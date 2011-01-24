@@ -73,7 +73,6 @@ Summary:	QEMU disk image utility
 Group:		Emulators
 Version:	%{qemu_version}
 Release:	%{qemu_release}
-Conflicts:	qemu < 0.9.0-%{mkrel 3}
 
 %description img
 This package contains the QEMU disk image utility that is used to
