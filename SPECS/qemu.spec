@@ -45,8 +45,6 @@ BuildRequires:	texinfo
 #BuildRequires:	vde-devel
 BuildRequires:	dev86
 BuildRequires:	iasl
-# glibc-devel with fixed preadv/pwritev prototypes
-BuildRequires:	glibc-devel >= 6:2.10.1-7mnb2
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
