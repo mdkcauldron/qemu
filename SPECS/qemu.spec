@@ -21,7 +21,7 @@ Source6: ksmtuned.init
 Source7: ksmtuned
 Source8: ksmtuned.conf
 
-License:	GPL
+License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
 Group:		Emulators
 Provides:	kvm
