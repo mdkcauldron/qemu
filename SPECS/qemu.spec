@@ -41,8 +41,7 @@ BuildRequires:	gnutls-devel
 BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
-# not in main
-#BuildRequires:	vde-devel
+BuildRequires:	vde-devel
 BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
