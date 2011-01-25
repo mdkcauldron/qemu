@@ -12,6 +12,8 @@ Version:	%{qemu_version}
 Release:	%{qemu_release}
 Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.gz
 Source1:	kvm.modules
+# TODO patch should be sent upstream
+# likely fix some ordering issue
 Patch0:		qemu-kvm-compile-fix.patch
 
 # KSM control scripts
