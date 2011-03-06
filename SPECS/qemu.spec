@@ -33,7 +33,6 @@ Requires:	qemu-img = %{version}-%{release}
 Requires:	cyrus-sasl
 BuildRequires:	libSDL-devel
 BuildRequires:	tetex-texi2html
-# XXXX: -luuid
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	kernel-headers	
 BuildRequires:	pulseaudio-devel
@@ -43,7 +42,9 @@ BuildRequires:	gnutls-devel
 BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
-BuildRequires:	vde-devel
+# not needed at this time, Fedora don't build it
+# BuildRequires:	vde-devel
+
 BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
