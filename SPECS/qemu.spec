@@ -79,7 +79,8 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
-%patch0 -p0
+%patch00 -p1
+%patch01 -p1
 
 # nuke explicit dependencies on GLIBC_PRIVATE
 # (Anssi 03/2008) FIXME: use _requires_exceptions
