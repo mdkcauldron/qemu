@@ -241,7 +241,6 @@ rm -f /etc/rc.d/*/{K,S}??qemu
 %{_datadir}/qemu/*.bin
 %{_datadir}/qemu/*.rom
 %{_datadir}/qemu/keymaps
-%{_datadir}/qemu/video.x
 %{_datadir}/qemu/openbios-sparc32
 %{_datadir}/qemu/openbios-sparc64
 %{_datadir}/qemu/openbios-ppc
