@@ -102,14 +102,6 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 cp -a x86_64-softmmu/qemu-system-x86_64 qemu-kvm
 make clean
 
-#pushd kvm
-#./configure \
-#	--prefix=%{_prefix} \
-#	--kerneldir="`pwd`/../kernel/" \
-#	--with-kvm-trace
-##make kvmtrace
-#make
-#popd
 %endif
 
 ./configure \
