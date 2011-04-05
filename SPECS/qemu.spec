@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
 %define qemu_version	0.14.0
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -12,8 +12,10 @@ Version:	%{qemu_version}
 Release:	%{qemu_release}
 Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.gz
 Source1:	kvm.modules
-Patch00: pc-add-a-Fedora-13-machine-type-for-backward-compat.patch
-Patch01: qemu-fix-non-PCI-target-build.patch
+# do not seems needed anymore ( as this seems to be Fedora specific )
+Patch0:     pc-add-a-Fedora-13-machine-type-for-backward-compat.patch
+# fix for non-x86 target that do not have pci support ( not sure if this is needed too )
+Patch1:     qemu-fix-non-PCI-target-build.patch
 
 # KSM control scripts
 Source4: ksm.init
@@ -41,8 +43,7 @@ BuildRequires:	gnutls-devel
 BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
-# not needed at this time, Fedora don't build it
-# BuildRequires:	vde-devel
+BuildRequires:	vde-devel
 
 BuildRequires:	dev86
 BuildRequires:	iasl
@@ -79,8 +80,8 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
-%patch00 -p1
-%patch01 -p1
+%patch0 -p1
+%patch1 -p1
 
 # nuke explicit dependencies on GLIBC_PRIVATE
 # (Anssi 03/2008) FIXME: use _requires_exceptions
