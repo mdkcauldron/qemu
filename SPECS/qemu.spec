@@ -4,8 +4,6 @@
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
-%define __find_requires %{_builddir}/%{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}/find_requires.sh
-
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	%{qemu_version}
@@ -82,14 +80,6 @@ create, commit, convert and get information from a disk image.
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
 %patch0 -p1
 %patch1 -p1
-
-# nuke explicit dependencies on GLIBC_PRIVATE
-# (Anssi 03/2008) FIXME: use _requires_exceptions
-cat >find_requires.sh << EOF
-#!/bin/sh
-%{_prefix}/lib/rpm/find-requires %{buildroot} %{_target_cpu} | grep -v GLIBC_PRIVATE
-EOF
-chmod +x find_requires.sh
 
 %build
 # don't use -mtune=generic if it is not supported
