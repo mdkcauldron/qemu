@@ -82,11 +82,7 @@ create, commit, convert and get information from a disk image.
 %patch1 -p1
 
 %build
-# don't use -mtune=generic if it is not supported
-if ! echo | %{__cc} -mtune=generic -xc -c - -o /dev/null 2> /dev/null; then
-  CFLAGS=`echo "$RPM_OPT_FLAGS" | sed -e "s/-mtune=generic/-mtune=pentiumpro/g"`
-fi
- 
+
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
