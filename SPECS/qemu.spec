@@ -26,6 +26,7 @@ License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
 Group:		Emulators
 Provides:	kvm
+# remove once 2010.0 is EOL
 Obsoletes:	kvm < 86
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
@@ -139,20 +140,11 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/modules/kvm.modules
-#install -m 0755 kvm/user/kvmtrace $RPM_BUILD_ROOT%{_bindir}/
-#install -m 0755 kvm/user/kvmtrace_format $RPM_BUILD_ROOT%{_bindir}/
 install -m 0755 kvm/kvm_stat $RPM_BUILD_ROOT%{_bindir}/
 install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_bindir}/
 %endif
 
 %makeinstall_std BUILD_DOCS="yes"
-
-#install -d ${RPM_BUILD_ROOT}%{_mandir}/man1
-#install -d ${RPM_BUILD_ROOT}%{_mandir}/man8
-#install -D -p -m 0644 qemu.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
-#install -D -p -m 0644 qemu-img.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
-#install -D -p -m 0644 qemu-nbd.8 ${RPM_BUILD_ROOT}%{_mandir}/man8
-#chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man1/*
 
 install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/qemu.conf
 
@@ -175,6 +167,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %_preun_service ksm
 %_preun_service ksmtuned
 
+# remove once 2009.1 is EOL 
 %triggerpostun -- qemu < 0.10.4-6
 rm -f /etc/rc.d/*/{K,S}??qemu
 
@@ -190,8 +183,6 @@ rm -f /etc/rc.d/*/{K,S}??qemu
 %{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_sysconfdir}/qemu/target-x86_64.conf
 %{_bindir}/kvm_stat
-#%{_bindir}/kvmtrace
-#%{_bindir}/kvmtrace_format
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
 %{_bindir}/qemu
