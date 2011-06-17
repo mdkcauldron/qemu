@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
-%define qemu_version	0.14.0
-%define qemu_rel	5
+%define qemu_version	0.14.1
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -12,13 +12,6 @@ Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%
 Source1:	kvm.modules
 # do not seems needed anymore ( as this seems to be Fedora specific )
 Patch0:     pc-add-a-Fedora-13-machine-type-for-backward-compat.patch
-# fix for non-x86 target that do not have pci support ( not sure if this is needed too )
-Patch1:     qemu-fix-non-PCI-target-build.patch
-
-# patches from debian
-# patch coming from upstream 
-# virtio-blk-fail-unaligned-access-CVE-2011-1750-52c050236e.diff
-Patch3:     qemu-kvm-CVE-2011-1750.diff 
 
 # KSM control scripts
 Source4: ksm.init
@@ -85,8 +78,6 @@ create, commit, convert and get information from a disk image.
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
 %patch0 -p1
-%patch1 -p1
-%patch3 -p1
 
 %build
 
