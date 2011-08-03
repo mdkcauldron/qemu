@@ -17,6 +17,7 @@
 # Required-Stop:
 # Should-Start:
 # Default-Start: 3 4 5
+# Default-Stop: 0 1 2 6
 # Short-Description: start and stop ksm
 # Description: The KSM init script starts and stops the ksm kernel thread.
 ### END INIT INFO

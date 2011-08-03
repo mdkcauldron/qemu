@@ -20,6 +20,7 @@
 # Required-Stop:
 # Should-Start:
 # Default-Start: 3 4 5
+# Default-Stop: 0 1 2 6
 # Short-Description: tune the speed of ksm
 # Description: The Kernel Samepage Merging control Daemon is a simple script
 #   that controls whether (and with what vigor) should ksm search duplicated
