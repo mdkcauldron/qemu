@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
-%define qemu_version	0.14.1
-%define qemu_rel	2
+%define qemu_version	0.15.0
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -12,7 +12,6 @@ Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%
 Source1:	kvm.modules
 # do not seems needed anymore ( as this seems to be Fedora specific )
 Patch0:     pc-add-a-Fedora-13-machine-type-for-backward-compat.patch
-Patch1:		qemu-kvm-0.14.1-null-build.patch
 # KSM control scripts
 Source4: ksm.init
 Source5: ksm.sysconfig
@@ -78,7 +77,6 @@ create, commit, convert and get information from a disk image.
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
 %patch0 -p1
-%patch1 -p0
 
 %build
 
