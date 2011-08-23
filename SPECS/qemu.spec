@@ -185,6 +185,7 @@ rm -f /etc/rc.d/*/{K,S}??qemu
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
+%{_bindir}/qemu-ga
 %{_bindir}/qemu-i386
 %{_bindir}/qemu-m68k
 %{_bindir}/qemu-mips*
@@ -211,6 +212,8 @@ rm -f /etc/rc.d/*/{K,S}??qemu
 %{_datadir}/qemu/openbios-sparc64
 %{_datadir}/qemu/openbios-ppc
 %{_datadir}/qemu/bamboo.dtb
+%{_datadir}/qemu/mpc8544ds.dtb
+%{_datadir}/qemu/petalogix-ml605.dtb
 %{_datadir}/qemu/petalogix-s3adsp1800.dtb
 
 %files img
