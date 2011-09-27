@@ -29,7 +29,7 @@ Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
 BuildRequires:	libSDL-devel
-BuildRequires:	tetex-texi2html
+BuildRequires:	texi2html
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	kernel-headers	
 BuildRequires:	pulseaudio-devel
