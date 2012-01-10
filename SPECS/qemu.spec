@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
 %define qemu_version	0.15.1
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -40,11 +40,14 @@ BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
 BuildRequires:	vde-devel
+%ifarch %{ix86} x86_64
+BuildRequires: spice-protocol >= 0.8.1
+BuildRequires: spice-server-devel >= 0.9.0
+%endif
 
 BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
@@ -92,6 +95,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--prefix=%{_prefix} \
 	--sysconfdir=%{_sysconfdir} \
 	--audio-drv-list=pa,sdl,alsa,oss \
+	--enable-spice \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
@@ -115,6 +119,9 @@ make clean
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--disable-kvm \
+%ifarch %{ix86} x86_64
+	--enable-spice \
+%endif
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
@@ -147,9 +154,6 @@ install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/qemu.conf
 # remove unpackaged files
 rm -rf $RPM_BUILD_ROOT%{_docdir}/qemu
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post 
 %ifarch %{ix86} x86_64
 # load kvm modules now, so we can make sure no reboot is needed.
@@ -168,7 +172,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 rm -f /etc/rc.d/*/{K,S}??qemu
 
 %files
-%defattr(-,root,root)
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
 %{_initddir}/ksm
