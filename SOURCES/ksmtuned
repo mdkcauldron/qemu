@@ -122,7 +122,7 @@ loop () {
     done
 }
 
-PIDFILE=${PIDFILE-/var/run/ksmtune.pid}
+PIDFILE=${PIDFILE-/var/run/ksmtuned.pid}
 if touch "$PIDFILE"; then
   loop &
   echo $! > "$PIDFILE"

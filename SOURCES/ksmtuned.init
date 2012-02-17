@@ -32,7 +32,7 @@
 
 prog=ksmtuned
 ksmtuned=/usr/sbin/ksmtuned
-pidfile=${PIDFILE-/var/run/ksmtune.pid}
+pidfile=${PIDFILE-/var/run/ksmtuned.pid}
 RETVAL=0
 
 start() {
