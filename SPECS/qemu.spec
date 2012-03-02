@@ -185,7 +185,6 @@ rm -f /etc/rc.d/*/{K,S}??qemu
 %{_bindir}/kvm_stat
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
-%{_bindir}/qemu
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
