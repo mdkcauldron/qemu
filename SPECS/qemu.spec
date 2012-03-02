@@ -16,7 +16,9 @@ Source5: ksm.sysconfig
 Source6: ksmtuned.init
 Source7: ksmtuned
 Source8: ksmtuned.conf
-Patch1: 0001-Fix-i8259-for-target-arches-not-supporting-KVM.patch
+# come from fedora package + some custom fix
+# to send upstream
+Patch1: Fix_save-restore_of_in-kernel_i8259.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -78,7 +80,7 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
-%apply_patches
+%patch1 -p1
 
 %build
 
