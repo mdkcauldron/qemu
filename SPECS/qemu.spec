@@ -168,10 +168,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %_preun_service ksm
 %_preun_service ksmtuned
 
-# remove once 2009.1 is EOL 
-%triggerpostun -- qemu < 0.10.4-6
-rm -f /etc/rc.d/*/{K,S}??qemu
-
 %files
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
