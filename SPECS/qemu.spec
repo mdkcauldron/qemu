@@ -201,6 +201,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-system-mips*
 %{_bindir}/qemu-system-sparc
 %{_bindir}/qemu-system-x86_64
+%{_bindir}/qemu-system-i386
 %{_mandir}/man1/qemu.1*
 %{_mandir}/man8/qemu-nbd.8*
 %dir %{_datadir}/qemu
@@ -214,6 +215,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/mpc8544ds.dtb
 %{_datadir}/qemu/petalogix-ml605.dtb
 %{_datadir}/qemu/petalogix-s3adsp1800.dtb
+%{_datadir}/qemu/palcode-clipper
 
 %files img
 %defattr(-,root,root)
