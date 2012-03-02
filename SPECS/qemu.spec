@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
 %define qemu_version	1.0
-%define qemu_rel	3
+%define qemu_rel	4
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -39,7 +39,7 @@ BuildRequires:	brlapi-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
-BuildRequires:	texinfo
+#BuildRequires:	texinfo
 BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
