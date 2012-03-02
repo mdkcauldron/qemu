@@ -41,6 +41,7 @@ BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
 BuildRequires:	vde-devel
+BuildRequires:	bluez-devel
 %ifarch %{ix86} x86_64
 BuildRequires: spice-protocol >= 0.8.1
 BuildRequires: spice-server-devel >= 0.9.0
