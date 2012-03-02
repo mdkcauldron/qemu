@@ -39,7 +39,7 @@ BuildRequires:	brlapi-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	libsasl2-devel
 BuildRequires:	pciutils-devel
-#BuildRequires:	texinfo
+BuildRequires:	texinfo
 BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
