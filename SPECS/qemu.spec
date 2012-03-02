@@ -43,7 +43,7 @@ BuildRequires:	texinfo
 BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
-BuildRequires:	usbredir-devel
+BuildRequires:	pkgconfig(libusbredirparser)
 BuildRequires:	libuuid-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
