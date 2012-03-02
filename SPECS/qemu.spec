@@ -104,6 +104,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--sysconfdir=%{_sysconfdir} \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--enable-spice \
+    --enable-mixemu \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
