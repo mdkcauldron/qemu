@@ -44,6 +44,7 @@ BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
 BuildRequires:	usbredir-devel
+BuildRequires:	libuuid-devel
 %ifarch %{ix86} x86_64
 BuildRequires: spice-protocol >= 0.8.1
 BuildRequires: spice-server-devel >= 0.9.0
