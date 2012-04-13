@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
 %define qemu_version	1.0
-%define qemu_rel	5
+%define qemu_rel	6
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -16,6 +16,8 @@ Source5: ksm.sysconfig
 Source6: ksmtuned.init
 Source7: ksmtuned
 Source8: ksmtuned.conf
+# Patch picked up from upstream GIT repo, it's for a next stable release of QEMU
+Patch0:         %{name}-1.0-upstream-support-for-udp-unicast-network-backend.patch
 # come from fedora package + some custom fix
 # to send upstream
 Patch1: Fix_save-restore_of_in-kernel_i8259.patch
@@ -87,6 +89,7 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
+%patch0 -p1
 %patch1 -p1
 
 %build
