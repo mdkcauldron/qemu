@@ -1,6 +1,6 @@
-%define qemu_name	qemu-kvm
-%define qemu_version	1.0
-%define qemu_rel	8
+%define qemu_name	qemu
+%define qemu_version	1.2.0
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -8,7 +8,7 @@ Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	%{qemu_version}
 Release:	%{qemu_release}
-Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.gz
+Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.init
@@ -16,15 +16,6 @@ Source5:	ksm.sysconfig
 Source6:	ksmtuned.init
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
-# Patch picked up from upstream GIT repo, it's for a next stable release of QEMU
-Patch0:		%{name}-1.0-upstream-support-for-udp-unicast-network-backend.patch
-# come from fedora package + some custom fix
-# to send upstream
-Patch1:		Fix_save-restore_of_in-kernel_i8259.patch
-# Patch from upstream GIT http://marc.info/?l=qemu-devel&m=133819025731504&w=2
-Patch2:		qemu-1.0-CVE-2012-2652.patch
-# Patch from RedHat, fixes CVE-2012-3515
-Patch3:		kvm-console-bounds-check-whenever-changing-the-cursor-du.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -93,10 +84,6 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 
