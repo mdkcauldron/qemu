@@ -207,7 +207,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/virtfs-proxy-helper
 %{_mandir}/man1/qemu.1*
 %{_mandir}/man8/qemu-nbd.8*
-%{_mandir}/man8/virtfs-proxy-helper.1.xz
+%{_mandir}/man1/virtfs-proxy-helper.*
 %dir %{_datadir}/qemu
 %{_datadir}/qemu/*.bin
 %{_datadir}/qemu/*.rom
