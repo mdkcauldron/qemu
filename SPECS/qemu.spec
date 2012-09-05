@@ -1,6 +1,6 @@
 %define qemu_name	qemu-kvm
 %define qemu_version	1.0
-%define qemu_rel	7
+%define qemu_rel	8
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -23,6 +23,8 @@ Patch0:		%{name}-1.0-upstream-support-for-udp-unicast-network-backend.patch
 Patch1:		Fix_save-restore_of_in-kernel_i8259.patch
 # Patch from upstream GIT http://marc.info/?l=qemu-devel&m=133819025731504&w=2
 Patch2:		qemu-1.0-CVE-2012-2652.patch
+# Patch from RedHat, fixes CVE-2012-3515
+Patch3:		kvm-console-bounds-check-whenever-changing-the-cursor-du.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -94,6 +96,7 @@ create, commit, convert and get information from a disk image.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 
