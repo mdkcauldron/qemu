@@ -213,10 +213,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/openbios-sparc32
 %{_datadir}/qemu/openbios-sparc64
 %{_datadir}/qemu/openbios-ppc
-%{_datadir}/qemu/bamboo.dtb
-%{_datadir}/qemu/mpc8544ds.dtb
-%{_datadir}/qemu/petalogix-ml605.dtb
-%{_datadir}/qemu/petalogix-s3adsp1800.dtb
+%{_datadir}/qemu/*.dtb
 %{_datadir}/qemu/palcode-clipper
 
 %files img
