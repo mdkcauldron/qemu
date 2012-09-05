@@ -148,7 +148,6 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/modules/kvm.modules
-install -m 0755 kvm/kvm_stat $RPM_BUILD_ROOT%{_bindir}/
 install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_bindir}/
 %endif
 
@@ -182,7 +181,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_sysconfdir}/qemu/target-x86_64.conf
-%{_bindir}/kvm_stat
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
 %{_bindir}/qemu-alpha
