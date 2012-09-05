@@ -204,17 +204,22 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-system-sparc
 %{_bindir}/qemu-system-x86_64
 %{_bindir}/qemu-system-i386
+%{_bindir}/virtfs-proxy-helper
 %{_mandir}/man1/qemu.1*
 %{_mandir}/man8/qemu-nbd.8*
+%{_mandir}/man8/virtfs-proxy-helper.1.xz
 %dir %{_datadir}/qemu
 %{_datadir}/qemu/*.bin
 %{_datadir}/qemu/*.rom
+%{_datadir}/qemu/cpus-*.conf
 %{_datadir}/qemu/keymaps
 %{_datadir}/qemu/openbios-sparc32
 %{_datadir}/qemu/openbios-sparc64
 %{_datadir}/qemu/openbios-ppc
 %{_datadir}/qemu/*.dtb
 %{_datadir}/qemu/palcode-clipper
+%{_datadir}/qemu/qemu-icon.bmp
+/usr/libexec/qemu-bridge-helper
 
 %files img
 %defattr(-,root,root)
