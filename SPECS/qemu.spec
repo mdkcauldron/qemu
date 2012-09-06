@@ -27,6 +27,7 @@ Obsoletes:	kvm < 86
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
+BuildRequires:	libtool
 BuildRequires:	libSDL-devel
 BuildRequires:	texi2html
 BuildRequires:	e2fsprogs-devel
