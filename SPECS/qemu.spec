@@ -45,6 +45,7 @@ BuildRequires:	pkgconfig(libusbredirparser)
 BuildRequires:	libuuid-devel
 # For smartcard NSS support
 BuildRequires:  nss-devel
+BuildRequires:  libcacard-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 
