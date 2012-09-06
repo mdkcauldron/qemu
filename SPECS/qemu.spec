@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.2.0
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -11,11 +11,12 @@ Release:	%{qemu_release}
 Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
-Source4:	ksm.init
+Source4:	ksm.service
 Source5:	ksm.sysconfig
-Source6:	ksmtuned.init
+Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
+Source9:	ksmctl.c
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -42,6 +43,8 @@ BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
 BuildRequires:	pkgconfig(libusbredirparser)
 BuildRequires:	libuuid-devel
+# For smartcard NSS support
+BuildRequires:  nss-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 
@@ -132,13 +135,16 @@ make clean
 
 %make V=1 $buildldflags
 
+gcc %{SOURCE9} -O2 -g -o ksmctl
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -D -p -m 0755 %{SOURCE4} $RPM_BUILD_ROOT%{_initddir}/ksm
+install -D -p -m 0644 %{SOURCE4} $RPM_BUILD_ROOT%{_unitdir}/ksm.service
 install -D -p -m 0644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/ksm
+install -D -p -m 0755 ksmctl $RPM_BUILD_ROOT/lib/systemd/ksmctl
 
-install -D -p -m 0755 %{SOURCE6} $RPM_BUILD_ROOT%{_initddir}/ksmtuned
+install -D -p -m 0644 %{SOURCE6} $RPM_BUILD_ROOT%{_unitdir}/ksmtuned.service
 install -D -p -m 0755 %{SOURCE7} $RPM_BUILD_ROOT%{_sbindir}/ksmtuned
 install -D -p -m 0644 %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/ksmtuned.conf
 
@@ -174,9 +180,10 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %files
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-%{_initddir}/ksm
+%{_unitdir}/ksm.service
+/lib/systemd/ksmctl
 %config(noreplace) %{_sysconfdir}/sysconfig/ksm
-%{_initddir}/ksmtuned
+%{_unitdir}/ksmtuned.service
 %{_sbindir}/ksmtuned
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %{_sysconfdir}/sysconfig/modules/kvm.modules
@@ -224,6 +231,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %files img
 %defattr(-,root,root)
 %{_bindir}/qemu-img
+%{_bindir}/vscclient
 %{_mandir}/man1/qemu-img.1*
 
 
