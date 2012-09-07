@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.2.0
-%define qemu_rel	2
+%define qemu_rel	3
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -44,9 +44,6 @@ BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
 BuildRequires:	pkgconfig(libusbredirparser)
 BuildRequires:	libuuid-devel
-# For smartcard NSS support
-BuildRequires:  nss-devel
-BuildRequires:  libcacard-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 
@@ -233,7 +230,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %files img
 %defattr(-,root,root)
 %{_bindir}/qemu-img
-%{_bindir}/vscclient
 %{_mandir}/man1/qemu-img.1*
 
 
