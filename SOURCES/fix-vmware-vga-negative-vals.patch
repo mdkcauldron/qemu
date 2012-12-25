@@ -1,0 +1,28 @@
+diff -p -up qemu-1.2.0/hw/vmware_vga.c.vmware-abort qemu-1.2.0/hw/vmware_vga.c
+--- qemu-1.2.0/hw/vmware_vga.c.vmware-abort	2012-09-05 16:03:06.000000000 +0200
++++ qemu-1.2.0/hw/vmware_vga.c	2012-12-25 04:14:47.728142532 +0100
+@@ -298,6 +298,24 @@ static inline void vmsvga_update_rect(st
+     uint8_t *src;
+     uint8_t *dst;
+ 
++    if (x < 0) {
++        fprintf(stderr, "%s: update x was < 0 (%d, w %d)\n",
++                        __FUNCTION__, x, w);
++        w += x;
++        if (w < 0) {
++            return;
++        }
++        x = 0;
++    }
++    if (y < 0) {
++        fprintf(stderr, "%s: update y was < 0 (%d, h %d)\n",
++                        __FUNCTION__, y, h);
++        h += y;
++        y = 0;
++    }
++    if ((w < 0) || (h < 0)) {
++        return;
++    }
+     if (x + w > s->width) {
+         fprintf(stderr, "%s: update width too large x: %d, w: %d\n",
+                         __FUNCTION__, x, w);

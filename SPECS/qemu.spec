@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.2.0
-%define qemu_rel	3
+%define qemu_rel	4
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -17,6 +17,10 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
+# (cjw) fix qemu crashing on guest X11 login when vmvga + spice is used
+#       caused by negative screen coordinates or width/height
+#       from ubuntu (for vnc) + stricter check
+Patch1:		fix-vmware-vga-negative-vals.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -44,6 +48,13 @@ BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
 BuildRequires:	pkgconfig(libusbredirparser)
 BuildRequires:	libuuid-devel
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	xen-devel
+BuildRequires:	libaio-devel
+BuildRequires:	cap-ng-devel
+# for virtfs
+BuildRequires:	cap-devel
+BuildRequires:	attr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 
@@ -86,6 +97,7 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
+%patch1 -p1 -b .vmware-abort
 
 %build
 
@@ -161,7 +173,7 @@ install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_bindir}/
 install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
-rm -rf $RPM_BUILD_ROOT%{_docdir}/qemu
+rm -rf $RPM_BUILD_ROOT%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
 
 %post 
 %ifarch %{ix86} x86_64
