@@ -9,6 +9,15 @@
  
  HELPERS-$(CONFIG_LINUX) = qemu-bridge-helper$(EXESUF)
  
+@@ -172,7 +172,7 @@
+ qemu-img-cmds.h: $(SRC_PATH)/qemu-img-cmds.hx
+ 	$(call quiet-command,sh $(SRC_PATH)/scripts/hxtool -h < $< > $@,"  GEN   $@")
+ 
+-qemu-ga$(EXESUF): LIBS = $(LIBS_QGA)
++qemu-ga$(EXESUF): LIBS = -lrt $(LIBS_QGA)
+ qemu-ga$(EXESUF): QEMU_CFLAGS += -I qga/qapi-generated
+ 
+ gen-out-type = $(subst .,-,$(suffix $@))
 --- qemu-1.2.0/Makefile.target.orig	2013-01-16 15:05:45.803313990 -0500
 +++ qemu-1.2.0/Makefile.target	2013-01-16 15:06:12.934451375 -0500
 @@ -34,6 +34,8 @@
