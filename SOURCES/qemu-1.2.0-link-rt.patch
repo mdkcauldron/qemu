@@ -9,3 +9,14 @@
  
  QEMU_CFLAGS += $(VNC_TLS_CFLAGS)
  QEMU_CFLAGS += $(VNC_SASL_CFLAGS)
+--- qemu-1.2.0/Makefile.orig	2013-01-16 14:56:09.124307697 -0500
++++ qemu-1.2.0/Makefile	2013-01-16 14:56:20.788370342 -0500
+@@ -35,7 +35,7 @@
+ 
+ $(call set-vpath, $(SRC_PATH))
+ 
+-LIBS+=-lz $(LIBS_TOOLS)
++LIBS+=-lz -lrt $(LIBS_TOOLS)
+ 
+ HELPERS-$(CONFIG_LINUX) = qemu-bridge-helper$(EXESUF)
+ 
