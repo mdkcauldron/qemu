@@ -1,0 +1,11 @@
+--- qemu-1.2.0/Makefile.target.orig	2013-01-16 14:48:05.492591233 -0500
++++ qemu-1.2.0/Makefile.target	2013-01-16 14:48:27.044717406 -0500
+@@ -130,7 +130,7 @@
+ obj-$(CONFIG_HAVE_CORE_DUMP) += dump.o
+ obj-$(CONFIG_NO_GET_MEMORY_MAPPING) += memory_mapping-stub.o
+ obj-$(CONFIG_NO_CORE_DUMP) += dump-stub.o
+-LIBS+=-lz
++LIBS+=-lz -lrt
+ 
+ QEMU_CFLAGS += $(VNC_TLS_CFLAGS)
+ QEMU_CFLAGS += $(VNC_SASL_CFLAGS)

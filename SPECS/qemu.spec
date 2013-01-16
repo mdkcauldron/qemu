@@ -26,6 +26,8 @@ Patch1:		fix-vmware-vga-negative-vals.patch
 Patch2:		qemu-e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
 Patch3:		qemu-e1000-discard-oversized-packets-based-on-SBP_LPE.patch
 
+Patch4:		qemu-1.2.0-link-rt.patch
+
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
 Group:		Emulators
@@ -104,6 +106,7 @@ create, commit, convert and get information from a disk image.
 %patch1 -p1 -b .vmware-abort
 %patch2 -p1 -b .CVE-2012-6075-1
 %patch3 -p1 -b .CVE-2012-6075-2
+%patch4 -p1 -b .link-rt
 
 %build
 
