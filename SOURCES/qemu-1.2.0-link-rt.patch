@@ -1,14 +1,3 @@
---- qemu-1.2.0/Makefile.target.orig	2013-01-16 14:48:05.492591233 -0500
-+++ qemu-1.2.0/Makefile.target	2013-01-16 14:48:27.044717406 -0500
-@@ -130,7 +130,7 @@
- obj-$(CONFIG_HAVE_CORE_DUMP) += dump.o
- obj-$(CONFIG_NO_GET_MEMORY_MAPPING) += memory_mapping-stub.o
- obj-$(CONFIG_NO_CORE_DUMP) += dump-stub.o
--LIBS+=-lz
-+LIBS+=-lz -lrt
- 
- QEMU_CFLAGS += $(VNC_TLS_CFLAGS)
- QEMU_CFLAGS += $(VNC_SASL_CFLAGS)
 --- qemu-1.2.0/Makefile.orig	2013-01-16 14:56:09.124307697 -0500
 +++ qemu-1.2.0/Makefile	2013-01-16 14:56:20.788370342 -0500
 @@ -35,7 +35,7 @@
@@ -20,3 +9,14 @@
  
  HELPERS-$(CONFIG_LINUX) = qemu-bridge-helper$(EXESUF)
  
+--- qemu-1.2.0/Makefile.target.orig	2013-01-16 15:05:45.803313990 -0500
++++ qemu-1.2.0/Makefile.target	2013-01-16 15:06:12.934451375 -0500
+@@ -34,6 +34,8 @@
+ endif
+ STPFILES=
+ 
++LIBS+=-lrt
++
+ ifndef CONFIG_HAIKU
+ LIBS+=-lm
+ endif
