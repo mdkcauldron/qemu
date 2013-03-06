@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.2.0
-%define qemu_rel	6
+%define qemu_rel	7
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -52,7 +52,7 @@ BuildRequires:	texinfo
 BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
-BuildRequires:	pkgconfig(libusbredirparser)
+BuildRequires:	pkgconfig(libusbredirparser) >= 0.3.4
 BuildRequires:	libuuid-devel
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	xen-devel
@@ -67,6 +67,7 @@ BuildRequires:  libxfs-devel
 %ifarch %{ix86} x86_64
 BuildRequires: spice-protocol >= 0.8.1
 BuildRequires: spice-server-devel >= 0.9.0
+BuildRequires: xen-devel >= 4.1.2
 %endif
 
 BuildRequires:	dev86
@@ -114,6 +115,23 @@ extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
 %ifarch %{ix86} x86_64
+./configure \
+	--target-list=x86_64-softmmu \
+	--prefix=%{_prefix} \
+	--sysconfdir=%{_sysconfdir} \
+	--audio-drv-list=pa,sdl,alsa,oss \
+	--enable-spice \
+	--enable-xen \
+	--enable-xen-pci-passthrough \
+	--disable-kvm \
+    --enable-mixemu \
+	--extra-ldflags=$extraldflags \
+	--extra-cflags="$CFLAGS"
+
+%make V=1 $buildldflags
+cp -a x86_64-softmmu/qemu-system-x86_64 qemu-xen
+make clean
+
 # sdl outputs to alsa or pulseaudio depending on system config, but it's broken (RH bug #495964)
 # alsa works, but causes huge CPU load due to bugs
 # oss works, but is very problematic because it grabs exclusive control of the device causing other apps to go haywire
@@ -123,6 +141,8 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--sysconfdir=%{_sysconfdir} \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--enable-spice \
+	--enable-kvm \
+	--disable-xen \
     --enable-mixemu \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
@@ -147,6 +167,7 @@ make clean
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--disable-kvm \
+	--disable-xen \
 %ifarch %{ix86} x86_64
 	--enable-spice \
 %endif
@@ -175,6 +196,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/modules/kvm.modules
 install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_bindir}/
+install -m 0755 qemu-xen $RPM_BUILD_ROOT%{_bindir}/
 %endif
 
 %makeinstall_std BUILD_DOCS="yes"
@@ -210,6 +232,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_sysconfdir}/qemu/target-x86_64.conf
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
+%{_bindir}/qemu-xen
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
