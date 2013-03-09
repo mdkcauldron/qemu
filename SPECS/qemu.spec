@@ -55,7 +55,6 @@ BuildRequires:	curl-devel
 BuildRequires:	pkgconfig(libusbredirparser) >= 0.3.4
 BuildRequires:	libuuid-devel
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	xen-devel
 BuildRequires:	libaio-devel
 BuildRequires:	cap-ng-devel
 # for virtfs
