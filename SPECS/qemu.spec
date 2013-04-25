@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.2.0
-%define qemu_rel	7
+%define qemu_rel	8
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -27,6 +27,9 @@ Patch2:		qemu-e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.pat
 Patch3:		qemu-e1000-discard-oversized-packets-based-on-SBP_LPE.patch
 
 Patch4:		qemu-1.2.0-link-rt.patch
+
+# Patch from fedora, fixes CVE-2013-1922
+Patch5:		qemu-1.2.0-CVE-2013-1922.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -107,6 +110,7 @@ create, commit, convert and get information from a disk image.
 %patch2 -p1 -b .CVE-2012-6075-1
 %patch3 -p1 -b .CVE-2012-6075-2
 %patch4 -p1 -b .link-rt
+%patch5 -p1 -b .CVE-2013-1922
 
 %build
 
