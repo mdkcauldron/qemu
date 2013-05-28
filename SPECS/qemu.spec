@@ -1,6 +1,6 @@
 %define qemu_name	qemu
-%define qemu_version	1.2.0
-%define qemu_rel	8
+%define qemu_version	1.5.0
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -17,26 +17,11 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
-# (cjw) fix qemu crashing on guest X11 login when vmvga + spice is used
-#       caused by negative screen coordinates or width/height
-#       from ubuntu (for vnc) + stricter check
-Patch1:		fix-vmware-vga-negative-vals.patch
-
-# fix CVE-2012-6075 (from upstream via debian)
-Patch2:		qemu-e1000-discard-packets-that-are-too-long-if-not-SBP-and-not-LPE.patch
-Patch3:		qemu-e1000-discard-oversized-packets-based-on-SBP_LPE.patch
-
-Patch4:		qemu-1.2.0-link-rt.patch
-
-# Patch from fedora, fixes CVE-2013-1922
-Patch5:		qemu-1.2.0-CVE-2013-1922.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
 Group:		Emulators
 Provides:	kvm
-# remove once 2010.0 is EOL
-Obsoletes:	kvm < 86
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
@@ -65,6 +50,7 @@ BuildRequires:	cap-devel
 BuildRequires:	attr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
+BuildRequires:  pkgconfig(libcacard)
 
 %ifarch %{ix86} x86_64
 BuildRequires: spice-protocol >= 0.8.1
@@ -106,11 +92,7 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
-%patch1 -p1 -b .vmware-abort
-%patch2 -p1 -b .CVE-2012-6075-1
-%patch3 -p1 -b .CVE-2012-6075-2
-%patch4 -p1 -b .link-rt
-%patch5 -p1 -b .CVE-2013-1922
+%apply_patches
 
 %build
 
@@ -208,6 +190,12 @@ install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
 rm -rf $RPM_BUILD_ROOT%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
+rm -f $RPM_BUILD_ROOT%{_libdir}/libcacard*
+rm -f $RPM_BUILD_ROOT/usr/lib/libcacard*
+rm -f $RPM_BUILD_ROOT%{_libdir}/pkgconfig/libcacard.pc
+rm -f $RPM_BUILD_ROOT/usr/lib/pkgconfig/libcacard.pc
+rm -rf $RPM_BUILD_ROOT%{_includedir}/cacard
+
 
 %post 
 %ifarch %{ix86} x86_64
@@ -262,9 +250,10 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_mandir}/man8/qemu-nbd.8*
 %{_mandir}/man1/virtfs-proxy-helper.*
 %dir %{_datadir}/qemu
+%{_datadir}/qemu/*.aml
 %{_datadir}/qemu/*.bin
+%{_datadir}/qemu/*.img
 %{_datadir}/qemu/*.rom
-%{_datadir}/qemu/cpus-*.conf
 %{_datadir}/qemu/keymaps
 %{_datadir}/qemu/openbios-sparc32
 %{_datadir}/qemu/openbios-sparc64
