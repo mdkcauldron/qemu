@@ -1,0 +1,77 @@
+commit 5943818aefa238e8009944028c8fd3509d7bde38
+Author: Miroslav Rezanina <mrezanin@redhat.com>
+Date:   Wed Jul 10 14:20:40 2013 +0200
+
+    qga: remove undefined behavior in ga_install_service()
+    
+    RH-Author: Laszlo Ersek <lersek@redhat.com>
+    Message-id: <1372954619-30116-3-git-send-email-lersek@redhat.com>
+    O-Subject: [EMBGD RHEL-6.4.z qemu-kvm PATCH 2/5] qga: remove undefined behavior in ga_install_service()
+    Bugzilla: 980758
+    RH-Acked-by: Eric Blake <eblake@redhat.com>
+    RH-Acked-by: Petr Matousek <pmatouse@redhat.com>
+    RH-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+    
+    We shouldn't snprintf() from a buffer to the same buffer.
+    
+    Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+    Signed-off-by: Michael Roth <mdroth@linux.vnet.ibm.com>
+    (cherry picked from commit a880845f3d92e508e43fcc38f0631b91c203e5d5)
+
+diff --git a/qga/service-win32.c b/qga/service-win32.c
+index 843398a..8a5de8a 100644
+--- a/qga/service-win32.c
++++ b/qga/service-win32.c
+@@ -39,34 +39,36 @@ int ga_install_service(const char *path, const char *logfile)
+ {
+     SC_HANDLE manager;
+     SC_HANDLE service;
+-    TCHAR cmdline[MAX_PATH];
++    TCHAR module_fname[MAX_PATH];
++    GString *cmdline;
+ 
+-    if (GetModuleFileName(NULL, cmdline, MAX_PATH) == 0) {
++    if (GetModuleFileName(NULL, module_fname, MAX_PATH) == 0) {
+         printf_win_error("No full path to service's executable");
+         return EXIT_FAILURE;
+     }
+ 
+-    _snprintf(cmdline, MAX_PATH - strlen(cmdline), "%s -d", cmdline);
++    cmdline = g_string_new(module_fname);
++    g_string_append(cmdline, " -d");
+ 
+     if (path) {
+-        _snprintf(cmdline, MAX_PATH - strlen(cmdline), "%s -p %s", cmdline, path);
++        g_string_append_printf(cmdline, " -p %s", path);
+     }
+     if (logfile) {
+-        _snprintf(cmdline, MAX_PATH - strlen(cmdline), "%s -l %s -v",
+-            cmdline, logfile);
++        g_string_append_printf(cmdline, " -l %s -v", logfile);
+     }
+ 
+-    g_debug("service's cmdline: %s", cmdline);
++    g_debug("service's cmdline: %s", cmdline->str);
+ 
+     manager = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+     if (manager == NULL) {
+         printf_win_error("No handle to service control manager");
++        g_string_free(cmdline, TRUE);
+         return EXIT_FAILURE;
+     }
+ 
+     service = CreateService(manager, QGA_SERVICE_NAME, QGA_SERVICE_DISPLAY_NAME,
+         SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START,
+-        SERVICE_ERROR_NORMAL, cmdline, NULL, NULL, NULL, NULL, NULL);
++        SERVICE_ERROR_NORMAL, cmdline->str, NULL, NULL, NULL, NULL, NULL);
+ 
+     if (service) {
+         SERVICE_DESCRIPTION desc = { (char *)QGA_SERVICE_DESCRIPTION };
+@@ -80,6 +82,7 @@ int ga_install_service(const char *path, const char *logfile)
+     CloseServiceHandle(service);
+     CloseServiceHandle(manager);
+ 
++    g_string_free(cmdline, TRUE);
+     return (service == NULL);
+ }
+ 

@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.5.0
-%define qemu_rel	3
+%define qemu_rel	4
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -17,6 +17,12 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
+
+# Patches from RedHat, fixes CVE-2013-2231
+Patch0:		kvm-qga-remove-undefined-behavior-in-ga_install_service.patch
+Patch1:		kvm-qga-diagnostic-output-should-go-to-stderr.patch
+Patch2:		kvm-qa_install_service-nest-error-paths-more-idiomatically.patch
+Patch3:		kvm-qga-escape-cmdline-args-when-registering-win32-service.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
