@@ -1,6 +1,6 @@
 %define qemu_name	qemu
-%define qemu_version	1.5.0
-%define qemu_rel	4
+%define qemu_version	1.6.0
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -8,7 +8,7 @@ Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	%{qemu_version}
 Release:	%{qemu_release}
-Source0:	http://kent.dl.sourceforge.net/sourceforge/kvm/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
+Source0:	http://wiki.qemu-project.org/download/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.service
@@ -17,12 +17,6 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
-
-# Patches from RedHat, fixes CVE-2013-2231
-Patch0:		kvm-qga-remove-undefined-behavior-in-ga_install_service.patch
-Patch1:		kvm-qga-diagnostic-output-should-go-to-stderr.patch
-Patch2:		kvm-qa_install_service-nest-error-paths-more-idiomatically.patch
-Patch3:		kvm-qga-escape-cmdline-args-when-registering-win32-service.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
@@ -101,7 +95,6 @@ create, commit, convert and get information from a disk image.
 %apply_patches
 
 %build
-
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
@@ -170,37 +163,35 @@ make clean
 gcc %{SOURCE9} -O2 -g -o ksmctl
 
 %install
-rm -rf $RPM_BUILD_ROOT
+install -D -p -m 0644 %{SOURCE4} %{buildroot}/%{_unitdir}/ksm.service
+install -D -p -m 0644 %{SOURCE5} %{buildroot}/%{_sysconfdir}/sysconfig/ksm
+install -D -p -m 0755 ksmctl %{buildroot}/lib/systemd/ksmctl
 
-install -D -p -m 0644 %{SOURCE4} $RPM_BUILD_ROOT%{_unitdir}/ksm.service
-install -D -p -m 0644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/ksm
-install -D -p -m 0755 ksmctl $RPM_BUILD_ROOT/lib/systemd/ksmctl
-
-install -D -p -m 0644 %{SOURCE6} $RPM_BUILD_ROOT%{_unitdir}/ksmtuned.service
-install -D -p -m 0755 %{SOURCE7} $RPM_BUILD_ROOT%{_sbindir}/ksmtuned
-install -D -p -m 0644 %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/ksmtuned.conf
+install -D -p -m 0644 %{SOURCE6} %{buildroot}/%{_unitdir}/ksmtuned.service
+install -D -p -m 0755 %{SOURCE7} %{buildroot}/%{_sbindir}/ksmtuned
+install -D -p -m 0644 %{SOURCE8} %{buildroot}/%{_sysconfdir}/ksmtuned.conf
 
 %ifarch %{ix86} x86_64
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/modules
-mkdir -p $RPM_BUILD_ROOT%{_bindir}/
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
+mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/modules
+mkdir -p %{buildroot}/%{_bindir}/
+mkdir -p %{buildroot}/%{_datadir}/%{name}
 
-install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/modules/kvm.modules
-install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_bindir}/
-install -m 0755 qemu-xen $RPM_BUILD_ROOT%{_bindir}/
+install -m 0755 %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.modules
+install -m 0755 qemu-kvm %{buildroot}/%{_bindir}/
+install -m 0755 qemu-xen %{buildroot}/%{_bindir}/
 %endif
 
 %makeinstall_std BUILD_DOCS="yes"
 
-install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/qemu.conf
+install -D -p -m 0644 qemu.sasl %{buildroot}/%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
-rm -rf $RPM_BUILD_ROOT%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
-rm -f $RPM_BUILD_ROOT%{_libdir}/libcacard*
-rm -f $RPM_BUILD_ROOT/usr/lib/libcacard*
-rm -f $RPM_BUILD_ROOT%{_libdir}/pkgconfig/libcacard.pc
-rm -f $RPM_BUILD_ROOT/usr/lib/pkgconfig/libcacard.pc
-rm -rf $RPM_BUILD_ROOT%{_includedir}/cacard
+rm -rf %{buildroot}/%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
+rm -f %{buildroot}/%{_libdir}/libcacard*
+rm -f %{buildroot}/usr/lib/libcacard*
+rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
+rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
+rm -rf %{buildroot}/%{_includedir}/cacard
 
 
 %post 
@@ -268,9 +259,9 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/palcode-clipper
 %{_datadir}/qemu/qemu-icon.bmp
 /usr/libexec/qemu-bridge-helper
+%{_datadir}/qemu/*.svg
 
 %files img
-%defattr(-,root,root)
 %{_bindir}/qemu-img
 %{_mandir}/man1/qemu-img.1*
 
