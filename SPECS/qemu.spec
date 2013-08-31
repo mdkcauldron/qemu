@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	1.6.0
-%define qemu_rel	2
+%define qemu_rel	3
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -34,7 +34,7 @@ BuildRequires:	pulseaudio-devel
 BuildRequires:	zlib-devel
 BuildRequires:	brlapi-devel
 BuildRequires:	gnutls-devel
-BuildRequires:	libsasl2-devel
+BuildRequires:	libsasl-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	texinfo
 BuildRequires:	vde-devel
