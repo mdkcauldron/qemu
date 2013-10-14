@@ -25,6 +25,8 @@ Provides:	kvm
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
+BuildRequires:	flex
+BuildRequires:	bison
 BuildRequires:	libtool
 BuildRequires:	libSDL-devel
 BuildRequires:	texi2html
