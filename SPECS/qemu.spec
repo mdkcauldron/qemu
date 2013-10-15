@@ -17,6 +17,7 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
+Patch0:		qemu-1.6.1-fix-ar.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
