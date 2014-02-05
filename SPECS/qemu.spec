@@ -1,6 +1,6 @@
 %define qemu_name	qemu
-%define qemu_version	1.6.1
-%define qemu_rel	2
+%define qemu_version	1.6.2
+%define qemu_rel	1
 #define qemu_snapshot	0
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 
@@ -17,7 +17,20 @@ Source6:	ksmtuned.service
 Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
-Patch0:		qemu-1.6.1-fix-ar.patch
+
+# CVE-2013-4377: Fix crash when unplugging virtio devices (rhbz#1012633,
+# rhbz#1012641), patches from Fedora
+Patch106:	0106-virtio-bus-remove-vdev-field.patch
+Patch107:	0107-virtio-pci-remove-vdev-field.patch
+Patch108:	0108-virtio-ccw-remove-vdev-field.patch
+Patch109:	0109-virtio-bus-cleanup-plug-unplug-interface.patch
+Patch110:	0110-virtio-blk-switch-exit-callback-to-VirtioDeviceClass.patch
+Patch111:	0111-virtio-serial-switch-exit-callback-to-VirtioDeviceCl.patch
+Patch112:	0112-virtio-net-switch-exit-callback-to-VirtioDeviceClass.patch
+Patch113:	0113-virtio-scsi-switch-exit-callback-to-VirtioDeviceClas.patch
+Patch114:	0114-virtio-balloon-switch-exit-callback-to-VirtioDeviceC.patch
+Patch115:	0115-virtio-rng-switch-exit-callback-to-VirtioDeviceClass.patch
+Patch116:	0116-virtio-pci-add-device_unplugged-callback.patch
 
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
