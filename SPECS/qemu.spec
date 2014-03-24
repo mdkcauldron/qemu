@@ -1,7 +1,7 @@
 %define qemu_name	qemu
 %define qemu_version	2.0.0
 %define qemu_rel	rc0
-%define qemu_snapshot	1
+%define qemu_snapshot	2
 %define qemu_release	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 #define qemu_pkgver     %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
 %define qemu_pkgver     %{qemu_name}-%{qemu_version}-%{qemu_rel}
@@ -44,7 +44,7 @@ BuildRequires:	texinfo
 BuildRequires:	vde-devel
 BuildRequires:	bluez-devel
 BuildRequires:	curl-devel
-BuildRequires:	pkgconfig(libusbredirparser) >= 0.3.4
+BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
 BuildRequires:	libuuid-devel
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	libaio-devel
