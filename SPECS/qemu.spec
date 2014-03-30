@@ -9,7 +9,7 @@
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	%{qemu_version}
-Release:	%{qemu_release}
+Release:	%{qemu_release}.1
 Source0:	http://wiki.qemu-project.org/download/%{qemu_pkgver}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
