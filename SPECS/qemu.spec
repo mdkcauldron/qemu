@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.0.0
-%define qemu_rel	1
+%define qemu_rel	2
 %define qemu_snapshot	rc2
 
 # This should normally be 0
@@ -119,6 +119,9 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--enable-spice \
 	--enable-xen \
 	--enable-xen-pci-passthrough \
+        --enable-libusb \
+        --enable-linux-aio \
+        --enable-usb-redir \
 	--disable-kvm \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
@@ -137,6 +140,9 @@ make clean
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--enable-spice \
 	--enable-kvm \
+        --enable-libusb \
+        --enable-linux-aio \
+        --enable-usb-redir \
 	--disable-xen \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
@@ -160,6 +166,9 @@ make clean
 	--sysconfdir=%{_sysconfdir} \
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--audio-drv-list=pa,sdl,alsa,oss \
+        --enable-linux-aio \
+        --enable-libusb \
+        --enable-usb-redir \
 	--disable-kvm \
 	--disable-xen \
 %ifarch %{ix86} x86_64
