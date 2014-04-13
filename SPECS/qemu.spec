@@ -60,6 +60,8 @@ BuildRequires:	attr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 BuildRequires:  pkgconfig(libcacard)
+BuildRequires:  lib64usb1.0-devel
+BuildRequires:  usbredir-devel
 
 %ifarch %{ix86} x86_64
 BuildRequires: spice-protocol >= 0.8.1
