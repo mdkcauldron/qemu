@@ -1,12 +1,8 @@
 %define qemu_name	qemu
 %define qemu_version	2.0.0
-%define qemu_rel	2
-%define qemu_snapshot	rc2
-
-# This should normally be 0
-# But we are setting this to 0.3 to fix a package versioning mistake
-
-%define qemu_snapshot_prefix 0.3
+%define qemu_rel	1
+#define qemu_snapshot	rc2
+#define qemu_snapshot_prefix 0
 
 %define qemu_release	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
 %define qemu_pkgver     %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
@@ -131,7 +127,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
 %make V=1 $buildldflags
 cp -a x86_64-softmmu/qemu-system-x86_64 qemu-xen
-make clean
+%make clean
 
 # sdl outputs to alsa or pulseaudio depending on system config, but it's broken (RH bug #495964)
 # alsa works, but causes huge CPU load due to bugs
@@ -152,7 +148,7 @@ make clean
 
 %make V=1 $buildldflags
 cp -a x86_64-softmmu/qemu-system-x86_64 qemu-kvm
-make clean
+%make clean
 
 %endif
 
@@ -214,7 +210,7 @@ rm -f %{buildroot}/usr/lib/libcacard*
 rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
 rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
 rm -rf %{buildroot}/%{_includedir}/cacard
-
+%find_lang %{name}
 
 %post 
 %ifarch %{ix86} x86_64
@@ -229,7 +225,9 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %_preun_service ksm
 %_preun_service ksmtuned
 
-%files
+
+
+%files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
 %{_unitdir}/ksm.service
