@@ -271,6 +271,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/*.bin
 %{_datadir}/qemu/*.img
 %{_datadir}/qemu/*.rom
+%{_datadir}/qemu/u-boot.e500
 %{_datadir}/qemu/keymaps
 %{_datadir}/qemu/openbios-sparc32
 %{_datadir}/qemu/openbios-sparc64
