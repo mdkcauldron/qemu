@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.2
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -72,6 +72,30 @@ ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
 
 #http://lists.gnu.org/archive/html/qemu-devel/2014-01/msg01035.html
 Patch0: qemu-2.0.0-mga-compile-fix.patch
+
+# Fedora patches
+# Allow aarch64 to boot compressed kernel
+Patch0001: 0001-loader-Add-load_image_gzipped-function.patch
+Patch0002: 0002-aarch64-Allow-kernel-option-to-take-a-gzip-compresse.patch
+# Fix crash in curl driver
+Patch0003: 0003-block.curl-adding-timeout-option.patch
+Patch0004: 0004-curl-Allow-a-cookie-or-cookies-to-be-sent-with-http-.patch
+Patch0005: 0005-curl-Don-t-deref-NULL-pointer-in-call-to-aio_poll.patch
+# Fix crash on migration/snapshot (bz #1144490)
+Patch0006: 0006-virtio-pci-enable-bus-master-for-old-guests.patch
+Patch0007: 0007-virtio-pci-fix-migration-for-pci-bus-master.patch
+# Fix PPC virtio regression (bz #1144490)
+Patch0008: 0008-Revert-virtio-pci-fix-migration-for-pci-bus-master.patch
+# CVE-2014-7815 vnc: insufficient bits_per_pixel from the client
+# sanitization (bz #1157647, bz #1157641)
+Patch0009: 0009-vnc-sanitize-bits_per_pixel-from-the-client.patch
+# CVE-2014-3689 vmware_vga: insufficient parameter validation in
+# rectangle functions (bz #1153038, bz #1153035)
+Patch0010: 0010-vmware-vga-CVE-2014-3689-turn-off-hw-accel.patch
+Patch0011: 0011-vmware-vga-add-vmsvga_verify_rect.patch
+Patch0012: 0012-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_update_r.patch
+Patch0013: 0013-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_copy_rec.patch
+Patch0014: 0014-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_fill_rec.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
