@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.2
-%define qemu_rel	2
+%define qemu_rel	3
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -96,6 +96,17 @@ Patch0011: 0011-vmware-vga-add-vmsvga_verify_rect.patch
 Patch0012: 0012-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_update_r.patch
 Patch0013: 0013-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_copy_rec.patch
 Patch0014: 0014-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_fill_rec.patch
+# Fix qemu-img convert corruption for unflushed files (bz #1167249)
+Patch0015: 0015-block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
+Patch0016: 0016-block-raw-posix-use-seek_hole-ahead-of-fiemap.patch
+# Fix SLES11 migration issue (bz #1109427)
+Patch0017: 0017-kvm-run-cpu-state-synchronization-on-target-vcpu-thr.patch
+Patch0018: 0018-Introduce-cpu_clean_all_dirty.patch
+Patch0019: 0019-kvmclock-Ensure-time-in-migration-never-goes-backwar.patch
+Patch0020: 0020-kvmclock-Ensure-proper-env-tsc-value-for-kvmclock_cu.patch
+# CVE-2014-7840: insufficient parameter validation during ram load (bz
+# #1163080)
+Patch0021: 0021-migration-fix-parameter-validation-on-ram-load.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
