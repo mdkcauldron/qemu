@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.2
-%define qemu_rel	3
+%define qemu_rel	4
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -107,6 +107,9 @@ Patch0020: 0020-kvmclock-Ensure-proper-env-tsc-value-for-kvmclock_cu.patch
 # CVE-2014-7840: insufficient parameter validation during ram load (bz
 # #1163080)
 Patch0021: 0021-migration-fix-parameter-validation-on-ram-load.patch
+# patches 22 and 23 are CVE-2014-8106 (rhbz#1169454)
+Patch0022: 0022-cirrus-fix-blit-region-check.patch
+Patch0023: 0023-cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
