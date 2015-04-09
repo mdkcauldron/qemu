@@ -1,6 +1,6 @@
 %define qemu_name	qemu
-%define qemu_version	2.1.2
-%define qemu_rel	5
+%define qemu_version	2.1.3
+%define qemu_rel	1
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -81,35 +81,26 @@ Patch0002: 0002-aarch64-Allow-kernel-option-to-take-a-gzip-compresse.patch
 Patch0003: 0003-block.curl-adding-timeout-option.patch
 Patch0004: 0004-curl-Allow-a-cookie-or-cookies-to-be-sent-with-http-.patch
 Patch0005: 0005-curl-Don-t-deref-NULL-pointer-in-call-to-aio_poll.patch
-# Fix crash on migration/snapshot (bz #1144490)
-Patch0006: 0006-virtio-pci-enable-bus-master-for-old-guests.patch
-Patch0007: 0007-virtio-pci-fix-migration-for-pci-bus-master.patch
 # Fix PPC virtio regression (bz #1144490)
-Patch0008: 0008-Revert-virtio-pci-fix-migration-for-pci-bus-master.patch
-# CVE-2014-7815 vnc: insufficient bits_per_pixel from the client
-# sanitization (bz #1157647, bz #1157641)
-Patch0009: 0009-vnc-sanitize-bits_per_pixel-from-the-client.patch
-# CVE-2014-3689 vmware_vga: insufficient parameter validation in
-# rectangle functions (bz #1153038, bz #1153035)
-Patch0010: 0010-vmware-vga-CVE-2014-3689-turn-off-hw-accel.patch
-Patch0011: 0011-vmware-vga-add-vmsvga_verify_rect.patch
-Patch0012: 0012-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_update_r.patch
-Patch0013: 0013-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_copy_rec.patch
-Patch0014: 0014-vmware-vga-use-vmsvga_verify_rect-in-vmsvga_fill_rec.patch
+Patch0006: 0006-virtio-pci-fix-migration-for-pci-bus-master.patch
+Patch0007: 0007-Revert-virtio-pci-fix-migration-for-pci-bus-master.patch
 # Fix qemu-img convert corruption for unflushed files (bz #1167249)
-Patch0015: 0015-block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
-Patch0016: 0016-block-raw-posix-use-seek_hole-ahead-of-fiemap.patch
-# Fix SLES11 migration issue (bz #1109427)
-Patch0017: 0017-kvm-run-cpu-state-synchronization-on-target-vcpu-thr.patch
-Patch0018: 0018-Introduce-cpu_clean_all_dirty.patch
-Patch0019: 0019-kvmclock-Ensure-time-in-migration-never-goes-backwar.patch
-Patch0020: 0020-kvmclock-Ensure-proper-env-tsc-value-for-kvmclock_cu.patch
-# CVE-2014-7840: insufficient parameter validation during ram load (bz
-# #1163080)
-Patch0021: 0021-migration-fix-parameter-validation-on-ram-load.patch
-# patches 22 and 23 are CVE-2014-8106 (rhbz#1169454)
-Patch0022: 0022-cirrus-fix-blit-region-check.patch
-Patch0023: 0023-cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf.patch
+Patch0008: 0008-block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
+Patch0009: 0009-block-raw-posix-use-seek_hole-ahead-of-fiemap.patch
+# Fix USB host assignment (bz #1187749)
+Patch0010: 0010-usb-host-fix-usb_host_speed_compat-tyops.patch
+# Qemu: PRDT overflow from guest to host (bz #1204919, bz #1205322)
+Patch0011: 0011-ide-Correct-handling-of-malformed-short-PRDTs.patch
+# CVE-2014-8106: cirrus: insufficient blit region checks (bz #1170612,
+# bz #1169454)
+Patch0012: 0012-cirrus-fix-blit-region-check.patch
+Patch0013: 0013-cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf.patch
+# Fix .vdi disk corruption (bz #1199400)
+Patch0014: 0014-block-vdi-Add-locking-for-parallel-requests.patch
+# CVE-2015-1779 vnc: insufficient resource limiting in VNC websockets
+# decoder (bz #1205051, bz #1199572)
+Patch0015: 0015-CVE-2015-1779-incrementally-decode-websocket-frames.patch
+Patch0016: 0016-CVE-2015-1779-limit-size-of-HTTP-headers-from-websoc.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
