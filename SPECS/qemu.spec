@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.3
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -101,6 +101,10 @@ Patch0014: 0014-block-vdi-Add-locking-for-parallel-requests.patch
 # decoder (bz #1205051, bz #1199572)
 Patch0015: 0015-CVE-2015-1779-incrementally-decode-websocket-frames.patch
 Patch0016: 0016-CVE-2015-1779-limit-size-of-HTTP-headers-from-websoc.patch
+# Fix qemu-img error (bz #1200043)
+Patch0017: 0017-block-Fix-max-nb_sectors-in-bdrv_make_zero.patch
+
+Patch0500: qemu-2.1.3-CVE-2015-3456.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
