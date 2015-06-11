@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.3
-%define qemu_rel	2
+%define qemu_rel	3
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -103,8 +103,17 @@ Patch0015: 0015-CVE-2015-1779-incrementally-decode-websocket-frames.patch
 Patch0016: 0016-CVE-2015-1779-limit-size-of-HTTP-headers-from-websoc.patch
 # Fix qemu-img error (bz #1200043)
 Patch0017: 0017-block-Fix-max-nb_sectors-in-bdrv_make_zero.patch
-
-Patch0500: qemu-2.1.3-CVE-2015-3456.patch
+# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
+# (bz #1221152)
+Patch0018: 0018-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
+# User interface freezes when entering space character in Xfig (bz
+# #1151253)
+Patch0019: 0019-qxl-keep-going-if-reaching-guest-bug-on-empty-area.patch
+# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
+# #1222894)
+Patch0020: 0020-slirp-use-less-predictable-directory-name-in-tmp-for.patch
+# Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
+Patch0021: 0021-target-i386-Haswell-noTSX-and-Broadwell-noTSX.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it

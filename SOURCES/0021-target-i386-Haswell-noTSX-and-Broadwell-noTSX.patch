@@ -1,0 +1,104 @@
+From: Eduardo Habkost <ehabkost@redhat.com>
+Date: Fri, 13 Mar 2015 15:58:09 -0300
+Subject: [PATCH] target-i386: Haswell-noTSX and Broadwell-noTSX
+
+With the Intel microcode update that removed HLE and RTM, there will be
+different kinds of Haswell and Broadwell CPUs out there: some that still
+have the HLE and RTM features, and some that don't have the HLE and RTM
+features. On both cases people may be willing to use the pc-*-2.3
+machine-types.
+
+So, to cover both cases, introduce Haswell-noTSX and Broadwell-noTSX CPU
+models, for hosts that have Haswell and Broadwell CPUs without TSX support.
+
+Reviewed-by: Daniel P. Berrange <berrange@redhat.com>
+Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
+(cherry picked from commit a356850b80b3d13b2ef737dad2acb05e6da03753)
+---
+ target-i386/cpu.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+
+diff --git a/target-i386/cpu.c b/target-i386/cpu.c
+index f9fcbca..d1f29e0 100644
+--- a/target-i386/cpu.c
++++ b/target-i386/cpu.c
+@@ -1009,6 +1009,38 @@ static X86CPUDefinition builtin_x86_defs[] = {
+         .model_id = "Intel Xeon E312xx (Sandy Bridge)",
+     },
+     {
++        .name = "Haswell-noTSX",
++        .level = 0xd,
++        .vendor = CPUID_VENDOR_INTEL,
++        .family = 6,
++        .model = 60,
++        .stepping = 1,
++        .features[FEAT_1_EDX] =
++            CPUID_VME | CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
++            CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA |
++            CPUID_PGE | CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 |
++            CPUID_MCE | CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE |
++            CPUID_DE | CPUID_FP87,
++        .features[FEAT_1_ECX] =
++            CPUID_EXT_AVX | CPUID_EXT_XSAVE | CPUID_EXT_AES |
++            CPUID_EXT_POPCNT | CPUID_EXT_X2APIC | CPUID_EXT_SSE42 |
++            CPUID_EXT_SSE41 | CPUID_EXT_CX16 | CPUID_EXT_SSSE3 |
++            CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSE3 |
++            CPUID_EXT_TSC_DEADLINE_TIMER | CPUID_EXT_FMA | CPUID_EXT_MOVBE |
++            CPUID_EXT_PCID | CPUID_EXT_F16C | CPUID_EXT_RDRAND,
++        .features[FEAT_8000_0001_EDX] =
++            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_NX |
++            CPUID_EXT2_SYSCALL,
++        .features[FEAT_8000_0001_ECX] =
++            CPUID_EXT3_LAHF_LM,
++        .features[FEAT_7_0_EBX] =
++            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 |
++            CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_SMEP |
++            CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_INVPCID,
++        .xlevel = 0x8000000A,
++        .model_id = "Intel Core Processor (Haswell, no TSX)",
++    },
++    {
+         .name = "Haswell",
+         .level = 0xd,
+         .vendor = CPUID_VENDOR_INTEL,
+@@ -1042,6 +1074,40 @@ static X86CPUDefinition builtin_x86_defs[] = {
+         .model_id = "Intel Core Processor (Haswell)",
+     },
+     {
++        .name = "Broadwell-noTSX",
++        .level = 0xd,
++        .vendor = CPUID_VENDOR_INTEL,
++        .family = 6,
++        .model = 61,
++        .stepping = 2,
++        .features[FEAT_1_EDX] =
++            CPUID_VME | CPUID_SSE2 | CPUID_SSE | CPUID_FXSR | CPUID_MMX |
++            CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_CMOV | CPUID_MCA |
++            CPUID_PGE | CPUID_MTRR | CPUID_SEP | CPUID_APIC | CPUID_CX8 |
++            CPUID_MCE | CPUID_PAE | CPUID_MSR | CPUID_TSC | CPUID_PSE |
++            CPUID_DE | CPUID_FP87,
++        .features[FEAT_1_ECX] =
++            CPUID_EXT_AVX | CPUID_EXT_XSAVE | CPUID_EXT_AES |
++            CPUID_EXT_POPCNT | CPUID_EXT_X2APIC | CPUID_EXT_SSE42 |
++            CPUID_EXT_SSE41 | CPUID_EXT_CX16 | CPUID_EXT_SSSE3 |
++            CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSE3 |
++            CPUID_EXT_TSC_DEADLINE_TIMER | CPUID_EXT_FMA | CPUID_EXT_MOVBE |
++            CPUID_EXT_PCID | CPUID_EXT_F16C | CPUID_EXT_RDRAND,
++        .features[FEAT_8000_0001_EDX] =
++            CPUID_EXT2_LM | CPUID_EXT2_RDTSCP | CPUID_EXT2_NX |
++            CPUID_EXT2_SYSCALL,
++        .features[FEAT_8000_0001_ECX] =
++            CPUID_EXT3_LAHF_LM | CPUID_EXT3_3DNOWPREFETCH,
++        .features[FEAT_7_0_EBX] =
++            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 |
++            CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_SMEP |
++            CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_INVPCID |
++            CPUID_7_0_EBX_RDSEED | CPUID_7_0_EBX_ADX |
++            CPUID_7_0_EBX_SMAP,
++        .xlevel = 0x8000000A,
++        .model_id = "Intel Core Processor (Broadwell, no TSX)",
++    },
++    {
+         .name = "Broadwell",
+         .level = 0xd,
+         .vendor = CPUID_VENDOR_INTEL,

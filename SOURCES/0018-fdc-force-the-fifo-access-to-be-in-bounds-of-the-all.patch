@@ -1,4 +1,7 @@
-From: Petr Matousek <address@hidden>
+From: Petr Matousek <pmatouse@redhat.com>
+Date: Wed, 6 May 2015 09:48:59 +0200
+Subject: [PATCH] fdc: force the fifo access to be in bounds of the allocated
+ buffer
 
 During processing of certain commands such as FD_CMD_READ_ID and
 FD_CMD_DRIVE_SPECIFICATION_COMMAND the fifo memory access could
@@ -10,15 +13,16 @@ allocated memory.
 
 This is CVE-2015-3456.
 
-Signed-off-by: Petr Matousek <address@hidden>
-Reviewed-by: John Snow <address@hidden>
-Signed-off-by: John Snow <address@hidden>
+Signed-off-by: Petr Matousek <pmatouse@redhat.com>
+Reviewed-by: John Snow <jsnow@redhat.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
+(cherry picked from commit e907746266721f305d67bc0718795fedee2e824c)
 ---
  hw/block/fdc.c | 17 +++++++++++------
  1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/hw/block/fdc.c b/hw/block/fdc.c
-index f72a392..d8a8edd 100644
+index 490d127..045459e 100644
 --- a/hw/block/fdc.c
 +++ b/hw/block/fdc.c
 @@ -1436,7 +1436,7 @@ static uint32_t fdctrl_read_data(FDCtrl *fdctrl)
@@ -76,5 +80,3 @@ index f72a392..d8a8edd 100644
      if (fdctrl->data_pos == fdctrl->data_len) {
          /* We now have all parameters
           * and will be able to treat the command
--- 
-2.1.0
