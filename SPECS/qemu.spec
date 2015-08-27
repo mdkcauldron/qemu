@@ -262,7 +262,6 @@ rm -f %{buildroot}/usr/lib/libcacard*
 rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
 rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
 rm -rf %{buildroot}/%{_includedir}/cacard
-%find_lang %{name}
 
 %post 
 %ifarch %{ix86} x86_64
@@ -279,7 +278,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 
 
 
-%files -f %{name}.lang
+%files
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
 %{_unitdir}/ksm.service
