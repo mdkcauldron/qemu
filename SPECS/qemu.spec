@@ -114,16 +114,37 @@ Patch0019: 0019-qxl-keep-going-if-reaching-guest-bug-on-empty-area.patch
 Patch0020: 0020-slirp-use-less-predictable-directory-name-in-tmp-for.patch
 # Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
 Patch0021: 0021-target-i386-Haswell-noTSX-and-Broadwell-noTSX.patch
+# CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
 Patch0022: 0022-CVE-2015-3214-i8254-out-of-bounds-pit.patch
+# CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory
+# access (bz #1247141)
 Patch0023: 0023-CVE-2015-5154-check-ide-array-bounds-patch.patch
+# CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz
+# #1230536)
 Patch0024: 0024-CVE-2015-3209-fix-pcnet-heap-buffer-overflow.patch
 Patch0025: 0025-CVE-2015-4103-gate-xen-pci-cfg-contents.patch
 Patch0026: 0026-CVE-2015-4104-xen-dont-allow-guest-control-msi-mask.patch
 Patch0027: 0027-CVE-2015-4105-xen-limit-msi-error-messages.patch
 Patch0028: 0028-CVE-2015-4106-xen-improper-restrict-pci-config-space.patch
+# CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
 # https://github.com/qemu/qemu/commit/7882080388be5088e72c425b02223c02e6cb4295
 # virtio-serial: fix ANY_LAYOUT
 Patch0029: qemu-2.4.0-rc3-CVE-2015-5745.patch
+# CVE-2015-5165: rtl8139 uninitialized heap memory information leakage
+# to guest (bz #1249755)
+Patch0030: 0030-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
+Patch0031: 0031-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
+Patch0032: 0032-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
+Patch0033: 0033-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
+Patch0034: 0034-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
+Patch0035: 0035-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
+Patch0036: 0036-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
+
+# Fix crash in qemu_spice_create_display (bz #1163047)
+Patch0100: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
+# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
+# (bz #1255899)
+Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
