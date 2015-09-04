@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.3
-%define qemu_rel	4
+%define qemu_rel	5
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -145,6 +145,7 @@ Patch0100: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
 # CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
 # (bz #1255899)
 Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
+Patch0102: 0102-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
