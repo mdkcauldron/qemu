@@ -146,6 +146,7 @@ Patch0100: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
 # (bz #1255899)
 Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
 Patch0102: 0102-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
+Patch0103: 0103-ide-fix-ATAPI-command-permissions.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
