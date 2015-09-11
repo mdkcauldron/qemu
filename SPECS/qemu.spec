@@ -178,7 +178,7 @@ create, commit, convert and get information from a disk image.
 
 %prep
 %setup -q -n %{qemu_pkgver}
-%apply_patches
+%autopatch -p1
 
 %build
 extraldflags="-Wl,--build-id";
