@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.1.3
-%define qemu_rel	6
+%define qemu_rel	7
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -147,6 +147,14 @@ Patch0100: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
 Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
 Patch0102: 0102-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
 Patch0103: 0103-ide-fix-ATAPI-command-permissions.patch
+# (CVE-2015-5278)
+Patch0104: 0104-net-avoid-infinite-loop-when-receiving-packets-CVE-2.patch
+# (CVE-2015-5279)
+Patch0105: 0105-net-add-checks-to-validate-ring-buffer-pointers-CVE-.patch
+# (CVE-2015-7295)
+Patch0106: 0106-virtio-introduce-virtqueue_unmap_sg.patch
+Patch0107: 0107-virtio-introduce-virtqueue_discard.patch
+Patch0108: 0108-virtio-net-correctly-drop-truncated-packets.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
