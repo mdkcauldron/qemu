@@ -1,6 +1,6 @@
 %define qemu_name	qemu
-%define qemu_version	2.1.3
-%define qemu_rel	7
+%define qemu_version	2.4.0.1
+%define qemu_rel	1
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -70,91 +70,9 @@ BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
 
-#http://lists.gnu.org/archive/html/qemu-devel/2014-01/msg01035.html
-Patch0: qemu-2.0.0-mga-compile-fix.patch
-
 # Fedora patches
-# Allow aarch64 to boot compressed kernel
-Patch0001: 0001-loader-Add-load_image_gzipped-function.patch
-Patch0002: 0002-aarch64-Allow-kernel-option-to-take-a-gzip-compresse.patch
-# Fix crash in curl driver
-Patch0003: 0003-block.curl-adding-timeout-option.patch
-Patch0004: 0004-curl-Allow-a-cookie-or-cookies-to-be-sent-with-http-.patch
-Patch0005: 0005-curl-Don-t-deref-NULL-pointer-in-call-to-aio_poll.patch
-# Fix PPC virtio regression (bz #1144490)
-Patch0006: 0006-virtio-pci-fix-migration-for-pci-bus-master.patch
-Patch0007: 0007-Revert-virtio-pci-fix-migration-for-pci-bus-master.patch
-# Fix qemu-img convert corruption for unflushed files (bz #1167249)
-Patch0008: 0008-block-raw-posix-Fix-disk-corruption-in-try_fiemap.patch
-Patch0009: 0009-block-raw-posix-use-seek_hole-ahead-of-fiemap.patch
-# Fix USB host assignment (bz #1187749)
-Patch0010: 0010-usb-host-fix-usb_host_speed_compat-tyops.patch
-# Qemu: PRDT overflow from guest to host (bz #1204919, bz #1205322)
-Patch0011: 0011-ide-Correct-handling-of-malformed-short-PRDTs.patch
-# CVE-2014-8106: cirrus: insufficient blit region checks (bz #1170612,
-# bz #1169454)
-Patch0012: 0012-cirrus-fix-blit-region-check.patch
-Patch0013: 0013-cirrus-don-t-overflow-CirrusVGAState-cirrus_bltbuf.patch
-# Fix .vdi disk corruption (bz #1199400)
-Patch0014: 0014-block-vdi-Add-locking-for-parallel-requests.patch
-# CVE-2015-1779 vnc: insufficient resource limiting in VNC websockets
-# decoder (bz #1205051, bz #1199572)
-Patch0015: 0015-CVE-2015-1779-incrementally-decode-websocket-frames.patch
-Patch0016: 0016-CVE-2015-1779-limit-size-of-HTTP-headers-from-websoc.patch
-# Fix qemu-img error (bz #1200043)
-Patch0017: 0017-block-Fix-max-nb_sectors-in-bdrv_make_zero.patch
-# CVE-2015-3456: (VENOM) fdc: out-of-bounds fifo buffer memory access
-# (bz #1221152)
-Patch0018: 0018-fdc-force-the-fifo-access-to-be-in-bounds-of-the-all.patch
-# User interface freezes when entering space character in Xfig (bz
-# #1151253)
-Patch0019: 0019-qxl-keep-going-if-reaching-guest-bug-on-empty-area.patch
-# CVE-2015-4037: insecure temporary file use in /net/slirp.c (bz
-# #1222894)
-Patch0020: 0020-slirp-use-less-predictable-directory-name-in-tmp-for.patch
-# Backport {Haswell,Broadwell}-noTSX cpu models (bz #1213053)
-Patch0021: 0021-target-i386-Haswell-noTSX-and-Broadwell-noTSX.patch
-# CVE-2015-3214: i8254: out-of-bounds memory access (bz #1243728)
-Patch0022: 0022-CVE-2015-3214-i8254-out-of-bounds-pit.patch
-# CVE-2015-5154: ide: atapi: heap overflow during I/O buffer memory
-# access (bz #1247141)
-Patch0023: 0023-CVE-2015-5154-check-ide-array-bounds-patch.patch
-# CVE-2015-3209: pcnet: multi-tmd buffer overflow in the tx path (bz
-# #1230536)
-Patch0024: 0024-CVE-2015-3209-fix-pcnet-heap-buffer-overflow.patch
-Patch0025: 0025-CVE-2015-4103-gate-xen-pci-cfg-contents.patch
-Patch0026: 0026-CVE-2015-4104-xen-dont-allow-guest-control-msi-mask.patch
-Patch0027: 0027-CVE-2015-4105-xen-limit-msi-error-messages.patch
-Patch0028: 0028-CVE-2015-4106-xen-improper-restrict-pci-config-space.patch
-# CVE-2015-5745: buffer overflow in virtio-serial (bz #1251160)
-# https://github.com/qemu/qemu/commit/7882080388be5088e72c425b02223c02e6cb4295
-# virtio-serial: fix ANY_LAYOUT
-Patch0029: qemu-2.4.0-rc3-CVE-2015-5745.patch
-# CVE-2015-5165: rtl8139 uninitialized heap memory information leakage
-# to guest (bz #1249755)
-Patch0030: 0030-rtl8139-avoid-nested-ifs-in-IP-header-parsing-CVE-20.patch
-Patch0031: 0031-rtl8139-drop-tautologous-if-ip-.-statement-CVE-2015-.patch
-Patch0032: 0032-rtl8139-skip-offload-on-short-Ethernet-IP-header-CVE.patch
-Patch0033: 0033-rtl8139-check-IP-Header-Length-field-CVE-2015-5165.patch
-Patch0034: 0034-rtl8139-check-IP-Total-Length-field-CVE-2015-5165.patch
-Patch0035: 0035-rtl8139-skip-offload-on-short-TCP-header-CVE-2015-51.patch
-Patch0036: 0036-rtl8139-check-TCP-Data-Offset-field-CVE-2015-5165.patch
-
-# Fix crash in qemu_spice_create_display (bz #1163047)
-Patch0100: 0022-spice-display-fix-segfault-in-qemu_spice_create_upda.patch
-# CVE-2015-5255: heap memory corruption in vnc_refresh_server_surface
-# (bz #1255899)
-Patch0101: 0101-vnc-fix-memory-corruption-CVE-2015-5225.patch
-Patch0102: 0102-e1000-Avoid-infinite-loop-in-processing-transmit-des.patch
+# http://git.qemu.org/?p=qemu.git;a=commit;h=d9033e1d3aa666c5071580617a57bd853c5d794a
 Patch0103: 0103-ide-fix-ATAPI-command-permissions.patch
-# (CVE-2015-5278)
-Patch0104: 0104-net-avoid-infinite-loop-when-receiving-packets-CVE-2.patch
-# (CVE-2015-5279)
-Patch0105: 0105-net-add-checks-to-validate-ring-buffer-pointers-CVE-.patch
-# (CVE-2015-7295)
-Patch0106: 0106-virtio-introduce-virtqueue_unmap_sg.patch
-Patch0107: 0107-virtio-introduce-virtqueue_discard.patch
-Patch0108: 0108-virtio-net-correctly-drop-truncated-packets.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
@@ -282,7 +200,7 @@ install -m 0755 qemu-kvm %{buildroot}/%{_bindir}/
 install -m 0755 qemu-xen %{buildroot}/%{_bindir}/
 %endif
 
-%makeinstall_std BUILD_DOCS="yes"
+%make_install BUILD_DOCS="yes"
 
 install -D -p -m 0644 qemu.sasl %{buildroot}/%{_sysconfdir}/sasl2/qemu.conf
 
@@ -319,7 +237,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_sbindir}/ksmtuned
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %{_sysconfdir}/sysconfig/modules/kvm.modules
-%{_sysconfdir}/qemu/target-x86_64.conf
+#{_sysconfdir}/qemu/target-x86_64.conf
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
 %{_bindir}/qemu-xen
@@ -361,6 +279,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/*.dtb
 %{_datadir}/qemu/palcode-clipper
 %{_datadir}/qemu/qemu-icon.bmp
+%{_datadir}/qemu/trace-events
 /usr/libexec/qemu-bridge-helper
 %{_datadir}/qemu/*.svg
 
