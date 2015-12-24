@@ -70,6 +70,15 @@ BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
 
+# Security fixes
+# CVE-2015-8567, CVE-2015-8568
+Patch0115:	0115-net-vmxnet3-memory-leakage-issue.patch
+# CVE-2015-8613
+Patch0116:	0116-scsi-initialise-info-object-with-appropriate-size.patch
+# CVE-2015-8619
+Patch0117:	0117-hmp-avoid-redundant-null-termination-of-buffer.patch
+
+
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
 achieves a reasonnable speed while being easy to port on new host
