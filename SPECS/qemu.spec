@@ -1,5 +1,5 @@
 %define qemu_name	qemu
-%define qemu_version	2.4.0.1
+%define qemu_version	2.5.0
 %define qemu_rel	1
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
@@ -69,10 +69,6 @@ BuildRequires: xen-devel >= 4.1.2
 BuildRequires:	dev86
 BuildRequires:	iasl
 ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
-
-# Fedora patches
-# http://git.qemu.org/?p=qemu.git;a=commit;h=d9033e1d3aa666c5071580617a57bd853c5d794a
-Patch0103: 0103-ide-fix-ATAPI-command-permissions.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
@@ -238,6 +234,8 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %{_sysconfdir}/sysconfig/modules/kvm.modules
 #{_sysconfdir}/qemu/target-x86_64.conf
+%{_bindir}/ivshmem-client
+%{_bindir}/ivshmem-server
 %{_bindir}/qemu-io
 %{_bindir}/qemu-kvm
 %{_bindir}/qemu-xen
@@ -264,6 +262,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-system-i386
 %{_bindir}/virtfs-proxy-helper
 %{_mandir}/man1/qemu.1*
+%{_mandir}/man8/qemu-ga.8*
 %{_mandir}/man8/qemu-nbd.8*
 %{_mandir}/man1/virtfs-proxy-helper.*
 %dir %{_datadir}/qemu
@@ -280,11 +279,10 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/palcode-clipper
 %{_datadir}/qemu/qemu-icon.bmp
 %{_datadir}/qemu/trace-events
-/usr/libexec/qemu-bridge-helper
 %{_datadir}/qemu/*.svg
+%{_datadir}/locale/*/LC_MESSAGES/qemu.mo
+/usr/libexec/qemu-bridge-helper
 
 %files img
 %{_bindir}/qemu-img
 %{_mandir}/man1/qemu-img.1*
-
-
