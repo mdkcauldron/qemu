@@ -289,7 +289,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_datadir}/qemu/qemu-icon.bmp
 %{_datadir}/qemu/trace-events
 %{_datadir}/qemu/*.svg
-%{_datadir}/locale/*/LC_MESSAGES/qemu.mo
 /usr/libexec/qemu-bridge-helper
 
 %files img
