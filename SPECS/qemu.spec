@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.5.0
-%define qemu_rel	2
+%define qemu_rel	3
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -24,7 +24,9 @@ Source9:	ksmctl.c
 License:	GPLv2+
 URL:		http://wiki.qemu.org/Main_Page
 Group:		Emulators
+%ifarch %{ix86} x86_64
 Provides:	kvm
+%endif
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
@@ -61,9 +63,9 @@ BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  usbredir-devel
 
 %ifarch %{ix86} x86_64
-BuildRequires: spice-protocol >= 0.8.1
-BuildRequires: spice-server-devel >= 0.9.0
-BuildRequires: xen-devel >= 4.1.2
+BuildRequires:	spice-protocol >= 0.8.1
+BuildRequires:	spice-server-devel >= 0.9.0
+BuildRequires:	xen-devel >= 4.1.2
 BuildRequires:	dev86
 BuildRequires:	iasl
 %endif
@@ -239,13 +241,15 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_unitdir}/ksmtuned.service
 %{_sbindir}/ksmtuned
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
-%{_sysconfdir}/sysconfig/modules/kvm.modules
 #{_sysconfdir}/qemu/target-x86_64.conf
 %{_bindir}/ivshmem-client
 %{_bindir}/ivshmem-server
 %{_bindir}/qemu-io
+%ifarch %{ix86} x86_64
+%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-kvm
 %{_bindir}/qemu-xen
+%endif
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
