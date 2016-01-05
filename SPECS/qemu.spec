@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.5.0
-%define qemu_rel	1
+%define qemu_rel	2
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -64,11 +64,9 @@ BuildRequires:  usbredir-devel
 BuildRequires: spice-protocol >= 0.8.1
 BuildRequires: spice-server-devel >= 0.9.0
 BuildRequires: xen-devel >= 4.1.2
-%endif
-
 BuildRequires:	dev86
 BuildRequires:	iasl
-ExclusiveArch:	%{ix86} ppc x86_64 amd64 %{sunsparc}
+%endif
 
 # Security fixes
 # CVE-2015-8567, CVE-2015-8568
