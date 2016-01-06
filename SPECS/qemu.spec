@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.5.0
-%define qemu_rel	3
+%define qemu_rel	4
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -52,6 +52,8 @@ BuildRequires:	libuuid-devel
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	libaio-devel
 BuildRequires:	cap-ng-devel
+BuildRequires:	spice-protocol >= 0.8.1
+BuildRequires:	spice-server-devel >= 0.9.0
 # for virtfs
 BuildRequires:	cap-devel
 BuildRequires:	attr-devel
@@ -61,10 +63,7 @@ BuildRequires:  pkgconfig(libcacard)
 # USB features
 BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  usbredir-devel
-
 %ifarch %{ix86} x86_64
-BuildRequires:	spice-protocol >= 0.8.1
-BuildRequires:	spice-server-devel >= 0.9.0
 BuildRequires:	xen-devel >= 4.1.2
 BuildRequires:	dev86
 BuildRequires:	iasl
@@ -176,9 +175,7 @@ cp -a x86_64-softmmu/qemu-system-x86_64 qemu-kvm
         --enable-usb-redir \
 	--disable-kvm \
 	--disable-xen \
-%ifarch %{ix86} x86_64
 	--enable-spice \
-%endif
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
