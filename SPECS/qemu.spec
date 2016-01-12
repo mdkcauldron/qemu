@@ -1,6 +1,6 @@
 %define qemu_name	qemu
 %define qemu_version	2.5.0
-%define qemu_rel	6
+%define qemu_rel	7
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
@@ -76,7 +76,12 @@ Patch0115:	0115-net-vmxnet3-memory-leakage-issue.patch
 Patch0116:	0116-scsi-initialise-info-object-with-appropriate-size.patch
 # CVE-2015-8619
 Patch0117:	0117-hmp-avoid-redundant-null-termination-of-buffer.patch
-
+# CVE-2015-8701
+Patch0118:	0118-net-rocker-fix-an-incorrect-array-bounds-check.patch
+# CVE-2015-8743
+Patch119:	0119-net-ne2000-fix-bounds-check-in-ioport-operations.patch
+# CVE-2016-1568
+Patch120:	0120-ide-ahci-reset-ncq-object-to-unused-on-error.patch
 
 %description
 QEMU is a FAST! processor emulator. By using dynamic translation it
