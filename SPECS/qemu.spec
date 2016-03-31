@@ -1,17 +1,16 @@
-%define qemu_name	qemu
 %define qemu_version	2.5.0
 %define qemu_rel	7
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
 %define qemu_release	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
-%define qemu_pkgver     %{qemu_name}-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
+%define qemu_pkgver     qemu-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
 
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	%{qemu_version}
 Release:	%{qemu_release}
-Source0:	http://wiki.qemu-project.org/download/%{qemu_name}-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
+Source0:	http://wiki.qemu-project.org/download/qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.service
