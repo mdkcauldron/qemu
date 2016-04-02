@@ -1,5 +1,5 @@
 %define qemu_version	2.5.0
-%define qemu_rel	7
+%define qemu_rel	8
 #define qemu_snapshot	rc2
 #define qemu_snapshot_prefix 0
 
