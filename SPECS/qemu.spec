@@ -2,8 +2,6 @@
 %define qemu_snapshot	rc2
 %define qemu_snapshot_prefix 0
 
-%define qemu_pkgver     qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}
-
 %ifarch %{ix86}
 # need_qemu_kvm should only ever be used by x86
 %global need_qemu_kvm 1
@@ -164,7 +162,7 @@ create, commit, convert and get information from a disk image.
 
 
 %prep
-%setup -q -n %{qemu_pkgver}
+%setup -q -n qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}
 %autopatch -p1
 
 
