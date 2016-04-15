@@ -44,10 +44,10 @@ Requires:	qemu-img = %{version}-%{release}
 Requires:	cyrus-sasl
 BuildRequires:	flex
 BuildRequires:	bison
-BuildRequires:	libSDL-devel
 BuildRequires:	texi2html
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	pulseaudio-devel
+BuildRequires:	SDL2-devel
 BuildRequires:	zlib-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	libsasl-devel
@@ -159,6 +159,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
         --enable-usb-redir \
 	--enable-kvm \
 	--enable-spice \
+	--with-sdlabi="2.0" \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
