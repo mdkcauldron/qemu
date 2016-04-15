@@ -113,8 +113,6 @@ CPUs. QEMU has two operating modes:
 %package img
 Summary:	QEMU disk image utility
 Group:		Emulators
-Version:	%{qemu_version}
-Release:	%{qemu_release}
 
 %description img
 This package contains the QEMU disk image utility that is used to
