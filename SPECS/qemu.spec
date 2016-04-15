@@ -87,6 +87,10 @@ BuildRequires: libseccomp-devel >= 2.3.0
 %endif
 # For network block driver
 BuildRequires: libcurl-devel
+# For smartcard NSS support
+BuildRequires: nss-devel
+# For VNC JPEG support
+BuildRequires: libjpeg-devel
 # For VNC PNG support
 BuildRequires: libpng-devel
 # For uuid generation
