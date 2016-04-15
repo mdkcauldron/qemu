@@ -75,9 +75,6 @@ BuildRequires:  libxfs-devel
 # USB features
 BuildRequires: usbredir-devel >= 0.5.
 BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
-%ifarch %{ix86} x86_64
-BuildRequires:	dev86
-%endif
 BuildRequires: gperftools-devel
 BuildRequires: texinfo
 # For /usr/bin/pod2man
