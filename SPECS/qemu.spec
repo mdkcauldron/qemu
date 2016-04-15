@@ -5,6 +5,20 @@
 %define qemu_release	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
 %define qemu_pkgver     qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}
 
+%ifarch %{ix86}
+# need_qemu_kvm should only ever be used by x86
+%global need_qemu_kvm 1
+%endif
+%ifarch x86_64
+# need_qemu_kvm should only ever be used by x86
+%global need_qemu_kvm 1
+%endif
+
+# Xen is available only on i386 x86_64 (from libvirt spec)
+%ifarch %{ix86} x86_64
+%global have_xen 1
+%endif
+
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	2.6.0
@@ -75,7 +89,9 @@ BuildRequires:	kernel-headers
 # For acpi compilation
 BuildRequires:	iasl
 # Xen support
+%if 0%{?have_xen:1}
 BuildRequires:	xen-devel
+%endif
 # Added in qemu 2.3
 BuildRequires: bzip2-devel
 # Added in qemu 2.4 for opengl bits
@@ -125,49 +141,6 @@ create, commit, convert and get information from a disk image.
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
-%ifarch %{ix86} x86_64
-./configure \
-	--target-list=x86_64-softmmu \
-	--prefix=%{_prefix} \
-	--sysconfdir=%{_sysconfdir} \
-	--audio-drv-list=pa,sdl,alsa,oss \
-	--enable-spice \
-	--enable-xen \
-	--enable-xen-pci-passthrough \
-        --enable-libusb \
-        --enable-linux-aio \
-        --enable-usb-redir \
-	--disable-kvm \
-	--extra-ldflags=$extraldflags \
-	--extra-cflags="$CFLAGS"
-
-%make V=1 $buildldflags
-cp -a x86_64-softmmu/qemu-system-x86_64 qemu-xen
-%make clean
-
-# sdl outputs to alsa or pulseaudio depending on system config, but it's broken (RH bug #495964)
-# alsa works, but causes huge CPU load due to bugs
-# oss works, but is very problematic because it grabs exclusive control of the device causing other apps to go haywire
-./configure \
-	--target-list=x86_64-softmmu \
-	--prefix=%{_prefix} \
-	--sysconfdir=%{_sysconfdir} \
-	--audio-drv-list=pa,sdl,alsa,oss \
-	--enable-spice \
-	--enable-kvm \
-        --enable-libusb \
-        --enable-linux-aio \
-        --enable-usb-redir \
-	--disable-xen \
-	--extra-ldflags=$extraldflags \
-	--extra-cflags="$CFLAGS"
-
-%make V=1 $buildldflags
-cp -a x86_64-softmmu/qemu-system-x86_64 qemu-kvm
-%make clean
-
-%endif
-
 ./configure \
 	--target-list="i386-softmmu x86_64-softmmu arm-softmmu cris-softmmu m68k-softmmu \
 		mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu ppc-softmmu \
@@ -184,8 +157,7 @@ cp -a x86_64-softmmu/qemu-system-x86_64 qemu-kvm
         --enable-linux-aio \
         --enable-libusb \
         --enable-usb-redir \
-	--disable-kvm \
-	--disable-xen \
+	--enable-kvm \
 	--enable-spice \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
@@ -209,8 +181,6 @@ mkdir -p %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_datadir}/%{name}
 
 install -m 0755 %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.modules
-install -m 0755 qemu-kvm %{buildroot}/%{_bindir}/
-install -m 0755 qemu-xen %{buildroot}/%{_bindir}/
 %endif
 
 %make_install BUILD_DOCS="yes"
@@ -255,8 +225,6 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-io
 %ifarch %{ix86} x86_64
 %{_sysconfdir}/sysconfig/modules/kvm.modules
-%{_bindir}/qemu-kvm
-%{_bindir}/qemu-xen
 %endif
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
