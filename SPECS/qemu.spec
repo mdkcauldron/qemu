@@ -66,6 +66,7 @@ BuildRequires:	cap-ng-devel
 BuildRequires: libiscsi-devel
 BuildRequires: libnfs-devel
 BuildRequires: snappy-devel
+BuildRequires:	lzo-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	libattr-devel
 # for direct xfs access with raw device
