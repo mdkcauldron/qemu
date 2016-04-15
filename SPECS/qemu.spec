@@ -284,6 +284,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %{_bindir}/qemu-sh4*
 %{_bindir}/qemu-sparc*
 %{_bindir}/qemu-x86_64
+%{_bindir}/qemu-system-aarch64
 %{_bindir}/qemu-system-arm
 %{_bindir}/qemu-system-cris
 %{_bindir}/qemu-system-m68k
