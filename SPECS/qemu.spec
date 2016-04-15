@@ -105,6 +105,8 @@ BuildRequires: libcap-devel
 BuildRequires: pixman-devel
 # Needed for usb passthrough for qemu >= 1.5
 BuildRequires: libusbx-devel
+# SSH block driver
+BuildRequires: libssh2-devel
 # GTK frontend
 BuildRequires: gtk3-devel
 BuildRequires: vte3-devel
