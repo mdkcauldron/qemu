@@ -1,6 +1,5 @@
 %define qemu_rel	1
 %define qemu_snapshot	rc2
-%define qemu_snapshot_prefix 0
 
 %ifarch %{ix86}
 # need_qemu_kvm should only ever be used by x86
@@ -27,7 +26,7 @@
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
+Release:	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
 Source0:	http://wiki.qemu-project.org/download/qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
