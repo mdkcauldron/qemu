@@ -65,6 +65,7 @@ BuildRequires:	libaio-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-devel
 BuildRequires:	cap-ng-devel
+BuildRequires:	ncurses-devel
 BuildRequires:	libattr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
