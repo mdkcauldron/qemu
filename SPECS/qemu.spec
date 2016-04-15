@@ -51,6 +51,8 @@ BuildRequires:	bison
 BuildRequires:	texi2html
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	pulseaudio-devel
+# pulled by SDL2 in FC:
+BuildRequires:	alsa-lib-devel
 BuildRequires:	SDL2-devel
 BuildRequires:	zlib-devel
 BuildRequires:	gnutls-devel
