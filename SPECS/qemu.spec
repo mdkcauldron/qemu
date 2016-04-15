@@ -120,6 +120,8 @@ BuildRequires: gtk3-devel
 BuildRequires: vte3-devel
 # GTK translations
 BuildRequires: gettext
+# RDMA migration
+BuildRequires: librdmacm-devel
 BuildRequires:	kernel-headers	
 # For acpi compilation
 BuildRequires:	iasl
