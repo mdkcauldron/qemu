@@ -161,11 +161,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="%{optflags}" \
 	--audio-drv-list=pa,sdl,alsa,oss \
-        --enable-linux-aio \
-        --enable-libusb \
-        --enable-usb-redir \
 	--enable-kvm \
-	--enable-spice \
 	--with-sdlabi="2.0" \
 	--with-gtkabi="3.0" \
 
