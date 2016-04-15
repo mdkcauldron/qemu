@@ -118,6 +118,8 @@ BuildRequires: libssh2-devel
 # GTK frontend
 BuildRequires: gtk3-devel
 BuildRequires: vte3-devel
+# GTK translations
+BuildRequires: gettext
 BuildRequires:	kernel-headers	
 # For acpi compilation
 BuildRequires:	iasl
