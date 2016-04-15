@@ -21,14 +21,14 @@
 %endif
 
 %define qemu_rel	1
-%define qemu_snapshot	rc2
+%global rcver	rc2
 
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?qemu_snapshot:0.%{qemu_snapshot}.}%{qemu_rel}
-Source0:	http://wiki.qemu-project.org/download/qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
-Source1:	kvm.modules/
+Release:	%mkrel %{?rcver:0.%{rcver}.}%{qemu_rel}
+Source0:	http://wiki.qemu-project.org/download/qemu-%{version}%{?rcver:-%{rcver}}.tar.bz2
+Source1:	kvm.modules/
 # KSM control scripts
 Source4:	ksm.service
 Source5:	ksm.sysconfig
@@ -157,7 +157,7 @@ This package provides a command line tool for manipulating disk images
 
 
 %prep
-%setup -q -n qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}
+%setup -q -n qemu-%{version}%{?rcver:-%{rcver}}
 %autopatch -p1
 
 
