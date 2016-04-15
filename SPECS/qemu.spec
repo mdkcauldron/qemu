@@ -14,6 +14,10 @@
 %global need_qemu_kvm 1
 %endif
 
+%ifarch %{ix86} x86_64 %{arm} aarch64 %{power64} s390 s390x
+%global have_seccomp 1
+%endif
+
 %ifarch %{ix86} x86_64
 %global have_spice   1
 %endif
@@ -76,6 +80,9 @@ BuildRequires: perl
 %if 0%{?have_spice:1}
 BuildRequires: spice-protocol >= 0.12.2
 BuildRequires: spice-server-devel >= 0.12.0
+%endif
+%if 0%{?have_seccomp:1}
+BuildRequires: libseccomp-devel >= 2.3.0
 %endif
 # For network block driver
 BuildRequires: libcurl-devel
