@@ -77,6 +77,7 @@ BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
 %ifarch %{ix86} x86_64
 BuildRequires:	dev86
 %endif
+BuildRequires: gperftools-devel
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl
@@ -182,7 +183,7 @@ ppc64abi32-linux-user sh4-linux-user sh4eb-linux-user \
 sparc-linux-user sparc64-linux-user sparc32plus-linux-user \
 aarch64-softmmu"
 
-    %global tcmallocflag --disable-tcmalloc
+    %global tcmallocflag --enable-tcmalloc
 
 %if 0%{?have_spice:1}
     %global spiceflag --enable-spice
