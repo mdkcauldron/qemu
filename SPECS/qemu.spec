@@ -14,6 +14,10 @@
 %global need_qemu_kvm 1
 %endif
 
+%ifarch %{ix86} x86_64
+%global have_spice   1
+%endif
+
 # Xen is available only on i386 x86_64 (from libvirt spec)
 %ifarch %{ix86} x86_64
 %global have_xen 1
@@ -69,8 +73,10 @@ BuildRequires:	dev86
 BuildRequires: texinfo
 # For /usr/bin/pod2man
 BuildRequires: perl
+%if 0%{?have_spice:1}
 BuildRequires: spice-protocol >= 0.12.2
 BuildRequires: spice-server-devel >= 0.12.0
+%endif
 # For network block driver
 BuildRequires: libcurl-devel
 # For VNC PNG support
@@ -161,6 +167,12 @@ ppc64abi32-linux-user sh4-linux-user sh4eb-linux-user \
 sparc-linux-user sparc64-linux-user sparc32plus-linux-user \
 aarch64-softmmu"
 
+%if 0%{?have_spice:1}
+    %global spiceflag --enable-spice
+%else
+    %global spiceflag --disable-spice
+%endif
+
 ./configure \
 	--prefix=%{_prefix} \
 	--libdir=%{_libdir} \
@@ -171,6 +183,7 @@ aarch64-softmmu"
 	--target-list="$buildarch" \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--enable-kvm \
+	%{spiceflag} \
 	--with-sdlabi="2.0" \
 	--with-gtkabi="3.0" \
 
