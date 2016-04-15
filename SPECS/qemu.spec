@@ -228,6 +228,8 @@ install -m 0755 %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.mod
 
 %make_install BUILD_DOCS="yes"
 
+%find_lang %{name}
+
 install -D -p -m 0644 qemu.sasl %{buildroot}/%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
@@ -253,7 +255,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 
 
 
-%files
+%files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
 %{_unitdir}/ksm.service
@@ -269,6 +271,7 @@ sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
 %ifarch %{ix86} x86_64
 %{_sysconfdir}/sysconfig/modules/kvm.modules
 %endif
+%{_bindir}/qemu-aarch64
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
