@@ -31,41 +31,52 @@ Requires:	qemu-img = %{version}-%{release}
 Requires:	cyrus-sasl
 BuildRequires:	flex
 BuildRequires:	bison
-BuildRequires:	libtool
 BuildRequires:	libSDL-devel
 BuildRequires:	texi2html
 BuildRequires:	e2fsprogs-devel
-BuildRequires:	kernel-headers	
 BuildRequires:	pulseaudio-devel
 BuildRequires:	zlib-devel
-BuildRequires:	brlapi-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	libsasl-devel
-BuildRequires:	pciutils-devel
-BuildRequires:	texinfo
 BuildRequires:	vde-devel
-BuildRequires:	bluez-devel
-BuildRequires:	curl-devel
-BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
-BuildRequires:	libuuid-devel
-BuildRequires:	pkgconfig(libpng)
+BuildRequires:	libtool
 BuildRequires:	libaio-devel
+BuildRequires:	pciutils-devel
+BuildRequires:	pulseaudio-devel
 BuildRequires:	cap-ng-devel
-BuildRequires:	spice-protocol >= 0.8.1
-BuildRequires:	spice-server-devel >= 0.9.0
-# for virtfs
-BuildRequires:	cap-devel
-BuildRequires:	attr-devel
+BuildRequires:	libattr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
 # USB features
-BuildRequires:  pkgconfig(libusb-1.0)
-BuildRequires:  usbredir-devel
+BuildRequires: usbredir-devel >= 0.5.
+BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
 %ifarch %{ix86} x86_64
-BuildRequires:	xen-devel >= 4.1.2
 BuildRequires:	dev86
-BuildRequires:	iasl
 %endif
+BuildRequires: texinfo
+# For /usr/bin/pod2man
+BuildRequires: perl
+BuildRequires: spice-protocol >= 0.12.2
+BuildRequires: spice-server-devel >= 0.12.0
+# For network block driver
+BuildRequires: libcurl-devel
+# For VNC PNG support
+BuildRequires: libpng-devel
+# For uuid generation
+BuildRequires: libuuid-devel
+# For BlueZ device support
+BuildRequires: bluez-devel
+# For Braille device support
+BuildRequires: brlapi-devel
+# For virtfs
+BuildRequires: libcap-devel
+# Needed for usb passthrough for qemu >= 1.5
+BuildRequires: libusbx-devel
+BuildRequires:	kernel-headers	
+# For acpi compilation
+BuildRequires:	iasl
+# Xen support
+BuildRequires:	xen-devel
 # Added in qemu 2.3
 BuildRequires: bzip2-devel
 # Added in qemu 2.4 for opengl bits
