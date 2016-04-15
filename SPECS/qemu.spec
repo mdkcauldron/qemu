@@ -39,10 +39,10 @@ Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.service
 Source5:	ksm.sysconfig
-Source6:	ksmtuned.service
-Source7:	ksmtuned
-Source8:	ksmtuned.conf
-Source9:	ksmctl.c
+Source6:	ksmctl.c
+Source7:	ksmtuned.service
+Source8:	ksmtuned
+Source9:	ksmtuned.conf
 
 %ifarch %{ix86} x86_64
 Provides:	kvm
@@ -207,16 +207,17 @@ aarch64-softmmu"
 
 %make V=1 $buildldflags
 
-gcc %{SOURCE9} -O2 -g -o ksmctl
+gcc %{_sourcedir}/ksmctl.c -O2 -g -o ksmctl
+
 
 %install
-install -D -p -m 0644 %{SOURCE4} %{buildroot}/%{_unitdir}/ksm.service
-install -D -p -m 0644 %{SOURCE5} %{buildroot}/%{_sysconfdir}/sysconfig/ksm
-install -D -p -m 0755 ksmctl %{buildroot}/lib/systemd/ksmctl
 
-install -D -p -m 0644 %{SOURCE6} %{buildroot}/%{_unitdir}/ksmtuned.service
-install -D -p -m 0755 %{SOURCE7} %{buildroot}/%{_sbindir}/ksmtuned
-install -D -p -m 0644 %{SOURCE8} %{buildroot}/%{_sysconfdir}/ksmtuned.conf
+install -D -p -m 0644 %{_sourcedir}/ksm.service %{buildroot}%{_unitdir}
+install -D -p -m 0644 %{_sourcedir}/ksm.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/ksm
+install -D -p -m 0755 ksmctl %{buildroot}%{_libexecdir}/ksmctl
+install -D -p -m 0644 %{_sourcedir}/ksmtuned.service %{buildroot}%{_unitdir}
+install -D -p -m 0755 %{_sourcedir}/ksmtuned %{buildroot}%{_sbindir}/ksmtuned
+install -D -p -m 0644 %{_sourcedir}/ksmtuned.conf %{buildroot}%{_sysconfdir}/ksmtuned.conf
 
 %ifarch %{ix86} x86_64
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/modules
