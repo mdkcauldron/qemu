@@ -182,7 +182,7 @@ ppc64abi32-linux-user sh4-linux-user sh4eb-linux-user \
 sparc-linux-user sparc64-linux-user sparc32plus-linux-user \
 aarch64-softmmu"
 
-    %global tcmallocflag --enable-tcmalloc
+    %global tcmallocflag --disable-tcmalloc
 
 %if 0%{?have_spice:1}
     %global spiceflag --enable-spice
