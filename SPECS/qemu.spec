@@ -20,6 +20,9 @@
 %global have_xen 1
 %endif
 
+%define qemu_rel	1
+%define qemu_snapshot	rc2
+
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
