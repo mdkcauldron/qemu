@@ -138,11 +138,14 @@ Group:		Emulators
 This package contains the QEMU disk image utility that is used to
 create, commit, convert and get information from a disk image.
 
+
 %prep
 %setup -q -n %{qemu_pkgver}
 %autopatch -p1
 
+
 %build
+# --build-id option is used for giving info to the debug packages.
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
