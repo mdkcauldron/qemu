@@ -1,6 +1,6 @@
 %define qemu_version	2.6.0
 %define qemu_rel	1
-%define qemu_snapshot	rc0
+%define qemu_snapshot	rc2
 %define qemu_snapshot_prefix 0
 
 %define qemu_release	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
