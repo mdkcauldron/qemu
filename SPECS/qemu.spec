@@ -99,6 +99,8 @@ BuildRequires: libuuid-devel
 BuildRequires: bluez-devel
 # For Braille device support
 BuildRequires: brlapi-devel
+# For FDT device tree support
+BuildRequires: libfdt-devel
 # For virtfs
 BuildRequires: libcap-devel
 # Hard requirement for version >= 1.3
