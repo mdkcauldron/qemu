@@ -245,11 +245,6 @@ rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
 rm -rf %{buildroot}/%{_includedir}/cacard
 
 %post 
-%ifarch %{ix86} x86_64
-# load kvm modules now, so we can make sure no reboot is needed.
-# If there's already a kvm module installed, we don't mess with it
-sh /%{_sysconfdir}/sysconfig/modules/kvm.modules
-%endif
 %_post_service ksmtuned
 %_post_service ksm
 
