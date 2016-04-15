@@ -156,6 +156,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 		sh4-linux-user sh4eb-linux-user sparc-linux-user sparc64-linux-user \
 		sparc32plus-linux-user" \
 	--prefix=%{_prefix} \
+	--libdir=%{_libdir} \
 	--sysconfdir=%{_sysconfdir} \
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--extra-ldflags=$extraldflags \
