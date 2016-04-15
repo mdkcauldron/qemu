@@ -103,6 +103,8 @@ BuildRequires: brlapi-devel
 BuildRequires: libcap-devel
 # Hard requirement for version >= 1.3
 BuildRequires: pixman-devel
+# For gluster support
+BuildRequires: glusterfs-devel >= 3.4.0
 # Needed for usb passthrough for qemu >= 1.5
 BuildRequires: libusbx-devel
 # SSH block driver
