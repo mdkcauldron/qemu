@@ -67,6 +67,10 @@ BuildRequires:	xen-devel >= 4.1.2
 BuildRequires:	dev86
 BuildRequires:	iasl
 %endif
+# virgl 3d support
+BuildRequires: virglrenderer-devel
+# Needed explicitly for qemu 2.6 GL support
+BuildRequires: pkgconfig(gbm)
 
 # Security fixes
 
