@@ -35,7 +35,6 @@ Group:		Emulators
 URL:		http://www.qemu.org/
 
 Source0:	http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.bz2
-Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.service
 Source5:	ksm.sysconfig
@@ -43,6 +42,8 @@ Source6:	ksmctl.c
 Source7:	ksmtuned.service
 Source8:	ksmtuned
 Source9:	ksmtuned.conf
+# Mageia stuff:
+Source100:	kvm.modules
 
 %ifarch %{ix86} x86_64
 Provides:	kvm
@@ -225,7 +226,7 @@ mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/modules
 mkdir -p %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_datadir}/%{name}
 
-install -m 0755 %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.modules
+install -m 0755 %{SOURCE100} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.modules
 %endif
 
 %make_install BUILD_DOCS="yes"
