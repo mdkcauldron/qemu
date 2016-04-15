@@ -58,7 +58,6 @@ BuildRequires:	cap-devel
 BuildRequires:	attr-devel
 # for direct xfs access with raw device
 BuildRequires:  libxfs-devel
-BuildRequires:  pkgconfig(libcacard)
 # USB features
 BuildRequires:  pkgconfig(libusb-1.0)
 BuildRequires:  usbredir-devel
@@ -67,6 +66,14 @@ BuildRequires:	xen-devel >= 4.1.2
 BuildRequires:	dev86
 BuildRequires:	iasl
 %endif
+# Added in qemu 2.3
+BuildRequires: bzip2-devel
+# Added in qemu 2.4 for opengl bits
+BuildRequires: libepoxy-devel
+# For 2.5 TLS test suite
+BuildRequires: libtasn1-devel
+# libcacard is it's own project as of qemu 2.5
+BuildRequires: libcacard-devel >= 2.5.0
 # virgl 3d support
 BuildRequires: virglrenderer-devel
 # Needed explicitly for qemu 2.6 GL support
