@@ -83,8 +83,13 @@ BuildRequires: bluez-devel
 BuildRequires: brlapi-devel
 # For virtfs
 BuildRequires: libcap-devel
+# Hard requirement for version >= 1.3
+BuildRequires: pixman-devel
 # Needed for usb passthrough for qemu >= 1.5
 BuildRequires: libusbx-devel
+# GTK frontend
+BuildRequires: gtk3-devel
+BuildRequires: vte3-devel
 BuildRequires:	kernel-headers	
 # For acpi compilation
 BuildRequires:	iasl
@@ -160,6 +165,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--enable-kvm \
 	--enable-spice \
 	--with-sdlabi="2.0" \
+	--with-gtkabi="3.0" \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="$CFLAGS"
 
