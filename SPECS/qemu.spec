@@ -30,7 +30,11 @@ Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
 Release:	%mkrel %{?rcver:0.%{rcver}.}%{qemu_rel}
-Source0:	http://.qemu-project.org/download/qemu-%{version}%{?rcver:%{rcstr}}.tar.bz2
+License:	GPLv2+ and LGPLv2+ and BSD
+Group:		Emulators
+URL:		http://www.qemu.org/
+
+Source0:	http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.bz2
 Source1:	kvm.modules
 # KSM control scripts
 Source4:	ksm.service
@@ -40,9 +44,6 @@ Source7:	ksmtuned
 Source8:	ksmtuned.conf
 Source9:	ksmctl.c
 
-License:	GPLv2+
-URL:		http://wiki.qemu.org/Main_Page
-Group:		Emulators
 %ifarch %{ix86} x86_64
 Provides:	kvm
 %endif
