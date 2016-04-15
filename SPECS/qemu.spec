@@ -158,6 +158,8 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--prefix=%{_prefix} \
 	--sysconfdir=%{_sysconfdir} \
 	--interp-prefix=%{_prefix}/qemu-%%M \
+	--extra-ldflags=$extraldflags \
+	--extra-cflags="%{optflags}" \
 	--audio-drv-list=pa,sdl,alsa,oss \
         --enable-linux-aio \
         --enable-libusb \
@@ -166,8 +168,6 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 	--enable-spice \
 	--with-sdlabi="2.0" \
 	--with-gtkabi="3.0" \
-	--extra-ldflags=$extraldflags \
-	--extra-cflags="$CFLAGS"
 
 %make V=1 $buildldflags
 
