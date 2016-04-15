@@ -1,14 +1,13 @@
-%define qemu_version	2.6.0
 %define qemu_rel	1
 %define qemu_snapshot	rc2
 %define qemu_snapshot_prefix 0
 
 %define qemu_release	%mkrel %{?qemu_snapshot:%{qemu_snapshot_prefix}.%{qemu_snapshot}.}%{qemu_rel}
-%define qemu_pkgver     qemu-%{qemu_version}%{?qemu_snapshot:-%{qemu_snapshot}}
+%define qemu_pkgver     qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}
 
 Summary:	QEMU CPU Emulator
 Name:		qemu
-Version:	%{qemu_version}
+Version:	2.6.0
 Release:	%{qemu_release}
 Source0:	http://wiki.qemu-project.org/download/qemu-%{version}%{?qemu_snapshot:-%{qemu_snapshot}}.tar.bz2
 Source1:	kvm.modules
