@@ -115,6 +115,7 @@ BuildRequires: libcacard-devel >= 2.5.0
 BuildRequires: virglrenderer-devel
 # Needed explicitly for qemu 2.6 GL support
 BuildRequires: pkgconfig(gbm)
+BuildRequires: libegl-devel
 
 # Security fixes
 
