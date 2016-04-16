@@ -20,7 +20,7 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	1
+%define qemu_rel	2
 %global rcver	rc2
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
