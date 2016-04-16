@@ -215,6 +215,10 @@ gcc %{_sourcedir}/ksmctl.c -O2 -g -o ksmctl
 
 %install
 
+mkdir -p %{buildroot}%{_udevdir}
+mkdir -p %{buildroot}%{_unitdir}
+mkdir -p %{buildroot}%{_sysconfdir}/qemu
+
 install -D -p -m 0644 %{_sourcedir}/ksm.service %{buildroot}%{_unitdir}
 install -D -p -m 0644 %{_sourcedir}/ksm.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/ksm
 install -D -p -m 0755 ksmctl %{buildroot}%{_libexecdir}/ksmctl
