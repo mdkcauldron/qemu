@@ -257,13 +257,12 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-%{_unitdir}/ksm.service
 /lib/systemd/ksmctl
-%config(noreplace) %{_sysconfdir}/sysconfig/ksm
-%{_unitdir}/ksmtuned.service
 %{_sbindir}/ksmtuned
+%{_unitdir}/ksmtuned.service
+%{_unitdir}/ksm.service
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
-#{_sysconfdir}/qemu/target-x86_64.conf
+%config(noreplace) %{_sysconfdir}/sysconfig/ksm
 %{_bindir}/ivshmem-client
 %{_bindir}/ivshmem-server
 %{_bindir}/qemu-io
