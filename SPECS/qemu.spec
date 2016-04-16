@@ -261,7 +261,7 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-/lib/systemd/ksmctl
+%{_libexecdir}/ksmctl
 %{_sbindir}/ksmtuned
 %{_unitdir}/ksmtuned.service
 %{_unitdir}/ksm.service
