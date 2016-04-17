@@ -238,7 +238,7 @@ install -m 0755 %{SOURCE100} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.m
 
 %find_lang %{name}
 
-install -D -p -m 0644 qemu.sasl %{buildroot}/%{_sysconfdir}/sasl2/qemu.conf
+install -D -p -m 0644 qemu.sasl %{buildroot}%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
 rm -rf %{buildroot}/%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
