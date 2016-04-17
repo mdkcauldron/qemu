@@ -20,7 +20,7 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	2
+%define qemu_rel	3
 %global rcver	rc2
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
@@ -42,6 +42,8 @@ Source6:	ksmctl.c
 Source7:	ksmtuned.service
 Source8:	ksmtuned
 Source9:	ksmtuned.conf
+# qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
+Source13: qemu-kvm.sh
 # Mageia stuff:
 Source100:	kvm.modules
 
@@ -238,6 +240,11 @@ install -m 0755 %{SOURCE100} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.m
 
 %find_lang %{name}
 
+%if 0%{?need_qemu_kvm}
+install -m 0755 %{_sourcedir}/qemu-kvm.sh %{buildroot}%{_bindir}/qemu-kvm
+ln -sf qemu.1.xz %{buildroot}%{_mandir}/man1/qemu-kvm.1.xz
+%endif
+
 install -D -p -m 0644 qemu.sasl %{buildroot}%{_sysconfdir}/sasl2/qemu.conf
 
 # remove unpackaged files
@@ -279,6 +286,10 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_bindir}/qemu-cris
 %{_bindir}/qemu-ga
 %{_bindir}/qemu-i386
+%if 0%{?need_qemu_kvm}
+%{_bindir}/qemu-kvm
+%{_mandir}/man1/qemu-kvm.1*
+%endif
 %{_bindir}/qemu-m68k
 %{_bindir}/qemu-mips*
 %{_bindir}/qemu-nbd
