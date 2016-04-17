@@ -383,9 +383,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_datadir}/qemu/*.rom
 %{_datadir}/qemu/u-boot.e500
 %{_datadir}/qemu/keymaps
-%{_datadir}/qemu/openbios-sparc32
-%{_datadir}/qemu/openbios-sparc64
-%{_datadir}/qemu/openbios-ppc
 %{_datadir}/qemu/*.dtb
 %{_datadir}/qemu/palcode-clipper
 %{_datadir}/qemu/qemu-icon.bmp
