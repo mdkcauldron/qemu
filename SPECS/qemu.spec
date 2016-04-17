@@ -152,6 +152,12 @@ Requires: sgabios-bin
 Requires: ipxe-roms-qemu
 Recommends: openbios
 Recommends: slof
+%ifarch %{ix86} x86_64
+Recommends: edk2-ovmf-arm edk2-ovmf-aarch64
+%endif
+%ifarch %{arm}
+Recommends: edk2-ovmf-ia32 edk2-ovmf-x64
+%endif
 
 %description
 QEMU is a generic and open source processor emulator which achieves a good
