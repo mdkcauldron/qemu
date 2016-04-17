@@ -20,7 +20,7 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	3
+%define qemu_rel	4
 %global rcver	rc2
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
@@ -144,6 +144,15 @@ BuildRequires: libegl-devel
 
 # Security fixes
 
+Requires: seavgabios-bin
+# virtio-blk booting is broken for Windows guests
+# if you mix seabios 1.7.4 and qemu 2.1.x
+Requires: seabios-bin >= 1.7.5
+Requires: sgabios-bin
+Requires: ipxe-roms-qemu
+Recommends: openbios
+Recommends: slof
+
 %description
 QEMU is a generic and open source processor emulator which achieves a good
 emulation speed by using dynamic translation. QEMU has two operating modes:
@@ -246,6 +255,55 @@ ln -sf qemu.1.xz %{buildroot}%{_mandir}/man1/qemu-kvm.1.xz
 %endif
 
 install -D -p -m 0644 qemu.sasl %{buildroot}%{_sysconfdir}/sasl2/qemu.conf
+
+# Provided by package openbios
+rm -rf %{buildroot}%{_datadir}/%{name}/openbios-ppc
+rm -rf %{buildroot}%{_datadir}/%{name}/openbios-sparc32
+rm -rf %{buildroot}%{_datadir}/%{name}/openbios-sparc64
+# Provided by package SLOF
+rm -rf %{buildroot}%{_datadir}/%{name}/slof.bin
+# Provided by package ipxe
+rm -rf %{buildroot}%{_datadir}/%{name}/pxe*rom
+rm -rf %{buildroot}%{_datadir}/%{name}/efi*rom
+# Provided by package seavgabios
+rm -rf %{buildroot}%{_datadir}/%{name}/vgabios*bin
+# Provided by package seabios
+rm -rf %{buildroot}%{_datadir}/%{name}/bios.bin
+rm -rf %{buildroot}%{_datadir}/%{name}/bios-256k.bin
+rm -rf %{buildroot}%{_datadir}/%{name}/acpi-dsdt.aml
+rm -rf %{buildroot}%{_datadir}/%{name}/q35-acpi-dsdt.aml
+# Provided by package sgabios
+rm -rf %{buildroot}%{_datadir}/%{name}/sgabios.bin
+ 
+# the pxe gpxe images will be symlinks to the images on
+# /usr/share/ipxe, as QEMU doesn't know how to look
+# for other paths, yet.
+pxe_link() {
+  ln -s ../ipxe/$2.rom %{buildroot}%{_datadir}/%{name}/pxe-$1.rom
+  ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{name}/efi-$1.rom
+}
+ 
+pxe_link e1000 8086100e
+pxe_link ne2k_pci 10ec8029
+pxe_link pcnet 10222000
+pxe_link rtl8139 10ec8139
+pxe_link virtio 1af41000
+ 
+rom_link() {
+    ln -s $1 %{buildroot}%{_datadir}/%{name}/$2
+}
+ 
+rom_link ../seavgabios/vgabios-isavga.bin vgabios.bin
+rom_link ../seavgabios/vgabios-cirrus.bin vgabios-cirrus.bin
+rom_link ../seavgabios/vgabios-qxl.bin vgabios-qxl.bin
+rom_link ../seavgabios/vgabios-stdvga.bin vgabios-stdvga.bin
+rom_link ../seavgabios/vgabios-vmware.bin vgabios-vmware.bin
+rom_link ../seavgabios/vgabios-virtio.bin vgabios-virtio.bin
+rom_link ../seabios/bios.bin bios.bin
+rom_link ../seabios/bios-256k.bin bios-256k.bin
+rom_link ../seabios/acpi-dsdt.aml acpi-dsdt.aml
+rom_link ../seabios/q35-acpi-dsdt.aml q35-acpi-dsdt.aml
+rom_link ../sgabios/sgabios.bin sgabios.bin
 
 # remove unpackaged files
 rm -rf %{buildroot}/%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
