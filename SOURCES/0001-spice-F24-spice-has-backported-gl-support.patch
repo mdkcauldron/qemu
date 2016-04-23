@@ -1,0 +1,30 @@
+From ce63c44a0e88db0ff6ea7eceb5ac56139b93ad89 Mon Sep 17 00:00:00 2001
+Message-Id: <ce63c44a0e88db0ff6ea7eceb5ac56139b93ad89.1461326482.git.crobinso@redhat.com>
+From: Pavel Grunt <pgrunt@redhat.com>
+Date: Fri, 11 Mar 2016 14:40:59 +0100
+Subject: [PATCH] spice: F24 spice has backported gl support
+
+Not for upstream, this just adjusts the version check to work with
+f24 backported spice gl support
+
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+---
+ include/ui/spice-display.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
+index 30ccfe3..00e4a0b 100644
+--- a/include/ui/spice-display.h
++++ b/include/ui/spice-display.h
+@@ -25,7 +25,7 @@
+ #include "sysemu/sysemu.h"
+ 
+ #if defined(CONFIG_OPENGL_DMABUF)
+-# if SPICE_SERVER_VERSION >= 0x000d01 /* release 0.13.1 */
++# if SPICE_SERVER_VERSION >= 0x000c07 /* release 0.12.7 */
+ #  define HAVE_SPICE_GL 1
+ #  include "ui/egl-helpers.h"
+ #  include "ui/egl-context.h"
+-- 
+2.7.3
+

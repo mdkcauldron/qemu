@@ -22,7 +22,7 @@
 
 %define qemu_rel	1
 # Release candidate version tracking
-%global rcver	rc2
+%global rcver	rc3
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
 %endif
