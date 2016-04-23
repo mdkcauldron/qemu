@@ -20,7 +20,8 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	4
+%define qemu_rel	1
+# Release candidate version tracking
 %global rcver	rc2
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
@@ -46,6 +47,11 @@ Source9:	ksmtuned.conf
 Source13: qemu-kvm.sh
 # Mageia stuff:
 Source100:	kvm.modules
+
+# Adjust spice gl version check to expect F24 backported version
+# Not for upstream, f24 only
+Patch0001: 0001-spice-F24-spice-has-backported-gl-support.patch
+
 
 %ifarch %{ix86} x86_64
 Provides:	kvm
