@@ -101,7 +101,7 @@ BuildRequires:	rsync
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-devel
 BuildRequires:	cap-ng-devel
-BuildRequires: libiscsi-devel
+BuildRequires:	pkgconfig(libiscsi)
 BuildRequires: libnfs-devel
 BuildRequires: snappy-devel
 BuildRequires:	lzo-devel
