@@ -619,6 +619,11 @@ unicore32-linux-user aarch64-softmmu"
 	--with-gtkabi="3.0" \
 	--enable-tcg-interpreter \
 
+echo "config-host.mak contents:"
+echo "==="
+cat config-host.mak
+echo "==="
+
 %make V=1 $buildldflags
 
 gcc %{_sourcedir}/ksmctl.c -O2 -g -o ksmctl
