@@ -603,6 +603,8 @@ unicore32-linux-user aarch64-softmmu"
 	--libdir=%{_libdir} \
 	--sysconfdir=%{_sysconfdir} \
 	--interp-prefix=%{_prefix}/qemu-%%M \
+	--localstatedir=%{_localstatedir} \
+	--libexecdir=%{_libexecdir} \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="%{optflags}" \
 	--disable-xfsctl \
