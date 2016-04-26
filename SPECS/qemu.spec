@@ -616,6 +616,7 @@ gcc %{_sourcedir}/ksmctl.c -O2 -g -o ksmctl
 %install
 
 %global _udevdir /lib/udev/rules.d
+%global qemudocdir %{_docdir}/%{name}
 
 mkdir -p %{buildroot}%{_udevdir}
 mkdir -p %{buildroot}%{_unitdir}
@@ -645,6 +646,11 @@ install -m 0644 %{_sourcedir}/80-kvm.rules %{buildroot}%{_udevdir}
 %make_install BUILD_DOCS="yes"
 
 %find_lang %{name}
+
+install -D -p -m 0644 -t %{buildroot}%{qemudocdir} Changelog README COPYING COPYING.LIB LICENSE
+for emu in %{buildroot}%{_bindir}/qemu-system-*; do
+    ln -sf qemu.1.xz %{buildroot}%{_mandir}/man1/$(basename $emu).1.xz
+done
 
 %if 0%{?need_qemu_kvm}
 install -m 0755 %{_sourcedir}/qemu-kvm.sh %{buildroot}%{_bindir}/qemu-kvm
