@@ -757,6 +757,14 @@ getent passwd qemu >/dev/null || \
 %global kvm_files \
 %{_udevdir}/80-kvm.rules
 
+%post guest-agent
+%systemd_post qemu-guest-agent.service
+%preun guest-agent
+%systemd_preun qemu-guest-agent.service
+%postun guest-agent
+%systemd_postun_with_restart qemu-guest-agent.service
+
+
 %files
 %doc README qemu-doc.html qemu-tech.html
 
