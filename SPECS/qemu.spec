@@ -50,6 +50,9 @@ Group:		Emulators
 URL:		http://www.qemu.org/
 
 Source0:	http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.bz2
+
+Source1: qemu.binfmt
+
 # Creates /dev/kvm
 Source3: 80-kvm.rules
 # KSM control scripts
@@ -716,6 +719,50 @@ rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
 rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
 rm -rf %{buildroot}/%{_includedir}/cacard
 
+# Install binfmt
+mkdir -p %{buildroot}%{_exec_prefix}/lib/binfmt.d
+for i in dummy \
+%ifnarch %{ix86} x86_64
+    qemu-i386 \
+%endif
+%ifnarch alpha
+    qemu-alpha \
+%endif
+%ifnarch %{arm}
+    qemu-arm \
+%endif
+    qemu-armeb \
+    qemu-cris \
+    qemu-microblaze qemu-microblazeel \
+%ifnarch mips
+    qemu-mips qemu-mips64 \
+%endif
+%ifnarch mipsel
+    qemu-mipsel qemu-mips64el \
+%endif
+%ifnarch m68k
+    qemu-m68k \
+%endif
+%ifnarch ppc ppc64 ppc64le
+    qemu-ppc qemu-ppc64abi32 qemu-ppc64 \
+%endif
+%ifnarch sparc sparc64
+    qemu-sparc qemu-sparc32plus qemu-sparc64 \
+%endif
+%ifnarch s390 s390x
+    qemu-s390x \
+%endif
+%ifnarch sh4
+    qemu-sh4 \
+%endif
+    qemu-sh4eb \
+; do
+  test $i = dummy && continue
+  grep /$i:\$ %{_sourcedir}/qemu.binfmt > %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i.conf
+  chmod 644 %{buildroot}%{_exec_prefix}/lib/binfmt.d/$i.conf
+done < %{_sourcedir}/qemu.binfmt
+
+
 # Install rules to use the bridge helper with libvirt's virbr0
 install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
 
@@ -744,6 +791,11 @@ getent passwd qemu >/dev/null || \
 %postun -n ksm
 %systemd_postun_with_restart ksm.service
 %systemd_postun_with_restart ksmtuned.service
+
+%post user
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun user
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 
 
 %post guest-agent
