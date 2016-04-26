@@ -1,8 +1,10 @@
 %ifarch %{ix86}
+%global kvm_package   system-x86
 # need_qemu_kvm should only ever be used by x86
 %global need_qemu_kvm 1
 %endif
 %ifarch x86_64
+%global kvm_package   system-x86
 # need_qemu_kvm should only ever be used by x86
 %global need_qemu_kvm 1
 %endif
