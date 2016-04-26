@@ -719,14 +719,6 @@ rom_link ../seabios/acpi-dsdt.aml acpi-dsdt.aml
 rom_link ../seabios/q35-acpi-dsdt.aml q35-acpi-dsdt.aml
 rom_link ../sgabios/sgabios.bin sgabios.bin
 
-# remove unpackaged files
-rm -rf %{buildroot}/%{_docdir}/qemu %{buildroot}%{_bindir}/vscclient
-rm -f %{buildroot}/%{_libdir}/libcacard*
-rm -f %{buildroot}/usr/lib/libcacard*
-rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
-rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
-rm -rf %{buildroot}/%{_includedir}/cacard
-
 # Install binfmt
 mkdir -p %{buildroot}%{_exec_prefix}/lib/binfmt.d
 for i in dummy \
