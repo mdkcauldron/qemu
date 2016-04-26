@@ -222,6 +222,7 @@ This package does not need to be installed on the host OS.
 %package img
 Summary:	QEMU command line tool for manipulating disk images
 Group:		Emulators
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
 
 %description img
 This package provides a command line tool for manipulating disk images
@@ -415,7 +416,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %endif
 %{_bindir}/qemu-m68k
 %{_bindir}/qemu-mips*
-%{_bindir}/qemu-nbd
 %{_bindir}/qemu-ppc*
 %{_bindir}/qemu-sh4*
 %{_bindir}/qemu-sparc*
@@ -432,7 +432,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_bindir}/qemu-system-i386
 %{_bindir}/virtfs-proxy-helper
 %{_mandir}/man1/qemu.1*
-%{_mandir}/man8/qemu-nbd.8*
 %{_mandir}/man1/virtfs-proxy-helper.*
 %dir %{_datadir}/qemu
 %{_datadir}/qemu/*.aml
@@ -467,7 +466,9 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files img
 %{_bindir}/qemu-img
 %{_bindir}/qemu-io
+%{_bindir}/qemu-nbd
 %{_mandir}/man1/qemu-img.1*
+%{_mandir}/man8/qemu-nbd.8*
 
 %files -n ivshmem-tools
 %{_bindir}/ivshmem-client
