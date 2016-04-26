@@ -50,6 +50,8 @@ Source9:	ksmtuned.conf
 Source10: qemu-guest-agent.service
 # guest agent udev rules
 Source11: 99-qemu-guest-agent.rules
+# /etc/qemu/bridge.conf
+Source12: bridge.conf
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
 
@@ -670,6 +672,9 @@ rm -f %{buildroot}/%{_libdir}/pkgconfig/libcacard.pc
 rm -f %{buildroot}/usr/lib/pkgconfig/libcacard.pc
 rm -rf %{buildroot}/%{_includedir}/cacard
 
+# Install rules to use the bridge helper with libvirt's virbr0
+install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
+
 %post 
 %_post_service ksmtuned
 %_post_service ksm
@@ -722,6 +727,7 @@ getent passwd qemu >/dev/null || \
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
 %config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
 %dir %{_sysconfdir}/qemu
+%config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 
 
 %files -n ksm
