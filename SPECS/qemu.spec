@@ -189,6 +189,26 @@ Group:		Emulators
 %description img
 This package provides a command line tool for manipulating disk images
 
+%package -n ivshmem-tools
+Summary: Client and server for QEMU ivshmem device
+Group: Development/Tools
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+
+%description -n ivshmem-tools
+This package provides client and server tools for QEMU's ivshmem device.
+
+%package -n ksm
+Summary: Kernel Samepage Merging services
+Group: Development/Tools
+Requires(post): systemd-units
+Requires(postun): systemd-units
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description -n ksm
+Kernel Samepage Merging (KSM) is a memory-saving de-duplication feature,
+that merges anonymous (private) pages (not pagecache ones).
+
+This package provides service files for disabling and tuning KSM.
+
 
 %prep
 %setup -q -n qemu-%{version}%{?rcstr}
@@ -342,15 +362,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-%{_libexecdir}/ksmctl
-%{_sbindir}/ksmtuned
-%{_unitdir}/ksmtuned.service
-%{_unitdir}/ksm.service
-%config(noreplace) %{_sysconfdir}/ksmtuned.conf
-%config(noreplace) %{_sysconfdir}/sysconfig/ksm
-%{_bindir}/ivshmem-client
-%{_bindir}/ivshmem-server
-%{_bindir}/qemu-io
 %ifarch %{ix86} x86_64
 %{_sysconfdir}/sysconfig/modules/kvm.modules
 %endif
@@ -400,6 +411,19 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_datadir}/qemu/*.svg
 /usr/libexec/qemu-bridge-helper
 
+%files -n ksm
+%{_libexecdir}/ksmctl
+%{_sbindir}/ksmtuned
+%{_unitdir}/ksmtuned.service
+%{_unitdir}/ksm.service
+%config(noreplace) %{_sysconfdir}/ksmtuned.conf
+%config(noreplace) %{_sysconfdir}/sysconfig/ksm
+
 %files img
 %{_bindir}/qemu-img
+%{_bindir}/qemu-io
 %{_mandir}/man1/qemu-img.1*
+
+%files -n ivshmem-tools
+%{_bindir}/ivshmem-client
+%{_bindir}/ivshmem-server
