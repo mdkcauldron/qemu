@@ -37,6 +37,8 @@ Group:		Emulators
 URL:		http://www.qemu.org/
 
 Source0:	http://wiki.qemu-project.org/download/%{name}-%{version}%{?rcstr}.tar.bz2
+# Creates /dev/kvm
+Source3: 80-kvm.rules
 # KSM control scripts
 Source4:	ksm.service
 Source5:	ksm.sysconfig
