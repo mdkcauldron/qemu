@@ -97,6 +97,7 @@ BuildRequires:	libsasl-devel
 BuildRequires:	vde-devel
 BuildRequires:	libtool
 BuildRequires:	libaio-devel
+BuildRequires:	rsync
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-devel
 BuildRequires:	cap-ng-devel
