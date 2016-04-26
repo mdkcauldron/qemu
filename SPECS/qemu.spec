@@ -107,8 +107,6 @@ BuildRequires: snappy-devel
 BuildRequires:	lzo-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	libattr-devel
-# for direct xfs access with raw device
-BuildRequires:  libxfs-devel
 # USB features
 BuildRequires: usbredir-devel >= 0.5.
 BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
@@ -607,6 +605,7 @@ unicore32-linux-user aarch64-softmmu"
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="%{optflags}" \
+	--disable-xfsctl \
 	--target-list="$buildarch" \
 	--audio-drv-list=pa,sdl,alsa,oss \
 	--enable-kvm \
