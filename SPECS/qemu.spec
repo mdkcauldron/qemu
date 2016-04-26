@@ -43,6 +43,10 @@ Source6:	ksmctl.c
 Source7:	ksmtuned.service
 Source8:	ksmtuned
 Source9:	ksmtuned.conf
+# guest agent service
+Source10: qemu-guest-agent.service
+# guest agent udev rules
+Source11: 99-qemu-guest-agent.rules
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
 # Mageia stuff:
@@ -182,6 +186,24 @@ emulation speed by using dynamic translation. QEMU has two operating modes:
 
 As QEMU requires no host kernel patches to run, it is safe and easy to use.
 
+%package guest-agent
+Summary: QEMU guest agent
+Group: System Environment/Daemons
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+
+%description guest-agent
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides an agent to run inside guests, which communicates
+with the host over a virtio-serial channel named "org.qemu.guest_agent.0"
+
+This package does not need to be installed on the host OS.
+
+
 %package img
 Summary:	QEMU command line tool for manipulating disk images
 Group:		Emulators
@@ -283,6 +305,10 @@ install -m 0755 %{SOURCE100} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.m
 
 %make_install BUILD_DOCS="yes"
 
+# Install qemu-guest-agent service and udev rules
+install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
+install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
+
 %find_lang %{name}
 
 %if 0%{?need_qemu_kvm}
@@ -358,6 +384,13 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %_preun_service ksmtuned
 
 
+%post guest-agent
+%systemd_post qemu-guest-agent.service
+%preun guest-agent
+%systemd_preun qemu-guest-agent.service
+%postun guest-agent
+%systemd_postun_with_restart qemu-guest-agent.service
+
 
 %files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
@@ -369,7 +402,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
 %{_bindir}/qemu-cris
-%{_bindir}/qemu-ga
 %{_bindir}/qemu-i386
 %if 0%{?need_qemu_kvm}
 %{_bindir}/qemu-kvm
@@ -394,7 +426,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_bindir}/qemu-system-i386
 %{_bindir}/virtfs-proxy-helper
 %{_mandir}/man1/qemu.1*
-%{_mandir}/man8/qemu-ga.8*
 %{_mandir}/man8/qemu-nbd.8*
 %{_mandir}/man1/virtfs-proxy-helper.*
 %dir %{_datadir}/qemu
@@ -418,6 +449,14 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %{_unitdir}/ksm.service
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/ksm
+
+%files guest-agent
+%doc COPYING README
+%{_bindir}/qemu-ga
+%{_mandir}/man8/qemu-ga.8*
+%{_unitdir}/qemu-guest-agent.service
+%{_udevdir}/99-qemu-guest-agent.rules
+
 
 %files img
 %{_bindir}/qemu-img
