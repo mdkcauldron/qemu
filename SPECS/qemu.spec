@@ -33,7 +33,6 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	2
 # Release candidate version tracking
 %global rcver	rc3
 %if 0%{?rcver:1}
@@ -43,7 +42,7 @@
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?rcver:0.%{rcver}.}%{qemu_rel}
+Release:	%mkrel %{?rcver:0.%{rcver}.}3
 Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
