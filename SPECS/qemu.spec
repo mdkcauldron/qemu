@@ -605,6 +605,7 @@ unicore32-linux-user aarch64-softmmu"
 	--interp-prefix=%{_prefix}/qemu-%%M \
 	--localstatedir=%{_localstatedir} \
 	--libexecdir=%{_libexecdir} \
+	--with-pkgversion=%{name}-%{version}-%{release} \
 	--disable-strip \
 	--extra-ldflags=$extraldflags \
 	--extra-cflags="%{optflags}" \
