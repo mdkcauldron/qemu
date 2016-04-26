@@ -31,6 +31,7 @@ Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
 Release:	%mkrel %{?rcver:0.%{rcver}.}%{qemu_rel}
+Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
 URL:		http://www.qemu.org/
@@ -158,20 +159,27 @@ BuildRequires: libegl-devel
 
 # Security fixes
 
-Requires: seavgabios-bin
-# virtio-blk booting is broken for Windows guests
-# if you mix seabios 1.7.4 and qemu 2.1.x
-Requires: seabios-bin >= 1.7.5
-Requires: sgabios-bin
-Requires: ipxe-roms-qemu
-Recommends: openbios
-Recommends: slof
-%ifarch %{ix86} x86_64
-Recommends: edk2-ovmf-arm edk2-ovmf-aarch64
-%endif
-%ifarch %{arm}
-Recommends: edk2-ovmf-ia32 edk2-ovmf-x64
-%endif
+Requires: %{name}-user = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-arm = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-cris = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-lm32 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-m68k = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-microblaze = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-mips = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-or32 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-ppc = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-s390x = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-sh4 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-sparc = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-unicore32 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-x86 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-xtensa = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-moxie = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-aarch64 = %{epoch}:%{version}-%{release}
+Requires: %{name}-system-tricore = %{epoch}:%{version}-%{release}
+Requires: %{name}-img = %{epoch}:%{version}-%{release}
+
 
 %description
 QEMU is a generic and open source processor emulator which achieves a good
@@ -185,6 +193,25 @@ emulation speed by using dynamic translation. QEMU has two operating modes:
    for one CPU on another CPU.
 
 As QEMU requires no host kernel patches to run, it is safe and easy to use.
+
+%package  common
+Summary: QEMU common files needed by all QEMU targets
+Group: Development/Tools
+# For: /usr/bin/getent
+Requires: glibc
+#For: /usr/sbin/useradd
+Requires: shadow-utils
+Requires(post): systemd-units
+Requires(preun): systemd-units
+Requires(postun): systemd-units
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+
+%description common
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the common files needed by all QEMU targets
+
 
 %package -n ksm
 Summary: Kernel Samepage Merging services
@@ -201,7 +228,7 @@ This package provides service files for disabling and tuning KSM.
 
 %package guest-agent
 Summary: QEMU guest agent
-Group: System Environment/Daemons
+Group: Emulators
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
@@ -235,6 +262,258 @@ This package provides client and server tools for QEMU's ivshmem device.
 
 
 
+%package user
+Summary: QEMU user mode emulation of qemu targets
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Requires(post): systemd-units
+Requires(postun): systemd-units
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description user
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the user mode emulation of qemu targets
+
+
+%package system-x86
+Summary: QEMU system emulator for x86
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Provides: kvm = 85
+Obsoletes: kvm < 85
+Requires: seavgabios-bin
+# virtio-blk booting is broken for Windows guests
+# if you mix seabios 1.7.4 and qemu 2.1.x
+Requires: seabios-bin >= 1.7.5
+Requires: sgabios-bin
+Requires: ipxe-roms-qemu
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%ifarch %{ix86} x86_64
+Recommends: edk2-ovmf-arm edk2-ovmf-aarch64
+%endif
+%ifarch %{arm}
+Recommends: edk2-ovmf-ia32 edk2-ovmf-x64
+%endif
+
+
+%description system-x86
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for x86. When being run in a x86
+machine that supports it, this package also provides the KVM virtualization
+platform.
+
+
+%package system-alpha
+Summary: QEMU system emulator for Alpha
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-alpha
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Alpha systems.
+
+
+%package system-arm
+Summary: QEMU system emulator for ARM
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-arm
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for ARM boards.
+
+
+%package system-mips
+Summary: QEMU system emulator for MIPS
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-mips
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for MIPS boards.
+
+
+%package system-cris
+Summary: QEMU system emulator for CRIS
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-cris
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for CRIS boards.
+
+
+%package system-lm32
+Summary: QEMU system emulator for LatticeMico32
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-lm32
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for LatticeMico32 boards.
+
+
+%package system-m68k
+Summary: QEMU system emulator for ColdFire (m68k)
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-m68k
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for ColdFire boards.
+
+
+%package system-microblaze
+Summary: QEMU system emulator for Microblaze
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-microblaze
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Microblaze boards.
+
+
+%package system-or32
+Summary: QEMU system emulator for OpenRisc32
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-or32
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for OpenRisc32 boards.
+
+
+%package system-s390x
+Summary: QEMU system emulator for S390
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-s390x
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for S390 systems.
+
+
+%package system-sh4
+Summary: QEMU system emulator for SH4
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-sh4
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for SH4 boards.
+
+
+%package system-sparc
+Summary: QEMU system emulator for SPARC
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+Requires: openbios
+%description system-sparc
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for SPARC and SPARC64 systems.
+
+
+%package system-ppc
+Summary: QEMU system emulator for PPC
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Requires: openbios
+Requires: SLOF
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-ppc
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for PPC and PPC64 systems.
+
+
+%package system-xtensa
+Summary: QEMU system emulator for Xtensa
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-xtensa
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Xtensa boards.
+
+
+%package system-unicore32
+Summary: QEMU system emulator for Unicore32
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-unicore32
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Unicore32 boards.
+
+
+%package system-moxie
+Summary: QEMU system emulator for Moxie
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-moxie
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Moxie boards.
+
+
+%package system-aarch64
+Summary: QEMU system emulator for AArch64
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-aarch64
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for AArch64.
+
+
+%package system-tricore
+Summary: QEMU system emulator for tricore
+Group: Development/Tools
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description system-tricore
+QEMU is a generic and open source processor emulator which achieves a good
+emulation speed by using dynamic translation.
+
+This package provides the system emulator for Tricore.
+
+
+
 %prep
 %setup -q -n qemu-%{version}%{?rcstr}
 %autopatch -p1
@@ -245,17 +524,26 @@ This package provides client and server tools for QEMU's ivshmem device.
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
-    buildarch="i386-softmmu x86_64-softmmu aarch64-linux-user arm-softmmu \
-cris-softmmu m68k-softmmu mips-softmmu mipsel-softmmu mips64-softmmu \
-mips64el-softmmu ppc-softmmu ppcemb-softmmu ppc64-softmmu \
-sh4-softmmu sh4eb-softmmu sparc-softmmu \
+# As of qemu 2.1, --enable-trace-backends supports multiple backends,
+# but there's a performance impact for non-dtrace so we don't use them
+tracebackends="dtrace"
+
+    buildarch="i386-softmmu x86_64-softmmu alpha-softmmu arm-softmmu \
+cris-softmmu lm32-softmmu m68k-softmmu microblaze-softmmu \
+microblazeel-softmmu mips-softmmu mipsel-softmmu mips64-softmmu \
+mips64el-softmmu or32-softmmu ppc-softmmu ppcemb-softmmu ppc64-softmmu \
+s390x-softmmu sh4-softmmu sh4eb-softmmu sparc-softmmu sparc64-softmmu \
+xtensa-softmmu xtensaeb-softmmu unicore32-softmmu moxie-softmmu \
+tricore-softmmu \
 i386-linux-user x86_64-linux-user aarch64-linux-user alpha-linux-user \
 arm-linux-user armeb-linux-user cris-linux-user m68k-linux-user \
-mips-linux-user \
-mipsel-linux-user ppc-linux-user ppc64-linux-user \
-ppc64abi32-linux-user sh4-linux-user sh4eb-linux-user \
+microblaze-linux-user microblazeel-linux-user mips-linux-user \
+mipsel-linux-user mips64-linux-user mips64el-linux-user \
+mipsn32-linux-user mipsn32el-linux-user \
+or32-linux-user ppc-linux-user ppc64-linux-user ppc64le-linux-user \
+ppc64abi32-linux-user s390x-linux-user sh4-linux-user sh4eb-linux-user \
 sparc-linux-user sparc64-linux-user sparc32plus-linux-user \
-aarch64-softmmu"
+unicore32-linux-user aarch64-softmmu"
 
     %global tcmallocflag --enable-tcmalloc
 
@@ -395,50 +683,42 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %systemd_postun_with_restart qemu-guest-agent.service
 
 
-%files -f %{name}.lang
+%post common
+getent group kvm >/dev/null || groupadd -g 36 -r kvm
+getent group qemu >/dev/null || groupadd -g 107 -r qemu
+getent passwd qemu >/dev/null || \
+  useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
+    -c "qemu user" qemu
+
+
+%global kvm_files \
+%{_udevdir}/80-kvm.rules
+
+%files
 %doc README qemu-doc.html qemu-tech.html
-%config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-%{_bindir}/qemu-aarch64
-%{_bindir}/qemu-alpha
-%{_bindir}/qemu-arm*
-%{_bindir}/qemu-cris
-%{_bindir}/qemu-i386
-%if 0%{?need_qemu_kvm}
-%{_bindir}/qemu-kvm
-%{_mandir}/man1/qemu-kvm.1*
-%endif
-%{_bindir}/qemu-m68k
-%{_bindir}/qemu-mips*
-%{_bindir}/qemu-ppc*
-%{_bindir}/qemu-sh4*
-%{_bindir}/qemu-sparc*
-%{_bindir}/qemu-x86_64
-%{_bindir}/qemu-system-aarch64
-%{_bindir}/qemu-system-arm
-%{_bindir}/qemu-system-cris
-%{_bindir}/qemu-system-m68k
-%{_bindir}/qemu-system-sh4*
-%{_bindir}/qemu-system-ppc*
-%{_bindir}/qemu-system-mips*
-%{_bindir}/qemu-system-sparc
-%{_bindir}/qemu-system-x86_64
-%{_bindir}/qemu-system-i386
-%{_bindir}/virtfs-proxy-helper
+
+%files common -f %{name}.lang
+%dir %{qemudocdir}
+%doc %{qemudocdir}/Changelog
+%doc %{qemudocdir}/README
+%doc %{qemudocdir}/qemu-doc.html
+%doc %{qemudocdir}/qemu-tech.html
+%doc %{qemudocdir}/qmp-commands.txt
+%doc %{qemudocdir}/COPYING
+%doc %{qemudocdir}/COPYING.LIB
+%doc %{qemudocdir}/LICENSE
+%dir %{_datadir}/%{name}/
+%{_datadir}/%{name}/qemu-icon.bmp
+%{_datadir}/%{name}/qemu_logo_no_text.svg
+%{_datadir}/%{name}/keymaps/
+%{_datadir}/%{name}/trace-events
 %{_mandir}/man1/qemu.1*
-%{_mandir}/man1/virtfs-proxy-helper.*
-%dir %{_datadir}/qemu
-%{_datadir}/qemu/*.aml
-%{_datadir}/qemu/*.bin
-%{_datadir}/qemu/*.img
-%{_datadir}/qemu/*.rom
-%{_datadir}/qemu/u-boot.e500
-%{_datadir}/qemu/keymaps
-%{_datadir}/qemu/*.dtb
-%{_datadir}/qemu/palcode-clipper
-%{_datadir}/qemu/qemu-icon.bmp
-%{_datadir}/qemu/trace-events
-%{_datadir}/qemu/*.svg
-/usr/libexec/qemu-bridge-helper
+%{_mandir}/man1/virtfs-proxy-helper.1*
+%{_bindir}/virtfs-proxy-helper
+%attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
+%config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
+%dir %{_sysconfdir}/qemu
+
 
 %files -n ksm
 %{_libexecdir}/ksmctl
@@ -466,3 +746,235 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files -n ivshmem-tools
 %{_bindir}/ivshmem-client
 %{_bindir}/ivshmem-server
+
+%files user
+%{_exec_prefix}/lib/binfmt.d/qemu-*.conf
+%{_bindir}/qemu-i386
+%{_bindir}/qemu-x86_64
+%{_bindir}/qemu-aarch64
+%{_bindir}/qemu-alpha
+%{_bindir}/qemu-arm
+%{_bindir}/qemu-armeb
+%{_bindir}/qemu-cris
+%{_bindir}/qemu-m68k
+%{_bindir}/qemu-microblaze
+%{_bindir}/qemu-microblazeel
+%{_bindir}/qemu-mips
+%{_bindir}/qemu-mipsel
+%{_bindir}/qemu-mips64
+%{_bindir}/qemu-mips64el
+%{_bindir}/qemu-mipsn32
+%{_bindir}/qemu-mipsn32el
+%{_bindir}/qemu-or32
+%{_bindir}/qemu-ppc
+%{_bindir}/qemu-ppc64
+%{_bindir}/qemu-ppc64abi32
+%{_bindir}/qemu-ppc64le
+%{_bindir}/qemu-s390x
+%{_bindir}/qemu-sh4
+%{_bindir}/qemu-sh4eb
+%{_bindir}/qemu-sparc
+%{_bindir}/qemu-sparc32plus
+%{_bindir}/qemu-sparc64
+%{_bindir}/qemu-unicore32
+%{_datadir}/systemtap/tapset/qemu-i386*.stp
+%{_datadir}/systemtap/tapset/qemu-x86_64*.stp
+%{_datadir}/systemtap/tapset/qemu-aarch64*.stp
+%{_datadir}/systemtap/tapset/qemu-alpha*.stp
+%{_datadir}/systemtap/tapset/qemu-arm*.stp
+%{_datadir}/systemtap/tapset/qemu-cris*.stp
+%{_datadir}/systemtap/tapset/qemu-m68k*.stp
+%{_datadir}/systemtap/tapset/qemu-microblaze*.stp
+%{_datadir}/systemtap/tapset/qemu-mips*.stp
+%{_datadir}/systemtap/tapset/qemu-or32*.stp
+%{_datadir}/systemtap/tapset/qemu-ppc*.stp
+%{_datadir}/systemtap/tapset/qemu-s390x*.stp
+%{_datadir}/systemtap/tapset/qemu-sh4*.stp
+%{_datadir}/systemtap/tapset/qemu-sparc*.stp
+%{_datadir}/systemtap/tapset/qemu-unicore32*.stp
+
+
+%files system-x86
+%{_bindir}/qemu-system-i386
+%{_bindir}/qemu-system-x86_64
+%{_datadir}/systemtap/tapset/qemu-system-i386*.stp
+%{_datadir}/systemtap/tapset/qemu-system-x86_64*.stp
+%{_mandir}/man1/qemu-system-i386.1*
+%{_mandir}/man1/qemu-system-x86_64.1*
+
+%if 0%{?need_qemu_kvm}
+%{_bindir}/qemu-kvm
+%{_mandir}/man1/qemu-kvm.1*
+%endif
+
+%{_datadir}/%{name}/acpi-dsdt.aml
+%{_datadir}/%{name}/q35-acpi-dsdt.aml
+%{_datadir}/%{name}/bios.bin
+%{_datadir}/%{name}/bios-256k.bin
+%{_datadir}/%{name}/sgabios.bin
+%{_datadir}/%{name}/linuxboot.bin
+%{_datadir}/%{name}/multiboot.bin
+%{_datadir}/%{name}/kvmvapic.bin
+%{_datadir}/%{name}/vgabios.bin
+%{_datadir}/%{name}/vgabios-cirrus.bin
+%{_datadir}/%{name}/vgabios-qxl.bin
+%{_datadir}/%{name}/vgabios-stdvga.bin
+%{_datadir}/%{name}/vgabios-vmware.bin
+%{_datadir}/%{name}/vgabios-virtio.bin
+%{_datadir}/%{name}/pxe-e1000.rom
+%{_datadir}/%{name}/efi-e1000.rom
+%{_datadir}/%{name}/pxe-virtio.rom
+%{_datadir}/%{name}/efi-virtio.rom
+%{_datadir}/%{name}/pxe-pcnet.rom
+%{_datadir}/%{name}/efi-pcnet.rom
+%{_datadir}/%{name}/pxe-rtl8139.rom
+%{_datadir}/%{name}/efi-rtl8139.rom
+%{_datadir}/%{name}/pxe-ne2k_pci.rom
+%{_datadir}/%{name}/efi-ne2k_pci.rom
+%ifarch %{ix86} x86_64
+%{?kvm_files:}
+%endif
+
+
+%files system-alpha
+%{_bindir}/qemu-system-alpha
+%{_datadir}/systemtap/tapset/qemu-system-alpha*.stp
+%{_mandir}/man1/qemu-system-alpha.1*
+%{_datadir}/%{name}/palcode-clipper
+
+
+%files system-arm
+%{_bindir}/qemu-system-arm
+%{_datadir}/systemtap/tapset/qemu-system-arm*.stp
+%{_mandir}/man1/qemu-system-arm.1*
+%ifarch armv7hl
+%{?kvm_files:}
+%endif
+
+
+%files system-mips
+%{_bindir}/qemu-system-mips
+%{_bindir}/qemu-system-mipsel
+%{_bindir}/qemu-system-mips64
+%{_bindir}/qemu-system-mips64el
+%{_datadir}/systemtap/tapset/qemu-system-mips*.stp
+%{_mandir}/man1/qemu-system-mips.1*
+%{_mandir}/man1/qemu-system-mipsel.1*
+%{_mandir}/man1/qemu-system-mips64el.1*
+%{_mandir}/man1/qemu-system-mips64.1*
+
+
+%files system-cris
+%{_bindir}/qemu-system-cris
+%{_datadir}/systemtap/tapset/qemu-system-cris*.stp
+%{_mandir}/man1/qemu-system-cris.1*
+
+
+%files system-lm32
+%{_bindir}/qemu-system-lm32
+%{_datadir}/systemtap/tapset/qemu-system-lm32*.stp
+%{_mandir}/man1/qemu-system-lm32.1*
+
+
+%files system-m68k
+%{_bindir}/qemu-system-m68k
+%{_datadir}/systemtap/tapset/qemu-system-m68k*.stp
+%{_mandir}/man1/qemu-system-m68k.1*
+
+
+%files system-microblaze
+%{_bindir}/qemu-system-microblaze
+%{_bindir}/qemu-system-microblazeel
+%{_datadir}/systemtap/tapset/qemu-system-microblaze*.stp
+%{_mandir}/man1/qemu-system-microblaze.1*
+%{_mandir}/man1/qemu-system-microblazeel.1*
+%{_datadir}/%{name}/petalogix*.dtb
+
+
+%files system-or32
+%{_bindir}/qemu-system-or32
+%{_datadir}/systemtap/tapset/qemu-system-or32*.stp
+%{_mandir}/man1/qemu-system-or32.1*
+
+
+%files system-s390x
+%{_bindir}/qemu-system-s390x
+%{_datadir}/systemtap/tapset/qemu-system-s390x*.stp
+%{_mandir}/man1/qemu-system-s390x.1*
+%{_datadir}/%{name}/s390-ccw.img
+%ifarch s390x
+%{?kvm_files:}
+%{_sysconfdir}/sysctl.d/50-kvm-s390x.conf
+%endif
+
+
+%files system-sh4
+%{_bindir}/qemu-system-sh4
+%{_bindir}/qemu-system-sh4eb
+%{_datadir}/systemtap/tapset/qemu-system-sh4*.stp
+%{_mandir}/man1/qemu-system-sh4.1*
+%{_mandir}/man1/qemu-system-sh4eb.1*
+
+
+%files system-sparc
+%{_bindir}/qemu-system-sparc
+%{_bindir}/qemu-system-sparc64
+%{_datadir}/systemtap/tapset/qemu-system-sparc*.stp
+%{_mandir}/man1/qemu-system-sparc.1*
+%{_mandir}/man1/qemu-system-sparc64.1*
+%{_datadir}/%{name}/QEMU,tcx.bin
+%{_datadir}/%{name}/QEMU,cgthree.bin
+
+
+%files system-ppc
+%{_bindir}/qemu-system-ppc
+%{_bindir}/qemu-system-ppc64
+%{_bindir}/qemu-system-ppcemb
+%{_datadir}/systemtap/tapset/qemu-system-ppc*.stp
+%{_mandir}/man1/qemu-system-ppc.1*
+%{_mandir}/man1/qemu-system-ppc64.1*
+%{_mandir}/man1/qemu-system-ppcemb.1*
+%{_datadir}/%{name}/bamboo.dtb
+%{_datadir}/%{name}/ppc_rom.bin
+%{_datadir}/%{name}/spapr-rtas.bin
+%{_datadir}/%{name}/u-boot.e500
+%ifarch ppc64 ppc64le
+%{?kvm_files:}
+%endif
+
+
+%files system-unicore32
+%{_bindir}/qemu-system-unicore32
+%{_datadir}/systemtap/tapset/qemu-system-unicore32*.stp
+%{_mandir}/man1/qemu-system-unicore32.1*
+
+
+%files system-xtensa
+%{_bindir}/qemu-system-xtensa
+%{_bindir}/qemu-system-xtensaeb
+%{_datadir}/systemtap/tapset/qemu-system-xtensa*.stp
+%{_mandir}/man1/qemu-system-xtensa.1*
+%{_mandir}/man1/qemu-system-xtensaeb.1*
+
+
+%files system-moxie
+%{_bindir}/qemu-system-moxie
+%{_datadir}/systemtap/tapset/qemu-system-moxie*.stp
+%{_mandir}/man1/qemu-system-moxie.1*
+
+
+%files system-aarch64
+%{_bindir}/qemu-system-aarch64
+%{_datadir}/systemtap/tapset/qemu-system-aarch64*.stp
+%{_mandir}/man1/qemu-system-aarch64.1*
+%ifarch aarch64
+%{?kvm_files:}
+%endif
+
+
+%files system-tricore
+%{_bindir}/qemu-system-tricore
+%{_datadir}/systemtap/tapset/qemu-system-tricore*.stp
+%{_mandir}/man1/qemu-system-tricore.1*
+
+
