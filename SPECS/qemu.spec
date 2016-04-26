@@ -602,6 +602,8 @@ mkdir -p %{buildroot}/%{_datadir}/%{name}
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
 
+# Install kvm specific bits
+install -m 0644 %{_sourcedir}/80-kvm.rules %{buildroot}%{_udevdir}
 %find_lang %{name}
 
 %if 0%{?need_qemu_kvm}
