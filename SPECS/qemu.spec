@@ -134,6 +134,10 @@ BuildRequires:	iasl
 %if 0%{?have_xen:1}
 BuildRequires:	xen-devel
 %endif
+# memdev hostmem backend added in 2.1
+%ifarch %{ix86} x86_64 aarch64
+BuildRequires: numactl-devel
+%endif
 # Added in qemu 2.3
 BuildRequires: bzip2-devel
 # Added in qemu 2.4 for opengl bits
