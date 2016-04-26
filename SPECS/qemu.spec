@@ -8,6 +8,13 @@
 # need_qemu_kvm should only ever be used by x86
 %global need_qemu_kvm 1
 %endif
+%ifarch armv7hl
+%global kvm_package   system-arm
+%endif
+%ifarch aarch64
+%global kvm_package   system-aarch64
+%endif
+
 
 %ifarch %{ix86} x86_64 %{arm} aarch64 %{power64} s390 s390x
 %global have_seccomp 1
