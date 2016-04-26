@@ -286,6 +286,8 @@ gcc %{_sourcedir}/ksmctl.c -O2 -g -o ksmctl
 
 %install
 
+%global _udevdir /lib/udev/rules.d
+
 mkdir -p %{buildroot}%{_udevdir}
 mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}%{_sysconfdir}/qemu
