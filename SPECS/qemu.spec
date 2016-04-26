@@ -628,12 +628,6 @@ install -D -p -m 0644 %{_sourcedir}/ksmtuned.service %{buildroot}%{_unitdir}
 install -D -p -m 0755 %{_sourcedir}/ksmtuned %{buildroot}%{_sbindir}/ksmtuned
 install -D -p -m 0644 %{_sourcedir}/ksmtuned.conf %{buildroot}%{_sysconfdir}/ksmtuned.conf
 
-%ifarch %{ix86} x86_64
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/modules
-mkdir -p %{buildroot}/%{_bindir}/
-mkdir -p %{buildroot}/%{_datadir}/%{name}
-%endif
-
 install -D -p -m 0644 %{_sourcedir}/kvm.conf %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
 
 # Install qemu-guest-agent service and udev rules
