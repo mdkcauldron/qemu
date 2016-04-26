@@ -89,6 +89,9 @@ BuildRequires:	e2fsprogs-devel
 BuildRequires:	pulseaudio-devel
 BuildRequires:	SDL2-devel
 BuildRequires:	zlib-devel
+BuildRequires:	which
+BuildRequires:	chrpath
+BuildRequires:	texi2html
 BuildRequires:	gnutls-devel
 BuildRequires:	libsasl-devel
 BuildRequires:	vde-devel
