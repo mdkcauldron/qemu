@@ -617,6 +617,7 @@ unicore32-linux-user aarch64-softmmu"
 	%{spiceflag} \
 	--with-sdlabi="2.0" \
 	--with-gtkabi="3.0" \
+	--enable-tcg-interpreter \
 
 %make V=1 $buildldflags
 
