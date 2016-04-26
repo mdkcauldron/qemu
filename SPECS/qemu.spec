@@ -49,8 +49,6 @@ Source10: qemu-guest-agent.service
 Source11: 99-qemu-guest-agent.rules
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
-# Mageia stuff:
-Source100:	kvm.modules
 
 # Adjust spice gl version check to expect F24 backported version
 # Not for upstream, f24 only
@@ -306,8 +304,6 @@ install -D -p -m 0644 %{_sourcedir}/ksmtuned.conf %{buildroot}%{_sysconfdir}/ksm
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/modules
 mkdir -p %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_datadir}/%{name}
-
-install -m 0755 %{SOURCE100} %{buildroot}/%{_sysconfdir}/sysconfig/modules/kvm.modules
 %endif
 
 %make_install BUILD_DOCS="yes"
@@ -402,9 +398,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 %files -f %{name}.lang
 %doc README qemu-doc.html qemu-tech.html
 %config(noreplace)%{_sysconfdir}/sasl2/qemu.conf
-%ifarch %{ix86} x86_64
-%{_sysconfdir}/sysconfig/modules/kvm.modules
-%endif
 %{_bindir}/qemu-aarch64
 %{_bindir}/qemu-alpha
 %{_bindir}/qemu-arm*
