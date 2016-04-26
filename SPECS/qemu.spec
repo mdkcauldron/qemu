@@ -728,14 +728,6 @@ install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
 chmod --quiet 666 /dev/kvm || :
 %endif
 
-%post guest-agent
-%systemd_post qemu-guest-agent.service
-%preun guest-agent
-%systemd_preun qemu-guest-agent.service
-%postun guest-agent
-%systemd_postun_with_restart qemu-guest-agent.service
-
-
 %post common
 getent group kvm >/dev/null || groupadd -g 36 -r kvm
 getent group qemu >/dev/null || groupadd -g 107 -r qemu
