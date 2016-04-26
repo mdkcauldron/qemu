@@ -33,7 +33,7 @@
 %global have_xen 1
 %endif
 
-%define qemu_rel	1
+%define qemu_rel	2
 # Release candidate version tracking
 %global rcver	rc3
 %if 0%{?rcver:1}
