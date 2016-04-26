@@ -15,6 +15,10 @@
 %global kvm_package   system-aarch64
 %endif
 
+%global have_kvm 0
+%if 0%{?kvm_package:1}
+%global have_kvm 1
+%endif
 
 %ifarch %{ix86} x86_64 %{arm} aarch64 %{power64} s390 s390x
 %global have_seccomp 1
