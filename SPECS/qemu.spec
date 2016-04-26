@@ -281,6 +281,28 @@ This package provides client and server tools for QEMU's ivshmem device.
 
 
 
+%if %{have_kvm}
+%package kvm
+Summary: QEMU metapackage for KVM support
+Group: Development/Tools
+Requires: qemu-%{kvm_package} = %{epoch}:%{version}-%{release}
+
+%description kvm
+This is a meta-package that provides a qemu-system-<arch> package for native
+architectures where kvm can be enabled. For example, in an x86 system, this
+will install qemu-system-x86
+
+
+%package kvm-tools
+Summary: KVM debugging and diagnostics tools
+Group: Development/Tools
+
+%description kvm-tools
+This package contains some diagnostics and debugging tools for KVM,
+such as kvm_stat.
+%endif
+
+
 %package user
 Summary: QEMU user mode emulation of qemu targets
 Group: Development/Tools
@@ -532,7 +554,6 @@ emulation speed by using dynamic translation.
 This package provides the system emulator for Tricore.
 
 
-
 %prep
 %setup -q -n qemu-%{version}%{?rcstr}
 %autopatch -p1
@@ -620,7 +641,11 @@ install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
 
 # Install kvm specific bits
+%if %{have_kvm}
+mkdir -p %{buildroot}%{_bindir}/
+install -m 0755 scripts/kvm/kvm_stat %{buildroot}%{_bindir}/
 install -m 0644 %{_sourcedir}/80-kvm.rules %{buildroot}%{_udevdir}
+%endif
 
 
 %make_install BUILD_DOCS="yes"
@@ -702,6 +727,14 @@ install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
 %_preun_service ksm
 %_preun_service ksmtuned
 
+%if %{have_kvm}
+%post %{kvm_package}
+# Default /dev/kvm permissions are 660, we install a udev rule changing that
+# to 666. However trying to trigger the re-permissioning via udev has been
+# a neverending source of trouble, so we just force it with chmod. For
+# more info see: https://bugzilla.redhat.com/show_bug.cgi?id=950436
+chmod --quiet 666 /dev/kvm || :
+%endif
 
 %post guest-agent
 %systemd_post qemu-guest-agent.service
@@ -776,6 +809,12 @@ getent passwd qemu >/dev/null || \
 %files -n ivshmem-tools
 %{_bindir}/ivshmem-client
 %{_bindir}/ivshmem-server
+
+%files kvm
+# Deliberately empty
+
+%files kvm-tools
+%{_bindir}/kvm_stat
 
 %files user
 %{_exec_prefix}/lib/binfmt.d/qemu-*.conf
@@ -1006,5 +1045,3 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-system-tricore
 %{_datadir}/systemtap/tapset/qemu-system-tricore*.stp
 %{_mandir}/man1/qemu-system-tricore.1*
-
-
