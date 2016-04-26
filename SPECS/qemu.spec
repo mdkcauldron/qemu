@@ -186,6 +186,19 @@ emulation speed by using dynamic translation. QEMU has two operating modes:
 
 As QEMU requires no host kernel patches to run, it is safe and easy to use.
 
+%package -n ksm
+Summary: Kernel Samepage Merging services
+Group: Development/Tools
+Requires(post): systemd-units
+Requires(postun): systemd-units
+Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
+%description -n ksm
+Kernel Samepage Merging (KSM) is a memory-saving de-duplication feature,
+that merges anonymous (private) pages (not pagecache ones).
+
+This package provides service files for disabling and tuning KSM.
+
+
 %package guest-agent
 Summary: QEMU guest agent
 Group: System Environment/Daemons
@@ -219,17 +232,6 @@ Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
 %description -n ivshmem-tools
 This package provides client and server tools for QEMU's ivshmem device.
 
-%package -n ksm
-Summary: Kernel Samepage Merging services
-Group: Development/Tools
-Requires(post): systemd-units
-Requires(postun): systemd-units
-Conflicts: qemu <= 2.6.0-0.rc3.1.mga6
-%description -n ksm
-Kernel Samepage Merging (KSM) is a memory-saving de-duplication feature,
-that merges anonymous (private) pages (not pagecache ones).
-
-This package provides service files for disabling and tuning KSM.
 
 
 %prep
