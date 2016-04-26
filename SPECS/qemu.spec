@@ -766,7 +766,8 @@ getent passwd qemu >/dev/null || \
 %{_udevdir}/80-kvm.rules
 
 %files
-%doc README qemu-doc.html qemu-tech.html
+# Deliberately empty
+
 
 %files common -f %{name}.lang
 %dir %{qemudocdir}
