@@ -100,6 +100,8 @@ BuildRequires: libseccomp-devel >= 2.3.0
 %endif
 # For network block driver
 BuildRequires: libcurl-devel
+# We need both because the 'stap' binary is probed for by configure
+BuildRequires: systemtap
 # For smartcard NSS support
 BuildRequires: nss-devel
 # For VNC JPEG support
