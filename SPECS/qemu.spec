@@ -766,6 +766,21 @@ done < %{_sourcedir}/qemu.binfmt
 # Install rules to use the bridge helper with libvirt's virbr0
 install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
 
+# When building using 'rpmbuild' or 'fedpkg local', RPATHs can be left in
+# the binaries and libraries (although this doesn't occur when
+# building in Koji, for some unknown reason). Some discussion here:
+#
+# https://lists.fedoraproject.org/pipermail/devel/2013-November/192553.html
+#
+# In any case it should always be safe to remove RPATHs from
+# the final binaries:
+for f in %{buildroot}%{_bindir}/* %{buildroot}%{_libdir}/* \
+         %{buildroot}%{_libexecdir}/*; do
+  if file $f | grep -q ELF; then chrpath --delete $f; fi
+done
+
+
+
 %if %{have_kvm}
 %post %{kvm_package}
 # Default /dev/kvm permissions are 660, we install a udev rule changing that
