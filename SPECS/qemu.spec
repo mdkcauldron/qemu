@@ -719,14 +719,6 @@ rm -rf %{buildroot}/%{_includedir}/cacard
 # Install rules to use the bridge helper with libvirt's virbr0
 install -m 0644 %{_sourcedir}/bridge.conf %{buildroot}%{_sysconfdir}/qemu
 
-%post 
-%_post_service ksmtuned
-%_post_service ksm
-
-%preun
-%_preun_service ksm
-%_preun_service ksmtuned
-
 %if %{have_kvm}
 %post %{kvm_package}
 # Default /dev/kvm permissions are 660, we install a udev rule changing that
@@ -750,6 +742,16 @@ getent group qemu >/dev/null || groupadd -g 107 -r qemu
 getent passwd qemu >/dev/null || \
   useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
     -c "qemu user" qemu
+
+%post -n ksm
+%systemd_post ksm.service
+%systemd_post ksmtuned.service
+%preun -n ksm
+%systemd_preun ksm.service
+%systemd_preun ksmtuned.service
+%postun -n ksm
+%systemd_postun_with_restart ksm.service
+%systemd_postun_with_restart ksmtuned.service
 
 
 %global kvm_files \
