@@ -617,7 +617,6 @@ unicore32-linux-user aarch64-softmmu"
 	%{spiceflag} \
 	--with-sdlabi="2.0" \
 	--with-gtkabi="3.0" \
-	--enable-tcg-interpreter \
 
 echo "config-host.mak contents:"
 echo "==="
