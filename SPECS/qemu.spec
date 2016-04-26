@@ -54,6 +54,8 @@ Source11: 99-qemu-guest-agent.rules
 Source12: bridge.conf
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
+# /etc/modprobe.d/kvm.conf
+Source20: kvm.conf
 
 # Adjust spice gl version check to expect F24 backported version
 # Not for upstream, f24 only
@@ -598,6 +600,8 @@ mkdir -p %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_datadir}/%{name}
 %endif
 
+install -D -p -m 0644 %{_sourcedir}/kvm.conf %{buildroot}%{_sysconfdir}/modprobe.d/kvm.conf
+
 # Install qemu-guest-agent service and udev rules
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
@@ -728,6 +732,7 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/virtfs-proxy-helper
 %attr(4755, root, root) %{_libexecdir}/qemu-bridge-helper
 %config(noreplace) %{_sysconfdir}/sasl2/qemu.conf
+%config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
 %dir %{_sysconfdir}/qemu
 %config(noreplace) %{_sysconfdir}/qemu/bridge.conf
 
