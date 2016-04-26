@@ -821,11 +821,13 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/ivshmem-client
 %{_bindir}/ivshmem-server
 
+%if %{have_kvm}
 %files kvm
 # Deliberately empty
 
 %files kvm-tools
 %{_bindir}/kvm_stat
+%endif
 
 %files user
 %{_exec_prefix}/lib/binfmt.d/qemu-*.conf
