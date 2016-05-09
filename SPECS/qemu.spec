@@ -34,7 +34,7 @@
 %endif
 
 # Release candidate version tracking
-%global rcver	rc4
+%global rcver	rc5
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
 %endif
@@ -75,6 +75,12 @@ Source20: kvm.conf
 # Adjust spice gl version check to expect F24 backported version
 # Not for upstream, f24 only
 Patch0001: 0001-spice-F24-spice-has-backported-gl-support.patch
+# Fix gtk UI crash when switching to monitor (bz #1333424)
+# Not upstream yet
+Patch0002: 0002-ui-gtk-fix-crash-when-terminal-inner-border-is-NULL.patch
+# Fix sdl2 UI lockup lockup when switching to monitor
+# Not upstream yet
+Patch0003: 0003-ui-sdl2-Release-grab-before-opening-console-window.patch
 
 
 %ifarch %{ix86} x86_64

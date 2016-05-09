@@ -1,0 +1,33 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Thu, 5 May 2016 19:39:38 -0400
+Subject: [PATCH] ui: gtk: fix crash when terminal inner-border is NULL
+
+VTE terminal inner-border can be NULL. The vte-0.36 (API 2.90)
+code checks for the condition too so I assume it's not just a bug
+
+Fixes a crash on Fedora 24 with gtk 3.20
+---
+ ui/gtk.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/ui/gtk.c b/ui/gtk.c
+index f372a6d..9876d89 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -340,10 +340,12 @@ static void gd_update_geometry_hints(VirtualConsole *vc)
+         geo.min_height = geo.height_inc * VC_TERM_Y_MIN;
+         mask |= GDK_HINT_MIN_SIZE;
+         gtk_widget_style_get(vc->vte.terminal, "inner-border", &ib, NULL);
+-        geo.base_width  += ib->left + ib->right;
+-        geo.base_height += ib->top + ib->bottom;
+-        geo.min_width   += ib->left + ib->right;
+-        geo.min_height  += ib->top + ib->bottom;
++        if (ib) {
++            geo.base_width  += ib->left + ib->right;
++            geo.base_height += ib->top + ib->bottom;
++            geo.min_width   += ib->left + ib->right;
++            geo.min_height  += ib->top + ib->bottom;
++        }
+         geo_widget = vc->vte.terminal;
+ #endif
+     }

@@ -1,0 +1,48 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Fri, 6 May 2016 12:36:46 -0400
+Subject: [PATCH] ui: sdl2: Release grab before opening console window
+
+sdl 2.0.4 currently has a bug which causes our UI shortcuts to fire
+rapidly in succession:
+
+  https://bugzilla.libsdl.org/show_bug.cgi?id=3287
+
+It's a toss up whether ctrl+alt+f or ctrl+alt+2 will fire an
+odd or even number of times, thus determining whether the action
+succeeds or fails.
+
+Opening monitor/serial windows is doubly broken, since it will often
+lock the UI trying to grab the pointer:
+
+  0x00007fffef3720a5 in SDL_Delay_REAL () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef3688ba in X11_SetWindowGrab () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef2f2da7 in SDL_SendWindowEvent () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef2f080b in SDL_SetKeyboardFocus () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef35d784 in X11_DispatchFocusIn.isra.8 () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef35dbce in X11_DispatchEvent () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef35ee4a in X11_PumpEvents () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef2eea6a in SDL_PumpEvents_REAL () at /lib64/libSDL2-2.0.so.0
+  0x00007fffef2eeab5 in SDL_WaitEventTimeout_REAL () at /lib64/libSDL2-2.0.so.0
+  0x000055555597eed0 in sdl2_poll_events (scon=0x55555876f928) at ui/sdl2.c:593
+
+We can work around that hang by ungrabbing the pointer before launching
+a new window. This roughly matches what our sdl1 code does
+---
+ ui/sdl2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index d042442..909038f 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -357,6 +357,10 @@ static void handle_keydown(SDL_Event *ev)
+         case SDL_SCANCODE_7:
+         case SDL_SCANCODE_8:
+         case SDL_SCANCODE_9:
++            if (gui_grab) {
++                sdl_grab_end(scon);
++            }
++
+             win = ev->key.keysym.scancode - SDL_SCANCODE_1;
+             if (win < sdl2_num_outputs) {
+                 sdl2_console[win].hidden = !sdl2_console[win].hidden;
