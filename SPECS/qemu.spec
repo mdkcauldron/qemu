@@ -34,7 +34,7 @@
 %endif
 
 # Release candidate version tracking
-%global rcver	rc5
+#global rcver	rc5
 %if 0%{?rcver:1}
 %global rcstr -%{rcver}
 %endif
