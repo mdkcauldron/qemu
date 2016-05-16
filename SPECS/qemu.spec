@@ -42,7 +42,7 @@
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?rcver:0.%{rcver}.}1
+Release:	%mkrel %{?rcver:0.%{rcver}.}2
 Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
@@ -89,49 +89,68 @@ Provides:	kvm
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
+# documentation deps
 BuildRequires:	texi2html
+BuildRequires:	texinfo
+# For /usr/bin/pod2man
+BuildRequires:	perl
+BuildRequires:	kernel-headers	
+# For acpi compilation
+BuildRequires:	iasl
+# For chrpath calls in specfile
+BuildRequires:	chrpath
+
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	pulseaudio-devel
+# -display sdl support
 BuildRequires:	SDL2-devel
+# used in various places for compression
 BuildRequires:	zlib-devel
-BuildRequires:	which
-BuildRequires:	chrpath
-BuildRequires:	texi2html
+# used in various places for crypto
 BuildRequires:	gnutls-devel
+# VNC sasl auth support
 BuildRequires:	libsasl-devel
 BuildRequires:	vde-devel
 BuildRequires:	libtool
+# aio implementation for block drivers
 BuildRequires:	libaio-devel
-BuildRequires:	rsync
-BuildRequires:	pciutils-devel
+# pulseaudio audio output
 BuildRequires:	pulseaudio-devel
-BuildRequires:	cap-ng-devel
+# iscsi drive support
 BuildRequires:	pkgconfig(libiscsi)
+# NFS drive support
 BuildRequires: libnfs-devel
+# snappy compression for memory dump
 BuildRequires: snappy-devel
+# lzo compression for memory dump
 BuildRequires:	lzo-devel
+# needed for -display curses
 BuildRequires:	ncurses-devel
+# used by 9pfs
 BuildRequires:	libattr-devel
+BuildRequires: libcap-devel
+# used by qemu-bridge-helper
+BuildRequires: libcap-ng-devel
+# spice usb redirection support
 # USB features
 BuildRequires: usbredir-devel >= 0.5.
 BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
+# tcmalloc support
 BuildRequires: gperftools-devel
 BuildRequires: texinfo
-# For /usr/bin/pod2man
-BuildRequires: perl
 %if 0%{?have_spice:1}
+# spice graphics support
 BuildRequires: spice-protocol >= 0.12.2
 BuildRequires: spice-server-devel >= 0.12.0
 %endif
 %if 0%{?have_seccomp:1}
+# seccomp containment support
 BuildRequires: libseccomp-devel >= 2.3.0
 %endif
 # For network block driver
 BuildRequires: libcurl-devel
 # We need both because the 'stap' binary is probed for by configure
 BuildRequires: systemtap
-# For smartcard NSS support
-BuildRequires: nss-devel
 # For VNC JPEG support
 BuildRequires: libjpeg-devel
 # For VNC PNG support
@@ -144,8 +163,6 @@ BuildRequires: bluez-devel
 BuildRequires: brlapi-devel
 # For FDT device tree support
 BuildRequires: libfdt-devel
-# For virtfs
-BuildRequires: libcap-devel
 # Hard requirement for version >= 1.3
 BuildRequires: pixman-devel
 # For gluster support
@@ -161,32 +178,27 @@ BuildRequires: vte2.90-devel
 BuildRequires: gettext
 # RDMA migration
 BuildRequires: librdmacm-devel
-BuildRequires:	kernel-headers	
-# For acpi compilation
-BuildRequires:	iasl
-# Xen support
 %if 0%{?have_xen:1}
+# Xen support
 BuildRequires:	xen-devel
 %endif
-# memdev hostmem backend added in 2.1
 %ifarch %{ix86} x86_64 aarch64
+# qemu 2.1: needed for memdev hostmem backend
 BuildRequires: numactl-devel
 %endif
-# Added in qemu 2.3
+# qemu 2.3: reading bzip2 compressed dmg images
 BuildRequires: bzip2-devel
-# Added in qemu 2.4 for opengl bits
+# qemu 2.4: needed for opengl bits
 BuildRequires: libepoxy-devel
-# For 2.5 TLS test suite
+# qemu 2.5: needed for TLS test suite
 BuildRequires: libtasn1-devel
-# libcacard is it's own project as of qemu 2.5
+# qemu 2.5: libcacard is it's own project now
 BuildRequires: libcacard-devel >= 2.5.0
-# virgl 3d support
+# qemu 2.5: virgl 3d support
 BuildRequires: virglrenderer-devel
-# Needed explicitly for qemu 2.6 GL support
+# qemu 2.6: Needed for gtk GL support
 BuildRequires: pkgconfig(gbm)
 BuildRequires: libegl-devel
-
-# Security fixes
 
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
