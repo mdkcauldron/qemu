@@ -83,9 +83,6 @@ Patch0002: 0002-ui-gtk-fix-crash-when-terminal-inner-border-is-NULL.patch
 Patch0003: 0003-ui-sdl2-Release-grab-before-opening-console-window.patch
 
 
-%ifarch %{ix86} x86_64
-Provides:	kvm
-%endif
 Requires:	qemu-img = %{version}-%{release}
 # for %%{_sysconfdir}/sasl2
 Requires:	cyrus-sasl
