@@ -131,7 +131,6 @@ BuildRequires: libcap-ng-devel
 BuildRequires: usbredir-devel >= 0.5.2
 # tcmalloc support
 BuildRequires: gperftools-devel
-BuildRequires: texinfo
 %if 0%{?have_spice:1}
 # spice graphics support
 BuildRequires: spice-protocol >= 0.12.2
