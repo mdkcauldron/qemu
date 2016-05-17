@@ -1,3 +1,5 @@
+%have_working_systemtap 0
+
 %ifarch %{ix86}
 %global kvm_package   system-x86
 # need_qemu_kvm should only ever be used by x86
@@ -970,7 +972,7 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-sparc32plus
 %{_bindir}/qemu-sparc64
 %{_bindir}/qemu-unicore32
-%if 0
+%if %have_working_systemtap
 %{_datadir}/systemtap/tapset/qemu-i386*.stp
 %{_datadir}/systemtap/tapset/qemu-x86_64*.stp
 %{_datadir}/systemtap/tapset/qemu-aarch64*.stp
@@ -987,6 +989,7 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/systemtap/tapset/qemu-sparc*.stp
 %{_datadir}/systemtap/tapset/qemu-unicore32*.stp
 %endif
+
 
 %files system-x86
 %{_bindir}/qemu-system-i386
@@ -1034,14 +1037,18 @@ getent passwd qemu >/dev/null || \
 
 %files system-alpha
 %{_bindir}/qemu-system-alpha
-#{_datadir}/systemtap/tapset/qemu-system-alpha*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-alpha*.stp
+%endif
 %{_mandir}/man1/qemu-system-alpha.1*
 %{_datadir}/%{name}/palcode-clipper
 
 
 %files system-arm
 %{_bindir}/qemu-system-arm
-#{_datadir}/systemtap/tapset/qemu-system-arm*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-arm*.stp
+%endif
 %{_mandir}/man1/qemu-system-arm.1*
 %ifarch armv7hl
 %{?kvm_files:}
@@ -1053,7 +1060,9 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-system-mipsel
 %{_bindir}/qemu-system-mips64
 %{_bindir}/qemu-system-mips64el
-#{_datadir}/systemtap/tapset/qemu-system-mips*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-mips*.stp
+%endif
 %{_mandir}/man1/qemu-system-mips.1*
 %{_mandir}/man1/qemu-system-mipsel.1*
 %{_mandir}/man1/qemu-system-mips64el.1*
@@ -1062,26 +1071,34 @@ getent passwd qemu >/dev/null || \
 
 %files system-cris
 %{_bindir}/qemu-system-cris
-#{_datadir}/systemtap/tapset/qemu-system-cris*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-cris*.stp
+%endif
 %{_mandir}/man1/qemu-system-cris.1*
 
 
 %files system-lm32
 %{_bindir}/qemu-system-lm32
-#{_datadir}/systemtap/tapset/qemu-system-lm32*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-lm32*.stp
+%endif
 %{_mandir}/man1/qemu-system-lm32.1*
 
 
 %files system-m68k
 %{_bindir}/qemu-system-m68k
-#{_datadir}/systemtap/tapset/qemu-system-m68k*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-m68k*.stp
+%endif
 %{_mandir}/man1/qemu-system-m68k.1*
 
 
 %files system-microblaze
 %{_bindir}/qemu-system-microblaze
 %{_bindir}/qemu-system-microblazeel
-#{_datadir}/systemtap/tapset/qemu-system-microblaze*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-microblaze*.stp
+%endif
 %{_mandir}/man1/qemu-system-microblaze.1*
 %{_mandir}/man1/qemu-system-microblazeel.1*
 %{_datadir}/%{name}/petalogix*.dtb
@@ -1089,13 +1106,17 @@ getent passwd qemu >/dev/null || \
 
 %files system-or32
 %{_bindir}/qemu-system-or32
-#{_datadir}/systemtap/tapset/qemu-system-or32*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-or32*.stp
+%endif
 %{_mandir}/man1/qemu-system-or32.1*
 
 
 %files system-s390x
 %{_bindir}/qemu-system-s390x
-#{_datadir}/systemtap/tapset/qemu-system-s390x*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-s390x*.stp
+%endif
 %{_mandir}/man1/qemu-system-s390x.1*
 %{_datadir}/%{name}/s390-ccw.img
 %ifarch s390x
@@ -1107,7 +1128,9 @@ getent passwd qemu >/dev/null || \
 %files system-sh4
 %{_bindir}/qemu-system-sh4
 %{_bindir}/qemu-system-sh4eb
-#{_datadir}/systemtap/tapset/qemu-system-sh4*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-sh4*.stp
+%endif
 %{_mandir}/man1/qemu-system-sh4.1*
 %{_mandir}/man1/qemu-system-sh4eb.1*
 
@@ -1115,7 +1138,9 @@ getent passwd qemu >/dev/null || \
 %files system-sparc
 %{_bindir}/qemu-system-sparc
 %{_bindir}/qemu-system-sparc64
-#{_datadir}/systemtap/tapset/qemu-system-sparc*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-sparc*.stp
+%endif
 %{_mandir}/man1/qemu-system-sparc.1*
 %{_mandir}/man1/qemu-system-sparc64.1*
 %{_datadir}/%{name}/QEMU,tcx.bin
@@ -1126,7 +1151,9 @@ getent passwd qemu >/dev/null || \
 %{_bindir}/qemu-system-ppc
 %{_bindir}/qemu-system-ppc64
 %{_bindir}/qemu-system-ppcemb
-#{_datadir}/systemtap/tapset/qemu-system-ppc*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-ppc*.stp
+%endif
 %{_mandir}/man1/qemu-system-ppc.1*
 %{_mandir}/man1/qemu-system-ppc64.1*
 %{_mandir}/man1/qemu-system-ppcemb.1*
@@ -1141,27 +1168,35 @@ getent passwd qemu >/dev/null || \
 
 %files system-unicore32
 %{_bindir}/qemu-system-unicore32
-#{_datadir}/systemtap/tapset/qemu-system-unicore32*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-unicore32*.stp
+%endif
 %{_mandir}/man1/qemu-system-unicore32.1*
 
 
 %files system-xtensa
 %{_bindir}/qemu-system-xtensa
 %{_bindir}/qemu-system-xtensaeb
-#{_datadir}/systemtap/tapset/qemu-system-xtensa*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-xtensa*.stp
+%endif
 %{_mandir}/man1/qemu-system-xtensa.1*
 %{_mandir}/man1/qemu-system-xtensaeb.1*
 
 
 %files system-moxie
 %{_bindir}/qemu-system-moxie
-#{_datadir}/systemtap/tapset/qemu-system-moxie*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-moxie*.stp
+%endif
 %{_mandir}/man1/qemu-system-moxie.1*
 
 
 %files system-aarch64
 %{_bindir}/qemu-system-aarch64
-#{_datadir}/systemtap/tapset/qemu-system-aarch64*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-aarch64*.stp
+%endif
 %{_mandir}/man1/qemu-system-aarch64.1*
 %ifarch aarch64
 %{?kvm_files:}
@@ -1170,5 +1205,7 @@ getent passwd qemu >/dev/null || \
 
 %files system-tricore
 %{_bindir}/qemu-system-tricore
-#{_datadir}/systemtap/tapset/qemu-system-tricore*.stp
+%if %have_working_systemtap
+%{_datadir}/systemtap/tapset/qemu-system-tricore*.stp
+%endif
 %{_mandir}/man1/qemu-system-tricore.1*
