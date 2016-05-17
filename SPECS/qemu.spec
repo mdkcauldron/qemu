@@ -128,8 +128,7 @@ BuildRequires: libcap-devel
 # used by qemu-bridge-helper
 BuildRequires: libcap-ng-devel
 # spice usb redirection support
-# USB features
-BuildRequires: usbredir-devel >= 0.5.
+BuildRequires: usbredir-devel >= 0.5.2
 BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
 # tcmalloc support
 BuildRequires: gperftools-devel
