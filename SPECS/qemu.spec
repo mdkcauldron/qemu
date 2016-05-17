@@ -42,7 +42,7 @@
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?rcver:0.%{rcver}.}2
+Release:	%mkrel %{?rcver:0.%{rcver}.}3
 Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
@@ -793,6 +793,44 @@ for f in %{buildroot}%{_bindir}/* %{buildroot}%{_libdir}/* \
   if file $f | grep -q ELF; then chrpath --delete $f; fi
 done
 
+%check
+
+# Tests are hanging on s390 as of 2.3.0
+#   https://bugzilla.redhat.com/show_bug.cgi?id=1206057
+# Tests seem to be a recurring problem on s390, so I'd suggest just leaving
+# it disabled.
+%global archs_skip_tests s390
+%global archs_ignore_test_failures 0
+
+%ifnarch %{archs_skip_tests}
+
+# Check the binary runs (see eg RHBZ#998722).
+b="./x86_64-softmmu/qemu-system-x86_64"
+if [ -x "$b" ]; then "$b" -help; fi
+
+%ifarch %{archs_ignore_test_failures}
+make check V=1
+%else
+make check V=1 || :
+%endif
+
+# Sanity-check current kernel can boot on this qemu.
+# The results are advisory only.
+%ifarch %{arm}
+hostqemu=arm-softmmu/qemu-system-arm
+%endif
+%ifarch aarch64
+hostqemu=arm-softmmu/qemu-system-aarch64
+%endif
+%ifarch %{ix86}
+hostqemu=i386-softmmu/qemu-system-i386
+%endif
+%ifarch x86_64
+hostqemu=x86_64-softmmu/qemu-system-x86_64
+%endif
+if test -f "$hostqemu"; then qemu-sanity-check --qemu=$hostqemu ||: ; fi
+
+%endif  # archs_skip_tests
 
 
 %if %{have_kvm}
