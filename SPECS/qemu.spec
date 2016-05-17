@@ -1,4 +1,4 @@
-%have_working_systemtap 0
+%global have_working_systemtap 0
 
 %ifarch %{ix86}
 %global kvm_package   system-x86
@@ -674,6 +674,7 @@ install -m 0644 %{_sourcedir}/80-kvm.rules %{buildroot}%{_udevdir}
 
 %find_lang %{name}
 
+chmod -x %{buildroot}%{_mandir}/man1/*
 install -D -p -m 0644 -t %{buildroot}%{qemudocdir} Changelog README COPYING COPYING.LIB LICENSE
 for emu in %{buildroot}%{_bindir}/qemu-system-*; do
     ln -sf qemu.1.xz %{buildroot}%{_mandir}/man1/$(basename $emu).1.xz
