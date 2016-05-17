@@ -129,7 +129,6 @@ BuildRequires: libcap-devel
 BuildRequires: libcap-ng-devel
 # spice usb redirection support
 BuildRequires: usbredir-devel >= 0.5.2
-BuildRequires:	pkgconfig(libusbredirparser-0.5) >= 0.6
 # tcmalloc support
 BuildRequires: gperftools-devel
 BuildRequires: texinfo
