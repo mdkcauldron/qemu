@@ -44,7 +44,7 @@
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?rcver:0.%{rcver}.}3
+Release:	%mkrel %{?rcver:0.%{rcver}.}4
 Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
@@ -78,11 +78,13 @@ Source20: kvm.conf
 # Not for upstream, f24 only
 Patch0001: 0001-spice-F24-spice-has-backported-gl-support.patch
 # Fix gtk UI crash when switching to monitor (bz #1333424)
-# Not upstream yet
 Patch0002: 0002-ui-gtk-fix-crash-when-terminal-inner-border-is-NULL.patch
 # Fix sdl2 UI lockup lockup when switching to monitor
-# Not upstream yet
 Patch0003: 0003-ui-sdl2-Release-grab-before-opening-console-window.patch
+# Explicitly error if spice GL setup fails
+Patch0004: 0004-ui-spice-Exit-if-gl-on-EGL-init-fails.patch
+# Fix monitor resizing with virgl (bz #1337564)
+Patch0005: 0005-spice-gl-add-use-qemu_spice_gl_monitor_config.patch
 
 
 # for %%{_sysconfdir}/sasl2

@@ -1,0 +1,30 @@
+From: Cole Robinson <crobinso@redhat.com>
+Date: Wed, 18 May 2016 11:44:33 -0400
+Subject: [PATCH] ui: spice: Exit if gl=on EGL init fails
+
+The user explicitly requested spice GL, so if we know it isn't
+going to work we should exit
+
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+---
+ ui/spice-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/ui/spice-core.c b/ui/spice-core.c
+index 61db3c1..da05054 100644
+--- a/ui/spice-core.c
++++ b/ui/spice-core.c
+@@ -833,9 +833,11 @@ void qemu_spice_init(void)
+                          "incompatible with -spice port/tls-port");
+             exit(1);
+         }
+-        if (egl_rendernode_init() == 0) {
+-            display_opengl = 1;
++        if (egl_rendernode_init() != 0) {
++            error_report("Failed to initialize EGL render node for SPICE GL");
++            exit(1);
+         }
++        display_opengl = 1;
+     }
+ #endif
+ }

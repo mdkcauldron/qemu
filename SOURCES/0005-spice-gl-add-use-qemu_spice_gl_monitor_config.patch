@@ -1,0 +1,83 @@
+From: Gerd Hoffmann <kraxel@redhat.com>
+Date: Wed, 3 Feb 2016 13:55:00 +0100
+Subject: [PATCH] spice/gl: add & use qemu_spice_gl_monitor_config
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+(cherry picked from commit 39414ef4e93db9041e463a097084a407d0d374f0)
+---
+ include/ui/spice-display.h |  1 +
+ ui/spice-display.c         | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
+index 00e4a0b..3c679e8 100644
+--- a/include/ui/spice-display.h
++++ b/include/ui/spice-display.h
+@@ -71,6 +71,7 @@ typedef struct QXLCookie {
+             QXLRect area;
+             int redraw;
+         } render;
++        void *data;
+     } u;
+ } QXLCookie;
+ 
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index 242ab5f..2a77a54 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -660,6 +660,11 @@ static void interface_async_complete(QXLInstance *sin, uint64_t cookie_token)
+         qemu_bh_schedule(ssd->gl_unblock_bh);
+         break;
+     }
++    case QXL_COOKIE_TYPE_IO:
++        if (cookie->io == QXL_IO_MONITORS_CONFIG_ASYNC) {
++            g_free(cookie->u.data);
++        }
++        break;
+ #endif
+     default:
+         /* should never be called, used in qxl native mode only */
+@@ -795,6 +800,29 @@ static const DisplayChangeListenerOps display_listener_ops = {
+ 
+ #ifdef HAVE_SPICE_GL
+ 
++static void qemu_spice_gl_monitor_config(SimpleSpiceDisplay *ssd,
++                                         int x, int y, int w, int h)
++{
++    QXLMonitorsConfig *config;
++    QXLCookie *cookie;
++
++    config = g_malloc0(sizeof(QXLMonitorsConfig) + sizeof(QXLHead));
++    config->count = 1;
++    config->max_allowed = 1;
++    config->heads[0].x = x;
++    config->heads[0].y = y;
++    config->heads[0].width = w;
++    config->heads[0].height = h;
++    cookie = qxl_cookie_new(QXL_COOKIE_TYPE_IO,
++                            QXL_IO_MONITORS_CONFIG_ASYNC);
++    cookie->u.data = config;
++
++    spice_qxl_monitors_config_async(&ssd->qxl,
++                                    (uintptr_t)config,
++                                    MEMSLOT_GROUP_HOST,
++                                    (uintptr_t)cookie);
++}
++
+ static void qemu_spice_gl_block(SimpleSpiceDisplay *ssd, bool block)
+ {
+     uint64_t timeout;
+@@ -858,6 +886,8 @@ static void qemu_spice_gl_scanout(DisplayChangeListener *dcl,
+                          surface_width(ssd->ds),
+                          surface_height(ssd->ds),
+                          stride, fourcc, y_0_top);
++
++    qemu_spice_gl_monitor_config(ssd, x, y, w, h);
+ }
+ 
+ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
