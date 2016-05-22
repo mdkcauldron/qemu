@@ -44,7 +44,7 @@
 Summary:	QEMU is a FAST! processor emulator
 Name:		qemu
 Version:	2.6.0
-Release:	%mkrel %{?rcver:0.%{rcver}.}4
+Release:	%mkrel %{?rcver:0.%{rcver}.}5
 Epoch: 0
 License:	GPLv2+ and LGPLv2+ and BSD
 Group:		Emulators
@@ -71,6 +71,9 @@ Source11: 99-qemu-guest-agent.rules
 Source12: bridge.conf
 # qemu-kvm back compat wrapper installed as /usr/bin/qemu-kvm
 Source13: qemu-kvm.sh
+# wrapper for choosing desired arm instruction set for user mode emulation
+# within chroot
+Source14: qemu-wrapper.c
 # /etc/modprobe.d/kvm.conf
 Source20: kvm.conf
 
@@ -196,6 +199,11 @@ BuildRequires: virglrenderer-devel
 # qemu 2.6: Needed for gtk GL support
 BuildRequires: pkgconfig(gbm)
 BuildRequires: libegl-devel
+# for static user mode emulation builds
+BuildRequires:	glibc-static-devel
+BuildRequires:	glib2-static-devel
+BuildRequires:	pcre-static-devel
+
 
 Requires: %{name}-user = %{epoch}:%{version}-%{release}
 Requires: %{name}-system-alpha = %{epoch}:%{version}-%{release}
@@ -572,6 +580,53 @@ emulation speed by using dynamic translation.
 
 This package provides the system emulator for Tricore.
 
+%package static-user-aarch64
+Summary: Static build of qemu aarch64 user mode
+Group: Emulators
+
+%description static-user-aarch64
+This package contains a static build of the user mode aarch64 qemu emulator,
+which allows you to run aarch64 binaries in your host environment without any
+need for a dedicated virtual machine.
+
+The static nature of this build makes it usable for doing aarch64 emulation in
+guest environment, ie. a chroot.
+
+%package static-user-arm
+Summary: Static build of qemu arm user mode
+Group: Emulators
+
+%description static-user-arm
+This package contains a static build of the user mode arm qemu emulator,
+which allows you to run arm binaries in your host environment without any
+need for a dedicated virtual machine.
+
+The static nature of this build makes it usable for doing arm emulation in
+guest environment, ie. a chroot.
+
+%package static-user-mips
+Summary: Static build of qemu mips user mode
+Group: Emulators
+
+%description static-user-mips
+This package contains a static build of the user mode mips qemu emulator,
+which allows you to run mips binaries in your host environment without any
+need for a dedicated virtual machine.
+
+The static nature of this build makes it usable for doing mips emulation in
+guest environment, ie. a chroot.
+
+%package static-user-mipsel
+Summary: Static build of qemu mipsel user mode
+Group: Emulators
+
+%description static-user-mipsel
+This package contains a static build of the user mode mipsel qemu emulator,
+which allows you to run mipsel binaries in your host environment without any
+need for a dedicated virtual machine.
+
+The static nature of this build makes it usable for doing mipsel emulation in
+guest environment, ie. a chroot.
 
 %prep
 %setup -q -n qemu-%{version}%{?rcstr}
@@ -586,6 +641,72 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 # As of qemu 2.1, --enable-trace-backends supports multiple backends,
 # but there's a performance impact for non-dtrace so we don't use them
 tracebackends="dtrace"
+
+mkdir -p qemu-static
+pushd qemu-static
+cp %{SOURCE14} qemu-wrapper.c
+../configure	--target-list=aarch64-linux-user,arm-linux-user,mips-linux-user,mipsel-linux-user \
+		--static \
+		--enable-tcg-interpreter \
+		--disable-debug-tcg \
+		--disable-debug-info \
+		--disable-sparse \
+		--disable-strip \
+		--disable-werror \
+		--disable-stack-protector \
+		--disable-sdl \
+		--disable-gtk \
+		--disable-virtfs \
+		--disable-vnc \
+		--disable-cocoa \
+		--disable-xen \
+		--disable-xen-pci-passthrough \
+		--disable-brlapi \
+		--disable-vnc-sasl \
+		--disable-vnc-jpeg \
+		--disable-vnc-png \
+		--disable-curses \
+		--disable-curl \
+		--disable-fdt \
+		--disable-bluez \
+		--disable-slirp \
+		--disable-rdma \
+		--disable-system \
+		--disable-bsd-user \
+		--disable-uuid \
+		--disable-vde \
+		--disable-netmap \
+		--disable-cap-ng \
+		--disable-attr \
+		--disable-blobs \
+		--disable-docs \
+		--disable-vhost-net \
+		--disable-spice \
+		--disable-libiscsi \
+		--disable-libnfs \
+		--disable-smartcard \
+		--disable-libusb \
+		--disable-usb-redir \
+		--disable-guest-agent \
+		--disable-seccomp \
+		--with-coroutine=ucontext \
+		--enable-coroutine-pool \
+		--disable-glusterfs \
+		--disable-archipelago \
+		--disable-tpm \
+		--disable-libssh2 \
+		--disable-vhdx \
+		--disable-numa \
+		--disable-lzo \
+		--disable-rbd \
+		--disable-gcrypt \
+		--disable-vte \
+		--disable-vhost-scsi \
+		--extra-ldflags="-Wl,-z,relro -Wl,-z,now" \
+		--extra-cflags="%{optflags}"
+%make V=1 $buildldflags
+gcc -static qemu-wrapper.c %{optflags} %{ldflags} -O3 -o qemu-wrapper
+popd
 
     buildarch="i386-softmmu x86_64-softmmu alpha-softmmu arm-softmmu \
 cris-softmmu lm32-softmmu m68k-softmmu microblaze-softmmu \
@@ -798,6 +919,17 @@ for f in %{buildroot}%{_bindir}/* %{buildroot}%{_libdir}/* \
   if file $f | grep -q ELF; then chrpath --delete $f; fi
 done
 
+install -d %{buildroot}%{_binfmtdir}
+install -m755 qemu-static/aarch64-linux-user/qemu-aarch64 -D %{buildroot}%{_bindir}/qemu-static-aarch64
+install -m755 qemu-static/arm-linux-user/qemu-arm -D %{buildroot}%{_bindir}/qemu-static-arm
+install -m755 qemu-static/qemu-wrapper -D %{buildroot}%{_bindir}/qemu-static-armv7hl
+install -m755 qemu-static/mips-linux-user/qemu-mips -D %{buildroot}%{_bindir}/qemu-static-mips
+install -m755 qemu-static/mipsel-linux-user/qemu-mipsel -D %{buildroot}%{_bindir}/qemu-static-mipsel
+echo ':aarch64:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-static-aarch64:' > %{buildroot}%{_binfmtdir}/aarch64.conf
+echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-static-armv7hl:' > %{buildroot}%{_binfmtdir}/arm.conf
+echo ':mips:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-static-mips:' > %{buildroot}%{_binfmtdir}/mips.conf
+echo ':mipsel:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-static-mipsel:' > %{buildroot}%{_binfmtdir}/mipsel.conf
+
 %check
 
 # Tests are hanging on s390 as of 2.3.0
@@ -869,6 +1001,26 @@ getent passwd qemu >/dev/null || \
 %postun user
 /bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 
+#(proyvind): this should really be automized by triggers, but whatever...
+%post static-user-aarch64
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun static-user-aarch64
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+
+%post static-user-arm
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun static-user-arm
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+
+%post static-user-mips
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun static-user-mips
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+
+%post static-user-mipsel
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
+%postun static-user-mipsel
+/bin/systemctl --system try-restart systemd-binfmt.service &>/dev/null || :
 
 %post guest-agent
 %systemd_post qemu-guest-agent.service
@@ -1212,3 +1364,20 @@ getent passwd qemu >/dev/null || \
 %{_datadir}/systemtap/tapset/qemu-system-tricore*.stp
 %endif
 %{_mandir}/man1/qemu-system-tricore.1*
+
+%files static-user-aarch64
+%{_bindir}/qemu-static-aarch64
+%{_binfmtdir}/aarch64.conf
+
+%files static-user-arm
+%{_bindir}/qemu-static-armv7hl
+%{_bindir}/qemu-static-arm
+%{_binfmtdir}/arm.conf
+
+%files static-user-mips
+%{_bindir}/qemu-static-mips
+%{_binfmtdir}/mips.conf
+
+%files static-user-mipsel
+%{_bindir}/qemu-static-mipsel
+%{_binfmtdir}/mipsel.conf
